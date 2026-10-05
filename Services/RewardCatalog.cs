@@ -10,7 +10,7 @@ public static class RewardCatalog
         {
             Id = "theme.default",
             Name = "Classic Blue",
-            Description = "The original SimpleReminders look.",
+            Description = "The original SimpleReminders theme.",
             Category = "Themes",
             Price = 0
         },
@@ -18,7 +18,7 @@ public static class RewardCatalog
         {
             Id = "theme.ocean",
             Name = "Ocean",
-            Description = "A cool blue accent for a calmer workspace.",
+            Description = "A calm blue accent for your workspace.",
             Category = "Themes",
             Price = 100
         },
@@ -42,7 +42,7 @@ public static class RewardCatalog
         {
             Id = "theme.sunset",
             Name = "Sunset",
-            Description = "A warm orange accent for a brighter workspace.",
+            Description = "A warm orange accent for your workspace.",
             Category = "Themes",
             Price = 250
         }
@@ -56,39 +56,47 @@ public static class RewardCatalog
             Name = "First Step",
             Description = "Complete your first reminder.",
             RewardCoins = 25,
-            RewardXP = 25
+            RewardXP = 0
+        },
+        new Achievement
+        {
+            Id = "achievement.five-tasks",
+            Name = "Getting Started",
+            Description = "Complete 5 reminders.",
+            RewardCoins = 50,
+            RewardXP = 0
         },
         new Achievement
         {
             Id = "achievement.ten-tasks",
             Name = "Getting Things Done",
             Description = "Complete 10 reminders.",
-            RewardCoins = 75,
-            RewardXP = 50
-        },
-        new Achievement
-        {
-            Id = "achievement.first-list",
-            Name = "Organizer",
-            Description = "Create your first custom list.",
-            RewardCoins = 25,
-            RewardXP = 25
-        },
-        new Achievement
-        {
-            Id = "achievement.five-lists",
-            Name = "Master Organizer",
-            Description = "Create 5 custom lists.",
             RewardCoins = 100,
-            RewardXP = 75
+            RewardXP = 0
         },
         new Achievement
         {
-            Id = "achievement.level-five",
-            Name = "Level 5",
-            Description = "Reach level 5.",
+            Id = "achievement.twenty-five-tasks",
+            Name = "Productive",
+            Description = "Complete 25 reminders.",
             RewardCoins = 150,
-            RewardXP = 100
+            RewardXP = 0
+        },
+        new Achievement
+        {
+            Id = "achievement.fifty-tasks",
+            Name = "Consistent",
+            Description = "Complete 50 reminders.",
+            RewardCoins = 250,
+            RewardXP = 0
+        },
+        new Achievement
+        {
+            Id = "achievement.hundred-tasks",
+            Name = "Master Planner",
+            Description = "Complete 100 reminders.",
+            RewardCoins = 500,
+            RewardXP = 0
         }
     ];
 }
