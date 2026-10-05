@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -31,6 +33,7 @@ public partial class MainWindow : Window
         ReminderList.ItemsSource = _reminderView;
         CustomListsList.ItemsSource = CustomLists;
 
+        ListsList.SelectedIndex = 0;
         RefreshView();
     }
 
