@@ -4,7 +4,7 @@ namespace SimpleReminders.Services;
 
 public static class RewardCatalog
 {
-    public static IReadOnlyList<StoreItem> StoreItems { get; } =
+    public static List<StoreItem> CreateStoreItems() =>
     [
         new StoreItem
         {
@@ -42,13 +42,13 @@ public static class RewardCatalog
         {
             Id = "theme.sunset",
             Name = "Sunset",
-            Description = "A warm orange accent with a bright feel.",
+            Description = "A warm orange accent for a brighter workspace.",
             Category = "Themes",
             Price = 250
         }
     ];
 
-    public static IReadOnlyList<Achievement> Achievements { get; } =
+    public static List<Achievement> CreateAchievements() =>
     [
         new Achievement
         {
