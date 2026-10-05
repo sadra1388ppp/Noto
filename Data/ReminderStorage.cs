@@ -45,16 +45,19 @@ public sealed class ReminderStorage
         }
     }
 
-    public void Save(IEnumerable<Reminder> reminders, IEnumerable<ReminderList> lists)
+    public void Save(
+        IEnumerable<Reminder> reminders,
+        IEnumerable<ReminderList> lists,
+        UserProgress progress)
     {
         var data = new StorageData
         {
             Reminders = reminders.ToList(),
-            Lists = lists.ToList()
+            Lists = lists.ToList(),
+            Progress = progress
         };
 
         var json = JsonSerializer.Serialize(data, _options);
-
         File.WriteAllText(_filePath, json);
     }
 }
@@ -62,5 +65,8 @@ public sealed class ReminderStorage
 public sealed class StorageData
 {
     public List<Reminder> Reminders { get; set; } = [];
+
     public List<ReminderList> Lists { get; set; } = [];
+
+    public UserProgress Progress { get; set; } = new();
 }
