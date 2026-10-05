@@ -1,0 +1,451 @@
+<Window x:Class="SimpleReminders.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Simple Reminders"
+        Width="1100"
+        Height="700"
+        MinWidth="900"
+        MinHeight="600"
+        Background="#F7F8FA"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+
+        <Style x:Key="SidebarItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="12,9"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Foreground" Value="#555B66"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="ItemBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBorder"
+                                        Property="Background"
+                                        Value="#F1F3F6"/>
+                            </Trigger>
+
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder"
+                                        Property="Background"
+                                        Value="#EAF1FF"/>
+
+                                <Setter Property="Foreground"
+                                        Value="#245FD1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#70757D"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="15"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#ECEEF2"/>
+                    <Setter Property="Foreground" Value="#202329"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#3478F6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="9">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2865DB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ReminderItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="Transparent"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ReminderCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#24272C"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="245"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0"
+                Background="White"
+                BorderBrush="#E6E8EB"
+                BorderThickness="0,0,1,0">
+
+            <Grid Margin="18">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Reminders"
+                           FontSize="27"
+                           FontWeight="SemiBold"
+                           Foreground="#15171A"
+                           Margin="6,6,0,24"/>
+
+                <ListBox Grid.Row="1"
+                         x:Name="ListsList"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         SelectionChanged="ListsList_SelectionChanged">
+
+                    <ListBoxItem IsSelected="True"
+                                 Style="{StaticResource SidebarItemStyle}">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="All Reminders"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"/>
+
+                            <TextBlock x:Name="SidebarAllCountText"
+                                       Grid.Column="1"
+                                       Text="0"
+                                       FontSize="12"
+                                       Foreground="#9297A0"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+                    </ListBoxItem>
+
+                </ListBox>
+
+                <StackPanel Grid.Row="2"
+                            Margin="0,24,0,0">
+
+                    <TextBlock Text="MY LISTS"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Foreground="#9499A1"
+                               Margin="7,0,0,10"/>
+
+                    <ListBox x:Name="CustomListsList"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             ItemContainerStyle="{StaticResource SidebarItemStyle}"
+                             SelectionChanged="CustomListsList_SelectionChanged"/>
+
+                    <TextBlock x:Name="NoListsText"
+                               Text="No custom lists"
+                               FontSize="13"
+                               Foreground="#9A9FA7"
+                               Margin="12,6,0,0"/>
+
+                </StackPanel>
+
+                <Border Grid.Row="3"
+                        x:Name="NewListPanel"
+                        Visibility="Collapsed"
+                        Background="#F6F7F9"
+                        BorderBrush="#E1E4E8"
+                        BorderThickness="1"
+                        CornerRadius="9"
+                        Padding="9"
+                        Margin="0,10,0,8">
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="NewListInput"
+                                 Grid.Column="0"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 FontSize="14"
+                                 VerticalContentAlignment="Center"/>
+
+                        <Button Grid.Column="1"
+                                Content="Save"
+                                Style="{StaticResource ActionButtonStyle}"
+                                Click="CreateList_Click"/>
+
+                        <Button Grid.Column="2"
+                                Content="×"
+                                Style="{StaticResource ActionButtonStyle}"
+                                Click="CancelNewList_Click"/>
+
+                    </Grid>
+
+                </Border>
+
+                <Button Grid.Row="4"
+                        Content="+  New List"
+                        Style="{StaticResource ActionButtonStyle}"
+                        HorizontalContentAlignment="Left"
+                        FontWeight="SemiBold"
+                        Click="NewListButton_Click"/>
+
+            </Grid>
+
+        </Border>
+
+        <!-- Main -->
+        <Grid Grid.Column="1"
+              Margin="42,34,42,34">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0"
+                  Margin="0,0,0,26">
+
+                <StackPanel>
+                    <TextBlock x:Name="PageTitleText"
+                               Text="All Reminders"
+                               FontSize="32"
+                               FontWeight="SemiBold"
+                               Foreground="#17191C"/>
+
+                    <TextBlock Text="Everything you want to remember, in one place."
+                               FontSize="14"
+                               Foreground="#7D828A"
+                               Margin="0,6,0,0"/>
+                </StackPanel>
+
+                <Border Width="255"
+                        Height="40"
+                        HorizontalAlignment="Right"
+                        Background="White"
+                        BorderBrush="#E1E4E8"
+                        BorderThickness="1"
+                        CornerRadius="9">
+
+                    <TextBox x:Name="SearchInput"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Padding="12,0"
+                             FontSize="14"
+                             VerticalContentAlignment="Center"
+                             ToolTip="Search reminders"
+                             TextChanged="SearchInput_TextChanged"/>
+                </Border>
+
+            </Grid>
+
+            <!-- Add Reminder -->
+            <Border Grid.Row="1"
+                    Background="White"
+                    BorderBrush="#E2E5E9"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="12"
+                    Margin="0,0,0,24">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="ReminderInput"
+                             Grid.Column="0"
+                             Height="42"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             FontSize="15"
+                             Padding="10,0"
+                             VerticalContentAlignment="Center"
+                             ToolTip="Reminder title"/>
+
+                    <DatePicker x:Name="DueDatePicker"
+                                Grid.Column="1"
+                                Height="42"
+                                Margin="10,0,10,0"
+                                VerticalContentAlignment="Center"/>
+
+                    <Button Grid.Column="2"
+                            Content="Add Reminder"
+                            Width="125"
+                            Height="42"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Click="AddReminder_Click"/>
+
+                </Grid>
+
+            </Border>
+
+            <!-- Reminder list -->
+            <Grid Grid.Row="2">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0"
+                      Margin="2,0,2,10">
+
+                    <TextBlock Text="Reminders"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#25282D"/>
+
+                    <TextBlock x:Name="ReminderCountText"
+                               HorizontalAlignment="Right"
+                               Text="0"
+                               FontSize="13"
+                               Foreground="#858A92"/>
+
+                </Grid>
+
+                <Grid Grid.Row="1">
+
+                    <ListBox x:Name="ReminderList"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             ItemContainerStyle="{StaticResource ReminderItemStyle}">
+
+                        <ListBox.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <Border Background="White"
+                                        BorderBrush="#E5E7EA"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="14">
+
+                                    <Grid>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+
+                                            <CheckBox Content="{Binding Title}"
+                                                      IsChecked="{Binding IsCompleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Style="{StaticResource ReminderCheckBoxStyle}"
+                                                      Checked="ReminderCheckBox_Changed"
+                                                      Unchecked="ReminderCheckBox_Changed"/>
+
+                                            <TextBlock Text="{Binding DueDate, StringFormat='{}{0:d}'}"
+                                                       FontSize="12"
+                                                       Foreground="#898F98"
+                                                       Margin="26,5,0,0"/>
+
+                                        </StackPanel>
+
+                                        <Button Grid.Column="1"
+                                                Content="×"
+                                                Width="32"
+                                                Height="32"
+                                                Style="{StaticResource ActionButtonStyle}"
+                                                Tag="{Binding}"
+                                                Click="DeleteReminder_Click"/>
+
+                                    </Grid>
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    <StackPanel x:Name="EmptyStatePanel"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+
+                        <TextBlock Text="No reminders"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="#34373C"
+                                   HorizontalAlignment="Center"/>
+
+                        <TextBlock Text="Add your first reminder above."
+                                   FontSize="14"
+                                   Foreground="#8A8F97"
+                                   Margin="0,7,0,0"
+                                   HorizontalAlignment="Center"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
+</Window>
