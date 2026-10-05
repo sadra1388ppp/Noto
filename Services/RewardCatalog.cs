@@ -48,55 +48,5 @@ public static class RewardCatalog
         }
     ];
 
-    public static List<Achievement> CreateAchievements() =>
-    [
-        new Achievement
-        {
-            Id = "achievement.first-task",
-            Name = "First Step",
-            Description = "Complete your first reminder.",
-            RewardCoins = 25,
-            RewardXP = 0
-        },
-        new Achievement
-        {
-            Id = "achievement.five-tasks",
-            Name = "Getting Started",
-            Description = "Complete 5 reminders.",
-            RewardCoins = 50,
-            RewardXP = 0
-        },
-        new Achievement
-        {
-            Id = "achievement.ten-tasks",
-            Name = "Getting Things Done",
-            Description = "Complete 10 reminders.",
-            RewardCoins = 100,
-            RewardXP = 0
-        },
-        new Achievement
-        {
-            Id = "achievement.twenty-five-tasks",
-            Name = "Productive",
-            Description = "Complete 25 reminders.",
-            RewardCoins = 150,
-            RewardXP = 0
-        },
-        new Achievement
-        {
-            Id = "achievement.fifty-tasks",
-            Name = "Consistent",
-            Description = "Complete 50 reminders.",
-            RewardCoins = 250,
-            RewardXP = 0
-        },
-        new Achievement
-        {
-            Id = "achievement.hundred-tasks",
-            Name = "Master Planner",
-            Description = "Complete 100 reminders.",
-            RewardCoins = 500,
-            RewardXP = 0
-        }
-    ];
+    public static List<Achievement> CreateAchievements() => [];
 }
