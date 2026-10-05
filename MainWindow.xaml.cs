@@ -38,18 +38,11 @@ public partial class MainWindow : Window
             StoreItems.Add(item);
         }
 
-        foreach (var achievement in RewardCatalog.CreateAchievements())
-        {
-            Achievements.Add(achievement);
-        }
-
         LoadData();
 
         ReminderList.ItemsSource = _reminderView;
         CustomListsList.ItemsSource = CustomLists;
         StoreItemsList.ItemsSource = StoreItems;
-        AchievementsList.ItemsSource = Achievements;
-
         EnsureProgressDefaults();
         ApplyTheme(_progress.EquippedThemeId);
         SyncRewardCatalogState();
@@ -174,13 +167,11 @@ public partial class MainWindow : Window
     private void RefreshRewardsView()
     {
         RewardsCoinsText.Text = _progress.Coins.ToString();
-        LevelText.Text = $"Level {_progress.Level}";
-        XPText.Text = $"{_progress.LevelXP} / {_progress.XPToNextLevel} XP";
-        XPProgressBar.Value = _progress.LevelXP;
-        CompletedCountText.Text = _progress.TotalCompleted.ToString();
-
-        var unlockedAchievements = Achievements.Count(x => x.IsUnlocked);
-        AchievementCountText.Text = $"{unlockedAchievements} / {Achievements.Count}";
+        StoreCoinsText.Text = _progress.Coins.ToString();
+        RewardsStatusText.Text =
+            string.IsNullOrWhiteSpace(RewardsStatusText.Text)
+                ? "Finish a reminder to earn 10 coins."
+                : RewardsStatusText.Text;
 
         SyncRewardCatalogState();
     }
@@ -214,10 +205,26 @@ public partial class MainWindow : Window
 
     private void ReminderCheckBox_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is CheckBox checkBox &&
-            checkBox.DataContext is Reminder reminder &&
-            checkBox.IsChecked == true)
+        if (sender is not CheckBox checkBox ||
+            checkBox.DataContext is not Reminder reminder)
         {
+            return;
+        }
+
+        if (checkBox.IsChecked == true)
+        {
+            var result = MessageBox.Show(
+                "Did you actually finish this, or are you trying to fool me?",
+                "Be honest",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                checkBox.IsChecked = false;
+                return;
+            }
+
             AwardCompletion(reminder);
         }
 
@@ -233,69 +240,28 @@ public partial class MainWindow : Window
         }
 
         _progress.RewardedReminderIds.Add(reminder.Id);
-
-        var oldLevel = _progress.Level;
-
         _progress.TotalCompleted++;
-        _progress.XP += 5;
-        _progress.Coins += 5;
+        _progress.Coins += 10;
+        RewardsStatusText.Text = "+10 coins earned. Nice work.";
 
-        if (_progress.Level > oldLevel)
-        {
-            var levelsGained = _progress.Level - oldLevel;
-            _progress.Coins += levelsGained * 25;
-            RewardsStatusText.Text =
-                $"Level {_progress.Level} reached! +{levelsGained * 25} bonus coins.";
-        }
-        else
-        {
-            RewardsStatusText.Text = "+5 XP and +5 coins earned.";
-        }
-
-        CheckAchievements();
         SaveAll();
-    }
-
-    private void CheckAchievements()
-    {
-        foreach (var achievement in Achievements)
-        {
-            if (achievement.IsUnlocked ||
-                !AchievementRequirementMet(achievement.Id))
-            {
-                continue;
-            }
-
-            achievement.IsUnlocked = true;
-
-            _progress.UnlockedAchievementIds.Add(achievement.Id);
-            _progress.Coins += achievement.RewardCoins;
-            _progress.XP += achievement.RewardXP;
-
-            RewardsStatusText.Text =
-                $"Achievement unlocked: {achievement.Name} • +{achievement.RewardCoins} coins.";
-        }
-
-        SyncRewardCatalogState();
-    }
-
-    private bool AchievementRequirementMet(string achievementId)
-    {
-        return achievementId switch
-        {
-            "achievement.first-task" => _progress.TotalCompleted >= 1,
-            "achievement.ten-tasks" => _progress.TotalCompleted >= 10,
-            "achievement.first-list" => CustomLists.Count >= 1,
-            "achievement.five-lists" => CustomLists.Count >= 5,
-            "achievement.level-five" => _progress.Level >= 5,
-            _ => false
-        };
     }
 
     private void DeleteReminder_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not Button button ||
             button.Tag is not Reminder reminder)
+        {
+            return;
+        }
+
+        var result = MessageBox.Show(
+            "What happened? Got tired already and gave up so quickly?",
+            "Delete Reminder",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (result != MessageBoxResult.Yes)
         {
             return;
         }
@@ -348,8 +314,6 @@ public partial class MainWindow : Window
         };
 
         CustomLists.Add(list);
-
-        CheckAchievements();
         SaveAll();
 
         NewListPanel.Visibility = Visibility.Collapsed;
@@ -417,10 +381,21 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (ListsList.SelectedIndex == 1)
+        CustomListsList.SelectedItem = null;
+
+        switch (ListsList.SelectedIndex)
         {
-            CustomListsList.SelectedItem = null;
-            ShowRewardsView();
+            case 1:
+                ShowRewardsView();
+                break;
+
+            case 2:
+                ShowStoreView();
+                break;
+
+            case 3:
+                ShowAchievementsView();
+                break;
         }
     }
 
@@ -443,13 +418,34 @@ public partial class MainWindow : Window
     {
         ReminderContentPanel.Visibility = Visibility.Visible;
         RewardsContentPanel.Visibility = Visibility.Collapsed;
+        StoreContentPanel.Visibility = Visibility.Collapsed;
+        AchievementsContentPanel.Visibility = Visibility.Collapsed;
     }
 
     private void ShowRewardsView()
     {
         ReminderContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Visible;
+        StoreContentPanel.Visibility = Visibility.Collapsed;
+        AchievementsContentPanel.Visibility = Visibility.Collapsed;
         RefreshRewardsView();
+    }
+
+    private void ShowStoreView()
+    {
+        ReminderContentPanel.Visibility = Visibility.Collapsed;
+        RewardsContentPanel.Visibility = Visibility.Collapsed;
+        StoreContentPanel.Visibility = Visibility.Visible;
+        AchievementsContentPanel.Visibility = Visibility.Collapsed;
+        RefreshRewardsView();
+    }
+
+    private void ShowAchievementsView()
+    {
+        ReminderContentPanel.Visibility = Visibility.Collapsed;
+        RewardsContentPanel.Visibility = Visibility.Collapsed;
+        StoreContentPanel.Visibility = Visibility.Collapsed;
+        AchievementsContentPanel.Visibility = Visibility.Visible;
     }
 
     private void StoreItemButton_Click(object sender, RoutedEventArgs e)
