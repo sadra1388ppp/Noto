@@ -93,6 +93,42 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="ListContextMenuStyle" TargetType="ContextMenu">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E5E9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DeleteMenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Foreground" Value="#C62828"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="12,9"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFF1F1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="ReminderItemStyle" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0,4"/>
@@ -189,7 +225,59 @@
                              BorderThickness="0"
                              Background="Transparent"
                              ItemContainerStyle="{StaticResource SidebarItemStyle}"
-                             SelectionChanged="CustomListsList_SelectionChanged"/>
+                             SelectionChanged="CustomListsList_SelectionChanged">
+
+                        <ListBox.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <Border Padding="0"
+                                        CornerRadius="8">
+
+                                    <Border.ContextMenu>
+
+                                        <ContextMenu
+                                            Style="{StaticResource ListContextMenuStyle}"
+                                            DataContext="{Binding PlacementTarget.DataContext,
+                                                RelativeSource={RelativeSource Self}}">
+
+                                            <MenuItem Header="Delete List"
+                                                      Style="{StaticResource DeleteMenuItemStyle}"
+                                                      Click="DeleteList_Click"/>
+
+                                        </ContextMenu>
+
+                                    </Border.ContextMenu>
+
+                                    <Grid Margin="2,0">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="24"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Ellipse Width="8"
+                                                 Height="8"
+                                                 Fill="#3478F6"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Name}"
+                                                   FontSize="15"
+                                                   Foreground="#555B66"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+
+                                    </Grid>
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
 
                     <TextBlock x:Name="NoListsText"
                                Text="No custom lists"
