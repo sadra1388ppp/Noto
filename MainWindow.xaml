@@ -510,7 +510,7 @@
                                             <CheckBox Content="{Binding Title}"
                                                       IsChecked="{Binding IsCompleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       Style="{StaticResource ReminderCheckBoxStyle}"
-                                                      Click="ReminderCheckBox_Click"/>
+                                                      PreviewMouseLeftButtonDown="ReminderCheckBox_PreviewMouseLeftButtonDown"/>
 
                                             <TextBlock Text="{Binding DueDate, StringFormat='{}{0:d}'}"
                                                        FontSize="12"
