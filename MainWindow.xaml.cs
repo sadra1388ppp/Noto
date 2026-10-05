@@ -179,6 +179,9 @@ public partial class MainWindow : Window
         XPProgressBar.Value = _progress.LevelXP;
         CompletedCountText.Text = _progress.TotalCompleted.ToString();
 
+        var unlockedAchievements = Achievements.Count(x => x.IsUnlocked);
+        AchievementCountText.Text = $"{unlockedAchievements} / {Achievements.Count}";
+
         SyncRewardCatalogState();
     }
 
@@ -234,7 +237,7 @@ public partial class MainWindow : Window
         var oldLevel = _progress.Level;
 
         _progress.TotalCompleted++;
-        _progress.XP += 10;
+        _progress.XP += 5;
         _progress.Coins += 5;
 
         if (_progress.Level > oldLevel)
@@ -246,7 +249,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            RewardsStatusText.Text = "+10 XP and +5 coins earned.";
+            RewardsStatusText.Text = "+5 XP and +5 coins earned.";
         }
 
         CheckAchievements();
@@ -345,9 +348,6 @@ public partial class MainWindow : Window
         };
 
         CustomLists.Add(list);
-
-        _progress.Coins += 5;
-        _progress.XP += 5;
 
         CheckAchievements();
         SaveAll();
