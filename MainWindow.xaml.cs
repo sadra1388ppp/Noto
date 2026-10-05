@@ -112,6 +112,13 @@ public partial class MainWindow : Window
 
     private void Reminder_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
+        if (sender is Reminder reminder &&
+            e.PropertyName == nameof(Reminder.IsCompleted) &&
+            !reminder.IsCompleted)
+        {
+            _progress.RewardedReminderIds.Remove(reminder.Id);
+        }
+
         _storage.Save(Reminders, CustomLists, _progress);
 
         if (e.PropertyName == nameof(Reminder.IsCompleted))
