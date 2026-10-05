@@ -6,8 +6,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using SimpleReminders.Data;
 using SimpleReminders.Models;
+using SimpleReminders.Services;
 
 namespace SimpleReminders;
 
@@ -18,7 +20,10 @@ public partial class MainWindow : Window
 
     public ObservableCollection<Reminder> Reminders { get; } = [];
     public ObservableCollection<ReminderList> CustomLists { get; } = [];
+    public ObservableCollection<StoreItem> StoreItems { get; } = [];
+    public ObservableCollection<Achievement> Achievements { get; } = [];
 
+    private UserProgress _progress = new();
     private Guid? _selectedListId;
 
     public MainWindow()
@@ -28,18 +33,38 @@ public partial class MainWindow : Window
         _reminderView = CollectionViewSource.GetDefaultView(Reminders);
         _reminderView.Filter = FilterReminder;
 
+        foreach (var item in RewardCatalog.CreateStoreItems())
+        {
+            StoreItems.Add(item);
+        }
+
+        foreach (var achievement in RewardCatalog.CreateAchievements())
+        {
+            Achievements.Add(achievement);
+        }
+
         LoadData();
 
         ReminderList.ItemsSource = _reminderView;
         CustomListsList.ItemsSource = CustomLists;
+        StoreItemsList.ItemsSource = StoreItems;
+        AchievementsList.ItemsSource = Achievements;
+
+        EnsureProgressDefaults();
+        ApplyTheme(_progress.EquippedThemeId);
+        SyncRewardCatalogState();
 
         ListsList.SelectedIndex = 0;
+        ShowRemindersView();
         RefreshView();
+        RefreshRewardsView();
     }
 
     private void LoadData()
     {
         var data = _storage.Load();
+
+        _progress = data.Progress ?? new UserProgress();
 
         foreach (var reminder in data.Reminders)
         {
@@ -52,6 +77,39 @@ public partial class MainWindow : Window
         }
     }
 
+    private void EnsureProgressDefaults()
+    {
+        _progress.RewardedReminderIds ??= [];
+        _progress.UnlockedAchievementIds ??= [];
+        _progress.OwnedStoreItemIds ??= [];
+
+        if (!_progress.OwnedStoreItemIds.Contains("theme.default"))
+        {
+            _progress.OwnedStoreItemIds.Add("theme.default");
+        }
+
+        if (string.IsNullOrWhiteSpace(_progress.EquippedThemeId))
+        {
+            _progress.EquippedThemeId = "theme.default";
+        }
+    }
+
+    private void SyncRewardCatalogState()
+    {
+        foreach (var item in StoreItems)
+        {
+            item.IsOwned = _progress.OwnedStoreItemIds.Contains(item.Id);
+            item.IsEquipped = item.Id.Equals(
+                _progress.EquippedThemeId,
+                StringComparison.OrdinalIgnoreCase);
+        }
+
+        foreach (var achievement in Achievements)
+        {
+            achievement.IsUnlocked = _progress.UnlockedAchievementIds.Contains(achievement.Id);
+        }
+    }
+
     private void AddReminderToCollection(Reminder reminder)
     {
         reminder.PropertyChanged += Reminder_PropertyChanged;
@@ -60,11 +118,12 @@ public partial class MainWindow : Window
 
     private void Reminder_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        _storage.Save(Reminders, CustomLists);
+        _storage.Save(Reminders, CustomLists, _progress);
 
         if (e.PropertyName == nameof(Reminder.IsCompleted))
         {
             _reminderView.Refresh();
+            RefreshView();
         }
     }
 
@@ -108,6 +167,19 @@ public partial class MainWindow : Window
         NoListsText.Visibility = CustomLists.Count == 0
             ? Visibility.Visible
             : Visibility.Collapsed;
+
+        RefreshRewardsView();
+    }
+
+    private void RefreshRewardsView()
+    {
+        RewardsCoinsText.Text = _progress.Coins.ToString();
+        LevelText.Text = $"Level {_progress.Level}";
+        XPText.Text = $"{_progress.LevelXP} / {_progress.XPToNextLevel} XP";
+        XPProgressBar.Value = _progress.LevelXP;
+        CompletedCountText.Text = _progress.TotalCompleted.ToString();
+
+        SyncRewardCatalogState();
     }
 
     private void AddReminder_Click(object sender, RoutedEventArgs e)
@@ -128,7 +200,7 @@ public partial class MainWindow : Window
         };
 
         AddReminderToCollection(reminder);
-        _storage.Save(Reminders, CustomLists);
+        SaveAll();
 
         ReminderInput.Clear();
         DueDatePicker.SelectedDate = null;
@@ -137,9 +209,90 @@ public partial class MainWindow : Window
         RefreshView();
     }
 
+    private void ReminderCheckBox_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is CheckBox checkBox &&
+            checkBox.DataContext is Reminder reminder &&
+            checkBox.IsChecked == true)
+        {
+            AwardCompletion(reminder);
+        }
+
+        SaveAll();
+        RefreshView();
+    }
+
+    private void AwardCompletion(Reminder reminder)
+    {
+        if (_progress.RewardedReminderIds.Contains(reminder.Id))
+        {
+            return;
+        }
+
+        _progress.RewardedReminderIds.Add(reminder.Id);
+
+        var oldLevel = _progress.Level;
+
+        _progress.TotalCompleted++;
+        _progress.XP += 10;
+        _progress.Coins += 5;
+
+        if (_progress.Level > oldLevel)
+        {
+            var levelsGained = _progress.Level - oldLevel;
+            _progress.Coins += levelsGained * 25;
+            RewardsStatusText.Text =
+                $"Level {_progress.Level} reached! +{levelsGained * 25} bonus coins.";
+        }
+        else
+        {
+            RewardsStatusText.Text = "+10 XP and +5 coins earned.";
+        }
+
+        CheckAchievements();
+        SaveAll();
+    }
+
+    private void CheckAchievements()
+    {
+        foreach (var achievement in Achievements)
+        {
+            if (achievement.IsUnlocked ||
+                !AchievementRequirementMet(achievement.Id))
+            {
+                continue;
+            }
+
+            achievement.IsUnlocked = true;
+
+            _progress.UnlockedAchievementIds.Add(achievement.Id);
+            _progress.Coins += achievement.RewardCoins;
+            _progress.XP += achievement.RewardXP;
+
+            RewardsStatusText.Text =
+                $"Achievement unlocked: {achievement.Name} • +{achievement.RewardCoins} coins.";
+        }
+
+        SyncRewardCatalogState();
+    }
+
+    private bool AchievementRequirementMet(string achievementId)
+    {
+        return achievementId switch
+        {
+            "achievement.first-task" => _progress.TotalCompleted >= 1,
+            "achievement.ten-tasks" => _progress.TotalCompleted >= 10,
+            "achievement.first-list" => CustomLists.Count >= 1,
+            "achievement.five-lists" => CustomLists.Count >= 5,
+            "achievement.level-five" => _progress.Level >= 5,
+            _ => false
+        };
+    }
+
     private void DeleteReminder_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is not Button button || button.Tag is not Reminder reminder)
+        if (sender is not Button button ||
+            button.Tag is not Reminder reminder)
         {
             return;
         }
@@ -147,13 +300,7 @@ public partial class MainWindow : Window
         reminder.PropertyChanged -= Reminder_PropertyChanged;
         Reminders.Remove(reminder);
 
-        _storage.Save(Reminders, CustomLists);
-        RefreshView();
-    }
-
-    private void ReminderCheckBox_Changed(object sender, RoutedEventArgs e)
-    {
-        _storage.Save(Reminders, CustomLists);
+        SaveAll();
         RefreshView();
     }
 
@@ -198,7 +345,12 @@ public partial class MainWindow : Window
         };
 
         CustomLists.Add(list);
-        _storage.Save(Reminders, CustomLists);
+
+        _progress.Coins += 5;
+        _progress.XP += 5;
+
+        CheckAchievements();
+        SaveAll();
 
         NewListPanel.Visibility = Visibility.Collapsed;
         NewListInput.Clear();
@@ -215,7 +367,8 @@ public partial class MainWindow : Window
 
     private void DeleteList_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is not MenuItem menuItem || menuItem.DataContext is not ReminderList list)
+        if (sender is not MenuItem menuItem ||
+            menuItem.DataContext is not ReminderList list)
         {
             return;
         }
@@ -233,13 +386,14 @@ public partial class MainWindow : Window
 
         var wasSelected = _selectedListId == list.Id;
 
-        foreach (var reminder in Reminders.Where(r => r.ListId == list.Id.ToString()))
+        foreach (var reminder in Reminders.Where(
+                     r => r.ListId == list.Id.ToString()))
         {
             reminder.ListId = null;
         }
 
         CustomLists.Remove(list);
-        _storage.Save(Reminders, CustomLists);
+        SaveAll();
 
         if (wasSelected)
         {
@@ -253,16 +407,21 @@ public partial class MainWindow : Window
 
     private void ListsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (ListsList.SelectedIndex != 0)
+        if (ListsList.SelectedIndex == 0)
         {
+            _selectedListId = null;
+            PageTitleText.Text = "All Reminders";
+            CustomListsList.SelectedItem = null;
+            ShowRemindersView();
+            RefreshView();
             return;
         }
 
-        _selectedListId = null;
-        PageTitleText.Text = "All Reminders";
-        CustomListsList.SelectedItem = null;
-
-        RefreshView();
+        if (ListsList.SelectedIndex == 1)
+        {
+            CustomListsList.SelectedItem = null;
+            ShowRewardsView();
+        }
     }
 
     private void CustomListsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -276,6 +435,116 @@ public partial class MainWindow : Window
         PageTitleText.Text = list.Name;
         ListsList.SelectedIndex = -1;
 
+        ShowRemindersView();
         RefreshView();
     }
+
+    private void ShowRemindersView()
+    {
+        ReminderContentPanel.Visibility = Visibility.Visible;
+        RewardsContentPanel.Visibility = Visibility.Collapsed;
+    }
+
+    private void ShowRewardsView()
+    {
+        ReminderContentPanel.Visibility = Visibility.Collapsed;
+        RewardsContentPanel.Visibility = Visibility.Visible;
+        RefreshRewardsView();
+    }
+
+    private void StoreItemButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button ||
+            button.Tag is not StoreItem item)
+        {
+            return;
+        }
+
+        if (item.IsEquipped)
+        {
+            return;
+        }
+
+        if (!item.IsOwned)
+        {
+            if (_progress.Coins < item.Price)
+            {
+                RewardsStatusText.Text = "Not enough coins for this item.";
+                return;
+            }
+
+            _progress.Coins -= item.Price;
+
+            if (!_progress.OwnedStoreItemIds.Contains(item.Id))
+            {
+                _progress.OwnedStoreItemIds.Add(item.Id);
+            }
+
+            RewardsStatusText.Text = $"{item.Name} purchased.";
+        }
+
+        EquipStoreItem(item);
+        SaveAll();
+        RefreshRewardsView();
+    }
+
+    private void EquipStoreItem(StoreItem item)
+    {
+        foreach (var storeItem in StoreItems)
+        {
+            storeItem.IsEquipped = false;
+        }
+
+        item.IsOwned = true;
+        item.IsEquipped = true;
+        _progress.EquippedThemeId = item.Id;
+
+        ApplyTheme(item.Id);
+        RewardsStatusText.Text = $"{item.Name} equipped.";
+    }
+
+    private void ApplyTheme(string themeId)
+    {
+        var palette = themeId switch
+        {
+            "theme.ocean" => new ThemePalette(
+                Color.FromRgb(13, 138, 188),
+                Color.FromRgb(7, 108, 151),
+                Color.FromRgb(230, 247, 253)),
+
+            "theme.violet" => new ThemePalette(
+                Color.FromRgb(124, 77, 255),
+                Color.FromRgb(94, 53, 177),
+                Color.FromRgb(241, 236, 255)),
+
+            "theme.forest" => new ThemePalette(
+                Color.FromRgb(46, 139, 87),
+                Color.FromRgb(34, 110, 68),
+                Color.FromRgb(232, 247, 238)),
+
+            "theme.sunset" => new ThemePalette(
+                Color.FromRgb(230, 106, 44),
+                Color.FromRgb(194, 81, 28),
+                Color.FromRgb(255, 239, 231)),
+
+            _ => new ThemePalette(
+                Color.FromRgb(52, 120, 246),
+                Color.FromRgb(40, 101, 219),
+                Color.FromRgb(234, 241, 255))
+        };
+
+        Resources["AccentBrush"] = new SolidColorBrush(palette.Accent);
+        Resources["AccentHoverBrush"] = new SolidColorBrush(palette.Hover);
+        Resources["AccentSoftBrush"] = new SolidColorBrush(palette.Soft);
+    }
+
+    private void SaveAll()
+    {
+        _storage.Save(Reminders, CustomLists, _progress);
+    }
+
+    private readonly record struct ThemePalette(
+        Color Accent,
+        Color Hover,
+        Color Soft);
 }
