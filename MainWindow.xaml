@@ -988,6 +988,107 @@
             </Border>
 
         </Grid>
+
+        <!-- Completion Confirmation -->
+        <Grid x:Name="CompletionConfirmationOverlay"
+              Panel.ZIndex="100"
+              Visibility="Collapsed"
+              Background="#66000000">
+
+            <Border Width="470"
+                    Background="White"
+                    CornerRadius="20"
+                    Padding="28"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="24"
+                                      ShadowDepth="8"
+                                      Opacity="0.2"/>
+                </Border.Effect>
+
+                <StackPanel>
+
+                    <Border Width="58"
+                            Height="58"
+                            Background="{DynamicResource AccentSoftBrush}"
+                            CornerRadius="16"
+                            HorizontalAlignment="Left">
+
+                        <TextBlock Text="?"
+                                   FontSize="30"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AccentBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <TextBlock Text="One quick question"
+                               FontSize="23"
+                               FontWeight="SemiBold"
+                               Foreground="#17191C"
+                               Margin="0,20,0,0"/>
+
+                    <TextBlock Text="Did you actually finish this, or are you trying to fool me?"
+                               FontSize="15"
+                               Foreground="#666D76"
+                               TextWrapping="Wrap"
+                               Margin="0,8,0,0"/>
+
+                    <Border Background="#F7F8FA"
+                            BorderBrush="#E5E7EA"
+                            BorderThickness="1"
+                            CornerRadius="11"
+                            Padding="13"
+                            Margin="0,18,0,0">
+
+                        <TextBlock x:Name="ConfirmationReminderText"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   Foreground="#353A41"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+
+                    <TextBlock Text="Confirming this reminder will add 10 coins."
+                               FontSize="12"
+                               Foreground="#8A9098"
+                               Margin="0,10,0,0"/>
+
+                    <Grid Margin="0,24,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="130"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"
+                                Content="Not yet"
+                                Height="40"
+                                Margin="0,0,10,0"
+                                Background="#F1F3F5"
+                                Foreground="#4C535C"
+                                BorderThickness="0"
+                                FontSize="13"
+                                FontWeight="SemiBold"
+                                Click="CancelCompletionConfirmation_Click"/>
+
+                        <Button Grid.Column="1"
+                                Content="Yes, I finished"
+                                Height="40"
+                                Background="{DynamicResource AccentBrush}"
+                                Foreground="White"
+                                BorderThickness="0"
+                                FontSize="13"
+                                FontWeight="SemiBold"
+                                Click="ConfirmCompletion_Click"/>
+                    </Grid>
+
+                </StackPanel>
+
+            </Border>
+
+        </Grid>
+
     </Grid>
 
 </Window>
