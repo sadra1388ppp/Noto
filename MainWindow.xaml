@@ -152,8 +152,7 @@
                          Background="Transparent"
                          SelectionChanged="ListsList_SelectionChanged">
 
-                    <ListBoxItem IsSelected="True"
-                                 Style="{StaticResource SidebarItemStyle}">
+                    <ListBoxItem Style="{StaticResource SidebarItemStyle}">
 
                         <Grid>
                             <Grid.ColumnDefinitions>
