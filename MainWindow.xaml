@@ -11,6 +11,10 @@
 
     <Window.Resources>
 
+        <SolidColorBrush x:Key="AccentBrush" Color="#3478F6"/>
+        <SolidColorBrush x:Key="AccentHoverBrush" Color="#2865DB"/>
+        <SolidColorBrush x:Key="AccentSoftBrush" Color="#EAF1FF"/>
+
         <Style x:Key="SidebarItemStyle" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="12,9"/>
             <Setter Property="Margin" Value="0,2"/>
@@ -39,10 +43,10 @@
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="ItemBorder"
                                         Property="Background"
-                                        Value="#EAF1FF"/>
+                                        Value="{DynamicResource AccentSoftBrush}"/>
 
                                 <Setter Property="Foreground"
-                                        Value="#245FD1"/>
+                                        Value="{DynamicResource AccentBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -67,7 +71,7 @@
         </Style>
 
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#3478F6"/>
+            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -88,7 +92,7 @@
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#2865DB"/>
+                    <Setter Property="Background" Value="{DynamicResource AccentHoverBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -208,6 +212,14 @@
                                        VerticalAlignment="Center"/>
                         </Grid>
 
+                    </ListBoxItem>
+
+                    <ListBoxItem Style="{StaticResource SidebarItemStyle}">
+                        <Grid>
+                            <TextBlock Text="Rewards"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
                     </ListBoxItem>
 
                 </ListBox>
@@ -338,7 +350,8 @@
         </Border>
 
         <!-- Main -->
-        <Grid Grid.Column="1"
+        <Grid x:Name="ReminderContentPanel"
+              Grid.Column="1"
               Margin="42,34,42,34">
 
             <Grid.RowDefinitions>
@@ -481,8 +494,7 @@
                                             <CheckBox Content="{Binding Title}"
                                                       IsChecked="{Binding IsCompleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       Style="{StaticResource ReminderCheckBoxStyle}"
-                                                      Checked="ReminderCheckBox_Changed"
-                                                      Unchecked="ReminderCheckBox_Changed"/>
+                                                      Click="ReminderCheckBox_Click"/>
 
                                             <TextBlock Text="{Binding DueDate, StringFormat='{}{0:d}'}"
                                                        FontSize="12"
@@ -528,6 +540,342 @@
                     </StackPanel>
 
                 </Grid>
+
+            </Grid>
+
+        </Grid>
+
+        <!-- Rewards -->
+        <Grid x:Name="RewardsContentPanel"
+              Grid.Column="1"
+              Margin="42,34,42,34"
+              Visibility="Collapsed">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0"
+                  Margin="0,0,0,24">
+
+                <StackPanel>
+                    <TextBlock Text="Rewards"
+                               FontSize="32"
+                               FontWeight="SemiBold"
+                               Foreground="#17191C"/>
+
+                    <TextBlock Text="Turn completed reminders into progress and rewards."
+                               FontSize="14"
+                               Foreground="#7D828A"
+                               Margin="0,6,0,0"/>
+                </StackPanel>
+
+                <Border HorizontalAlignment="Right"
+                        Background="#FFFFFF"
+                        BorderBrush="#E2E5E9"
+                        BorderThickness="1"
+                        CornerRadius="11"
+                        Padding="14,9">
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Coins"
+                                   FontSize="13"
+                                   Foreground="#777D86"
+                                   VerticalAlignment="Center"/>
+
+                        <TextBlock x:Name="RewardsCoinsText"
+                                   Text="50"
+                                   FontSize="17"
+                                   FontWeight="SemiBold"
+                                   Foreground="#17191C"
+                                   Margin="8,0,0,0"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                </Border>
+
+            </Grid>
+
+            <Border Grid.Row="1"
+                    Background="White"
+                    BorderBrush="#E2E5E9"
+                    BorderThickness="1"
+                    CornerRadius="13"
+                    Padding="20"
+                    Margin="0,0,0,20">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="220"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+
+                        <TextBlock Text="Your Progress"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#202329"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,14,0,9">
+
+                            <TextBlock x:Name="LevelText"
+                                       Text="Level 1"
+                                       FontSize="15"
+                                       FontWeight="SemiBold"
+                                       Foreground="#202329"/>
+
+                            <TextBlock x:Name="XPText"
+                                       Text="0 / 100 XP"
+                                       FontSize="14"
+                                       Foreground="#80858D"
+                                       Margin="12,1,0,0"/>
+
+                        </StackPanel>
+
+                        <ProgressBar x:Name="XPProgressBar"
+                                     Height="9"
+                                     Minimum="0"
+                                     Maximum="100"
+                                     Value="0"/>
+
+                        <TextBlock x:Name="RewardsStatusText"
+                                   Text="Complete a reminder to earn your first reward."
+                                   FontSize="13"
+                                   Foreground="#737981"
+                                   Margin="0,12,0,0"/>
+
+                    </StackPanel>
+
+                    <Border Grid.Column="1"
+                            Background="{DynamicResource AccentSoftBrush}"
+                            CornerRadius="12"
+                            Padding="16"
+                            Margin="24,0,0,0">
+
+                        <StackPanel VerticalAlignment="Center">
+
+                            <TextBlock Text="Completed"
+                                       FontSize="12"
+                                       Foreground="#69717B"/>
+
+                            <TextBlock x:Name="CompletedCountText"
+                                       Text="0"
+                                       FontSize="28"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AccentBrush}"
+                                       Margin="0,3,0,0"/>
+
+                            <TextBlock Text="reminders"
+                                       FontSize="12"
+                                       Foreground="#69717B"/>
+
+                        </StackPanel>
+
+                    </Border>
+                </Grid>
+
+            </Border>
+
+            <Grid Grid.Row="2">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.15*"/>
+                    <ColumnDefinition Width="0.85*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Store -->
+                <Border Grid.Column="0"
+                        Background="White"
+                        BorderBrush="#E2E5E9"
+                        BorderThickness="1"
+                        CornerRadius="13"
+                        Padding="18"
+                        Margin="0,0,10,0">
+
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0"
+                              Margin="0,0,0,13">
+
+                            <StackPanel>
+                                <TextBlock Text="Store"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"
+                                           Foreground="#202329"/>
+
+                                <TextBlock Text="Buy themes with your coins."
+                                           FontSize="13"
+                                           Foreground="#838891"
+                                           Margin="0,4,0,0"/>
+                            </StackPanel>
+
+                        </Grid>
+
+                        <ScrollViewer Grid.Row="1"
+                                      VerticalScrollBarVisibility="Auto">
+
+                            <ItemsControl x:Name="StoreItemsList">
+
+                                <ItemsControl.ItemTemplate>
+
+                                    <DataTemplate>
+
+                                        <Border Background="#F9FAFB"
+                                                BorderBrush="#E5E7EA"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="13"
+                                                Margin="0,4">
+
+                                            <Grid>
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+
+                                                    <TextBlock Text="{Binding Name}"
+                                                               FontSize="15"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="#22252A"/>
+
+                                                    <TextBlock Text="{Binding Description}"
+                                                               FontSize="12"
+                                                               TextWrapping="Wrap"
+                                                               Foreground="#7B818A"
+                                                               Margin="0,4,0,0"/>
+
+                                                    <TextBlock Text="{Binding Category}"
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource AccentBrush}"
+                                                               Margin="0,7,0,0"/>
+
+                                                </StackPanel>
+
+                                                <Button Grid.Column="1"
+                                                        Tag="{Binding}"
+                                                        Content="{Binding ActionText}"
+                                                        MinWidth="92"
+                                                        Height="34"
+                                                        Margin="12,0,0,0"
+                                                        Background="{DynamicResource AccentBrush}"
+                                                        Foreground="White"
+                                                        BorderThickness="0"
+                                                        FontSize="12"
+                                                        FontWeight="SemiBold"
+                                                        Click="StoreItemButton_Click"/>
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </DataTemplate>
+
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+
+                        </ScrollViewer>
+
+                    </Grid>
+
+                </Border>
+
+                <!-- Achievements -->
+                <Border Grid.Column="1"
+                        Background="White"
+                        BorderBrush="#E2E5E9"
+                        BorderThickness="1"
+                        CornerRadius="13"
+                        Padding="18"
+                        Margin="10,0,0,0">
+
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0"
+                                    Margin="0,0,0,13">
+
+                            <TextBlock Text="Achievements"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="#202329"/>
+
+                            <TextBlock Text="Milestones you can unlock."
+                                       FontSize="13"
+                                       Foreground="#838891"
+                                       Margin="0,4,0,0"/>
+
+                        </StackPanel>
+
+                        <ScrollViewer Grid.Row="1"
+                                      VerticalScrollBarVisibility="Auto">
+
+                            <ItemsControl x:Name="AchievementsList">
+
+                                <ItemsControl.ItemTemplate>
+
+                                    <DataTemplate>
+
+                                        <Border Background="#F9FAFB"
+                                                BorderBrush="#E5E7EA"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="12"
+                                                Margin="0,4">
+
+                                            <StackPanel>
+
+                                                <Grid>
+
+                                                    <TextBlock Text="{Binding Name}"
+                                                               FontSize="14"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="#24272C"/>
+
+                                                    <TextBlock Text="{Binding StatusText}"
+                                                               HorizontalAlignment="Right"
+                                                               FontSize="11"
+                                                               Foreground="#7E848D"/>
+
+                                                </Grid>
+
+                                                <TextBlock Text="{Binding Description}"
+                                                           FontSize="12"
+                                                           Foreground="#7B818A"
+                                                           TextWrapping="Wrap"
+                                                           Margin="0,5,0,0"/>
+
+                                            </StackPanel>
+
+                                        </Border>
+
+                                    </DataTemplate>
+
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+
+                        </ScrollViewer>
+
+                    </Grid>
+
+                </Border>
 
             </Grid>
 
