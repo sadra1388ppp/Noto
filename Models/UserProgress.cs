@@ -53,7 +53,7 @@ public sealed class UserProgress : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalCompleted)));
     }
 
-    private void SetField<T>(ref T field, T value, string propertyName)
+    private void SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value))
         {
