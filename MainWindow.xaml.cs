@@ -283,8 +283,12 @@ public partial class MainWindow : Window
             return;
         }
 
+        var deleteMessage = reminder.IsCompleted
+            ? "Delete this completed reminder?"
+            : "What happened? Got tired already and gave up so quickly?";
+
         var result = MessageBox.Show(
-            "What happened? Got tired already and gave up so quickly?",
+            deleteMessage,
             "Delete Reminder",
             MessageBoxButton.YesNo,
             MessageBoxImage.Question);
