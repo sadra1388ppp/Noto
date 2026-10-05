@@ -25,6 +25,7 @@ public partial class MainWindow : Window
 
     private UserProgress _progress = new();
     private Guid? _selectedListId;
+    private Reminder? _pendingCompletionReminder;
 
     public MainWindow()
     {
@@ -203,7 +204,7 @@ public partial class MainWindow : Window
         RefreshView();
     }
 
-    private void ReminderCheckBox_Click(object sender, RoutedEventArgs e)
+    private void ReminderCheckBox_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         if (sender is not CheckBox checkBox ||
             checkBox.DataContext is not Reminder reminder)
@@ -211,22 +212,40 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (checkBox.IsChecked == true)
+        if (!reminder.IsCompleted)
         {
-            var result = MessageBox.Show(
-                "Did you actually finish this, or are you trying to fool me?",
-                "Be honest",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
-
-            if (result != MessageBoxResult.Yes)
-            {
-                checkBox.IsChecked = false;
-                return;
-            }
-
-            AwardCompletion(reminder);
+            e.Handled = true;
+            ShowCompletionConfirmation(reminder);
         }
+    }
+
+    private void ShowCompletionConfirmation(Reminder reminder)
+    {
+        _pendingCompletionReminder = reminder;
+        ConfirmationReminderText.Text = reminder.Title;
+        CompletionConfirmationOverlay.Visibility = Visibility.Visible;
+    }
+
+    private void CancelCompletionConfirmation_Click(object sender, RoutedEventArgs e)
+    {
+        _pendingCompletionReminder = null;
+        CompletionConfirmationOverlay.Visibility = Visibility.Collapsed;
+    }
+
+    private void ConfirmCompletion_Click(object sender, RoutedEventArgs e)
+    {
+        var reminder = _pendingCompletionReminder;
+
+        _pendingCompletionReminder = null;
+        CompletionConfirmationOverlay.Visibility = Visibility.Collapsed;
+
+        if (reminder is null || reminder.IsCompleted)
+        {
+            return;
+        }
+
+        reminder.IsCompleted = true;
+        AwardCompletion(reminder);
 
         SaveAll();
         RefreshView();
@@ -236,6 +255,7 @@ public partial class MainWindow : Window
     {
         if (_progress.RewardedReminderIds.Contains(reminder.Id))
         {
+            RewardsStatusText.Text = "This reminder was already rewarded.";
             return;
         }
 
@@ -244,6 +264,7 @@ public partial class MainWindow : Window
         _progress.Coins += 10;
         RewardsStatusText.Text = "+10 coins earned. Nice work.";
 
+        RefreshRewardsView();
         SaveAll();
     }
 
