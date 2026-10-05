@@ -31,6 +31,7 @@ public sealed class ReminderStorage
             }
 
             var json = File.ReadAllText(_filePath);
+
             return JsonSerializer.Deserialize<StorageData>(json, _options)
                    ?? new StorageData();
         }
@@ -49,6 +50,7 @@ public sealed class ReminderStorage
         };
 
         var json = JsonSerializer.Serialize(data, _options);
+
         File.WriteAllText(_filePath, json);
     }
 }
@@ -56,6 +58,5 @@ public sealed class ReminderStorage
 public sealed class StorageData
 {
     public List<Reminder> Reminders { get; set; } = [];
-
     public List<ReminderList> Lists { get; set; } = [];
 }
