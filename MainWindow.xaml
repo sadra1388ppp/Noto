@@ -991,6 +991,7 @@
 
         <!-- Completion Confirmation -->
         <Grid x:Name="CompletionConfirmationOverlay"
+              Grid.ColumnSpan="2"
               Panel.ZIndex="100"
               Visibility="Collapsed"
               Background="#66000000">
