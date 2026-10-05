@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,7 +23,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        _reminderView = CollectionViewSource.GetDefaultCollectionView(Reminders);
+        _reminderView = CollectionViewSource.GetDefaultView(Reminders);
         _reminderView.Filter = FilterReminder;
 
         LoadData();
@@ -30,7 +31,6 @@ public partial class MainWindow : Window
         ReminderList.ItemsSource = _reminderView;
         CustomListsList.ItemsSource = CustomLists;
 
-        _selectedListId = null;
         RefreshView();
     }
 
@@ -72,12 +72,13 @@ public partial class MainWindow : Window
             return false;
         }
 
-        if (_selectedListId.HasValue && reminder.ListId != _selectedListId.Value.ToString())
+        if (_selectedListId.HasValue &&
+            reminder.ListId != _selectedListId.Value.ToString())
         {
             return false;
         }
 
-        var search = SearchInput?.Text?.Trim();
+        var search = SearchInput.Text.Trim();
 
         if (string.IsNullOrWhiteSpace(search))
         {
@@ -92,10 +93,11 @@ public partial class MainWindow : Window
     {
         _reminderView.Refresh();
 
-        var visibleCount = _reminderView.Cast<object>().Count();
+        var visibleCount = _reminderView.Cast<Reminder>().Count();
 
         ReminderCountText.Text = visibleCount.ToString();
         SidebarAllCountText.Text = Reminders.Count.ToString();
+
         EmptyStatePanel.Visibility = visibleCount == 0
             ? Visibility.Visible
             : Visibility.Collapsed;
@@ -217,11 +219,7 @@ public partial class MainWindow : Window
 
         _selectedListId = null;
         PageTitleText.Text = "All Reminders";
-
-        if (CustomListsList.SelectedItem is not null)
-        {
-            CustomListsList.SelectedItem = null;
-        }
+        CustomListsList.SelectedItem = null;
 
         RefreshView();
     }
@@ -235,11 +233,7 @@ public partial class MainWindow : Window
 
         _selectedListId = list.Id;
         PageTitleText.Text = list.Name;
-
-        if (ListsList.SelectedIndex != -1)
-        {
-            ListsList.SelectedIndex = -1;
-        }
+        ListsList.SelectedIndex = -1;
 
         RefreshView();
     }
