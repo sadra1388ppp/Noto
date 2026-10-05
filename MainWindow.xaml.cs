@@ -213,6 +213,44 @@ public partial class MainWindow : Window
         NewListInput.Clear();
     }
 
+    private void DeleteList_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not MenuItem menuItem || menuItem.DataContext is not ReminderList list)
+        {
+            return;
+        }
+
+        var result = MessageBox.Show(
+            $"Delete the list \"{list.Name}\"? Reminders inside it will be kept in All Reminders.",
+            "Delete List",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        var wasSelected = _selectedListId == list.Id;
+
+        foreach (var reminder in Reminders.Where(r => r.ListId == list.Id.ToString()))
+        {
+            reminder.ListId = null;
+        }
+
+        CustomLists.Remove(list);
+        _storage.Save(Reminders, CustomLists);
+
+        if (wasSelected)
+        {
+            _selectedListId = null;
+            ListsList.SelectedIndex = 0;
+            PageTitleText.Text = "All Reminders";
+        }
+
+        RefreshView();
+    }
+
     private void ListsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (ListsList.SelectedIndex != 0)
