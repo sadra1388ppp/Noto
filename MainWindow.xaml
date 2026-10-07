@@ -154,6 +154,15 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
+        <Style x:Key="ReminderCalendarStyle" TargetType="Calendar">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#30353B"/>
+            <Setter Property="BorderBrush" Value="#E2E5E9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
     </Window.Resources>
 
     <Grid>
@@ -240,7 +249,7 @@
 
                     <ListBoxItem Style="{StaticResource SidebarItemStyle}">
                         <Grid>
-                            <TextBlock Text="Store"
+                            <TextBlock Text="Achievements"
                                        FontSize="15"
                                        VerticalAlignment="Center"/>
                         </Grid>
@@ -248,7 +257,7 @@
 
                     <ListBoxItem Style="{StaticResource SidebarItemStyle}">
                         <Grid>
-                            <TextBlock Text="Achievements"
+                            <TextBlock Text="Store"
                                        FontSize="15"
                                        VerticalAlignment="Center"/>
                         </Grid>
@@ -434,21 +443,20 @@
                     Background="White"
                     BorderBrush="#E2E5E9"
                     BorderThickness="1"
-                    CornerRadius="12"
+                    CornerRadius="14"
                     Padding="12"
                     Margin="0,0,0,24">
 
                 <Grid>
-
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="190"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBox x:Name="ReminderInput"
                              Grid.Column="0"
-                             Height="42"
+                             Height="46"
                              BorderThickness="0"
                              Background="Transparent"
                              FontSize="15"
@@ -456,16 +464,49 @@
                              VerticalContentAlignment="Center"
                              ToolTip="Reminder title"/>
 
-                    <DatePicker x:Name="DueDatePicker"
-                                Grid.Column="1"
-                                Height="42"
-                                Margin="10,0,10,0"
-                                VerticalContentAlignment="Center"/>
+                    <Border Grid.Column="1"
+                            Height="46"
+                            Margin="10,0,10,0"
+                            Background="#F8F9FB"
+                            BorderBrush="#E3E6EA"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="11,0">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="DUE DATE"
+                                           FontSize="8"
+                                           FontWeight="SemiBold"
+                                           Foreground="#969BA3"/>
+                                <TextBlock Text="Choose a date"
+                                           FontSize="10"
+                                           Foreground="#777D86"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <DatePicker x:Name="DueDatePicker"
+                                        Grid.Column="1"
+                                        Margin="8,0,0,0"
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        FontSize="12"
+                                        Foreground="#30353B"
+                                        VerticalContentAlignment="Center"
+                                        CalendarStyle="{StaticResource ReminderCalendarStyle}"/>
+                        </Grid>
+                    </Border>
 
                     <Button Grid.Column="2"
                             Content="Add Reminder"
                             Width="125"
-                            Height="42"
+                            Height="46"
                             Style="{StaticResource PrimaryButtonStyle}"
                             Click="AddReminder_Click"/>
 
@@ -1288,13 +1329,12 @@
 
             <StackPanel Grid.Row="0"
                         Margin="0,0,0,22">
-
                 <TextBlock Text="Achievements"
                            FontSize="32"
                            FontWeight="SemiBold"
                            Foreground="#17191C"/>
 
-                <TextBlock Text="Your Store rewards, collected as achievements."
+                <TextBlock Text="Complete reminders, earn coins, and keep building your streak."
                            FontSize="14"
                            Foreground="#7B818A"
                            Margin="0,6,0,0"/>
@@ -1304,86 +1344,74 @@
                     Background="White"
                     BorderBrush="#E2E5E9"
                     BorderThickness="1"
-                    CornerRadius="16"
-                    Padding="20">
+                    CornerRadius="18"
+                    Padding="28">
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl x:Name="AchievementItemsList">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Width="220"
-                                        Background="#FAFBFC"
-                                        BorderBrush="#E4E7EA"
-                                        BorderThickness="1"
-                                        CornerRadius="13"
-                                        Padding="15"
-                                        Margin="0,0,12,12">
+                    <Border Width="96"
+                            Height="96"
+                            Background="{DynamicResource AccentSoftBrush}"
+                            CornerRadius="28"
+                            VerticalAlignment="Top">
 
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Ellipse Width="58"
+                                     Height="58"
+                                     Fill="{DynamicResource AccentBrush}"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
 
-                                        <Border Grid.Row="0"
-                                                Height="82"
-                                                Background="{DynamicResource AccentSoftBrush}"
-                                                CornerRadius="10"
-                                                Margin="0,0,0,13">
+                            <TextBlock Text="C"
+                                       Foreground="White"
+                                       FontSize="22"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
 
-                                            <Grid>
-                                                <Ellipse Width="42"
-                                                         Height="42"
-                                                         Fill="{DynamicResource AccentBrush}"/>
+                    <StackPanel Grid.Column="1"
+                                Margin="24,2,0,0"
+                                VerticalAlignment="Center">
 
-                                                <TextBlock Text="A"
-                                                           Foreground="White"
-                                                           FontSize="17"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Grid>
-                                        </Border>
+                        <TextBlock Text="Reminder Champion"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="#202329"/>
 
-                                        <TextBlock Grid.Row="1"
-                                                   Text="{Binding Name}"
-                                                   FontSize="15"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="#202329"/>
+                        <TextBlock Text="Every time you complete a reminder, you earn"
+                                   FontSize="14"
+                                   Foreground="#666D76"
+                                   Margin="0,8,0,0"/>
 
-                                        <TextBlock Grid.Row="2"
-                                                   Text="{Binding Description}"
-                                                   FontSize="12"
-                                                   Foreground="#7B818A"
-                                                   TextWrapping="Wrap"
-                                                   Margin="0,5,0,13"/>
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,10,0,0">
 
-                                        <Border Grid.Row="3"
-                                                Height="36"
-                                                Background="#EEF8F1"
-                                                CornerRadius="8">
+                            <TextBlock Text="10"
+                                       FontSize="28"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource AccentBrush}"/>
 
-                                            <TextBlock Text="Unlocked"
-                                                       FontSize="12"
-                                                       FontWeight="SemiBold"
-                                                       Foreground="#31824D"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"/>
-                                        </Border>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+                            <TextBlock Text=" coins"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="#30353B"
+                                       VerticalAlignment="Bottom"
+                                       Margin="4,0,0,5"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Finish your reminder, confirm it, and your coin balance goes up."
+                                   FontSize="12"
+                                   Foreground="#8A9098"
+                                   TextWrapping="Wrap"
+                                   Margin="0,7,0,0"/>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
 
