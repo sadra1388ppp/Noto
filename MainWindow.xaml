@@ -433,7 +433,9 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>indow.Resources>
+        </Style>
+
+    </Window.Resources>
 
     <Grid>
 
