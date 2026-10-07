@@ -26,7 +26,6 @@ public partial class MainWindow : Window
     public ObservableCollection<Achievement> Achievements { get; } = [];
     public ObservableCollection<StoreItem> OwnedStoreItems { get; } = [];
     public ObservableCollection<Reminder> CalendarDayReminders { get; } = [];
-    public ObservableCollection<Reminder> HistoryItems { get; } = [];
 
     private UserProgress _progress = new();
     private Guid? _selectedListId;
@@ -56,7 +55,6 @@ public partial class MainWindow : Window
         StoreItemsList.ItemsSource = StoreItems;
         RewardItemsList.ItemsSource = OwnedStoreItems;
         CalendarRemindersList.ItemsSource = CalendarDayReminders;
-        HistoryItemsList.ItemsSource = HistoryItems;
         EnsureProgressDefaults();
         ApplyTheme(_progress.EquippedThemeId);
         SyncRewardCatalogState();
@@ -147,7 +145,6 @@ public partial class MainWindow : Window
             _reminderView.Refresh();
             RefreshView();
             RefreshCalendar();
-            RefreshHistory();
         }
     }
 
@@ -232,25 +229,6 @@ public partial class MainWindow : Window
         _ownerMode = false;
         RewardsStatusText.Text = "Owner mode disabled.";
         RefreshRewardsView();
-    }
-
-    private void RefreshHistory()
-    {
-        var completed = Reminders
-            .Where(r => r.IsCompleted)
-            .OrderByDescending(r => r.DueDate ?? r.CreatedAt)
-            .ThenByDescending(r => r.CreatedAt)
-            .ToList();
-
-        HistoryItems.Clear();
-        foreach (var reminder in completed)
-        {
-            HistoryItems.Add(reminder);
-        }
-
-        HistoryCompletedCountText.Text = completed.Count.ToString();
-        HistoryCoinsText.Text = (completed.Count * 10).ToString();
-        HistoryLatestText.Text = completed.Count == 0 ? "Nothing yet" : completed[0].Title;
     }
 
     private void RefreshCalendar()
@@ -1033,28 +1011,15 @@ public partial class MainWindow : Window
     private void ShowRemindersView()
     {
         ReminderContentPanel.Visibility = Visibility.Visible;
-        HistoryContentPanel.Visibility = Visibility.Collapsed;
         CalendarContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Collapsed;
         AchievementsContentPanel.Visibility = Visibility.Collapsed;
-    }
-
-    private void ShowHistoryView()
-    {
-        ReminderContentPanel.Visibility = Visibility.Collapsed;
-        HistoryContentPanel.Visibility = Visibility.Visible;
-        CalendarContentPanel.Visibility = Visibility.Collapsed;
-        RewardsContentPanel.Visibility = Visibility.Collapsed;
-        StoreContentPanel.Visibility = Visibility.Collapsed;
-        AchievementsContentPanel.Visibility = Visibility.Collapsed;
-        RefreshHistory();
     }
 
     private void ShowCalendarView()
     {
         ReminderContentPanel.Visibility = Visibility.Collapsed;
-        HistoryContentPanel.Visibility = Visibility.Collapsed;
         CalendarContentPanel.Visibility = Visibility.Visible;
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Collapsed;
@@ -1065,7 +1030,6 @@ public partial class MainWindow : Window
     private void ShowRewardsView()
     {
         ReminderContentPanel.Visibility = Visibility.Collapsed;
-        HistoryContentPanel.Visibility = Visibility.Collapsed;
         CalendarContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Visible;
         StoreContentPanel.Visibility = Visibility.Collapsed;
@@ -1076,7 +1040,6 @@ public partial class MainWindow : Window
     private void ShowStoreView()
     {
         ReminderContentPanel.Visibility = Visibility.Collapsed;
-        HistoryContentPanel.Visibility = Visibility.Collapsed;
         CalendarContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Visible;
@@ -1155,7 +1118,6 @@ public partial class MainWindow : Window
     private void ShowAchievementsView()
     {
         ReminderContentPanel.Visibility = Visibility.Collapsed;
-        HistoryContentPanel.Visibility = Visibility.Collapsed;
         CalendarContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Collapsed;
