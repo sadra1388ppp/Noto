@@ -213,15 +213,15 @@
                                         Value="#8E949C"/>
                             </Trigger>
 
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
                                     <Condition Property="IsChecked" Value="True"/>
                                     <Condition Property="IsMouseOver" Value="True"/>
-                                </MultiDataTrigger.Conditions>
+                                </MultiTrigger.Conditions>
                                 <Setter TargetName="CheckBoxBorder"
                                         Property="Background"
                                         Value="{DynamicResource AccentHoverBrush}"/>
-                            </MultiDataTrigger>
+                            </MultiTrigger>
 
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="CheckBoxBorder"
