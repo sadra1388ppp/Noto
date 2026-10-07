@@ -1626,13 +1626,14 @@
                     <Grid Grid.Row="0"
                           Margin="6,2,6,16">
                         <StackPanel>
-                            <TextBlock x:Name="StoreCatalogHeadline"
+                            <TextBlock x:Name="StoreCategoryTitle"
                                        Text="Featured Collection"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        Foreground="#17191C"/>
 
-                            <TextBlock Text="Preview every item before you spend your coins."
+                            <TextBlock x:Name="StoreCategoryDescription"
+                                       Text="Preview every item before you spend your coins."
                                        FontSize="12"
                                        Foreground="#8A9098"
                                        Margin="0,4,0,0"/>
