@@ -466,6 +466,64 @@
             </Setter>
         </Style>
 
+        <Style x:Key="StorePurchaseButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="MinWidth" Value="110"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="StoreButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="StoreButtonBorder"
+                                        Property="Background"
+                                        Value="{DynamicResource AccentHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="StoreButtonBorder"
+                                        Property="Opacity"
+                                        Value="0.86"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="StoreButtonBorder"
+                                        Property="Background"
+                                        Value="#E7E9ED"/>
+                                <Setter Property="Foreground"
+                                        Value="#8A9098"/>
+                                <Setter Property="Cursor"
+                                        Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEquipped}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Category}" Value="Guns"/>
+                        <Condition Binding="{Binding IsOwned}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="StoreCategoryButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="54"/>
             <Setter Property="Background" Value="#F7F8FA"/>
@@ -1557,7 +1615,7 @@
                     BorderBrush="#E2E5E9"
                     BorderThickness="1"
                     CornerRadius="16"
-                    Padding="28">
+                    Padding="22">
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -1565,59 +1623,289 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel>
-                        <TextBlock x:Name="StoreCategoryTitle"
-                                   Text="All"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"
-                                   Foreground="#17191C"/>
-
-                        <TextBlock x:Name="StoreCategoryDescription"
-                                   Text="Browse everything available in the Noto Store."
-                                   FontSize="13"
-                                   Foreground="#7B818A"
-                                   Margin="0,5,0,0"/>
-                    </StackPanel>
-
-                    <Grid Grid.Row="1"
-                          VerticalAlignment="Center">
-
-                        <StackPanel HorizontalAlignment="Center">
-
-                            <Border Width="72"
-                                    Height="72"
-                                    Background="{DynamicResource AccentSoftBrush}"
-                                    CornerRadius="36"
-                                    HorizontalAlignment="Center">
-
-                                <TextBlock x:Name="StoreCategoryIcon"
-                                           Text="A"
-                                           FontSize="25"
-                                           FontWeight="Bold"
-                                           Foreground="{DynamicResource AccentBrush}"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"/>
-                            </Border>
-
-                            <TextBlock Text="No items available yet"
-                                       FontSize="16"
+                    <Grid Grid.Row="0"
+                          Margin="6,2,6,16">
+                        <StackPanel>
+                            <TextBlock x:Name="StoreCatalogHeadline"
+                                       Text="Featured Collection"
+                                       FontSize="18"
                                        FontWeight="SemiBold"
-                                       Foreground="#30353B"
-                                       HorizontalAlignment="Center"
-                                       Margin="0,16,0,4"/>
+                                       Foreground="#17191C"/>
 
-                            <TextBlock x:Name="StoreCategoryEmptyText"
-                                       Text="There are no Store items available yet."
-                                       FontSize="13"
+                            <TextBlock Text="Preview every item before you spend your coins."
+                                       FontSize="12"
                                        Foreground="#8A9098"
-                                       TextAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-
+                                       Margin="0,4,0,0"/>
                         </StackPanel>
+
+                        <Border HorizontalAlignment="Right"
+                                Background="{DynamicResource AccentSoftBrush}"
+                                CornerRadius="9"
+                                Padding="10,6"
+                                VerticalAlignment="Center">
+
+                            <TextBlock Text="LIVE CATALOG"
+                                       FontSize="9"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource AccentBrush}"/>
+                        </Border>
                     </Grid>
 
-                    <ItemsControl x:Name="StoreItemsList"
-                                  Visibility="Collapsed"/>
+                    <Grid Grid.Row="1">
+                        <ScrollViewer x:Name="StoreItemsScrollViewer"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+
+                            <ItemsControl x:Name="StoreItemsList">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+
+                                        <Border Width="300"
+                                                Height="286"
+                                                Background="#FAFBFC"
+                                                BorderBrush="#E3E6EA"
+                                                BorderThickness="1"
+                                                CornerRadius="16"
+                                                Padding="14"
+                                                Margin="0,0,14,14">
+
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="118"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.Row="0"
+                                                        Background="{Binding PreviewBackground}"
+                                                        CornerRadius="12"
+                                                        ClipToBounds="True">
+
+                                                    <Grid>
+
+                                                        <Grid.Resources>
+
+                                                            <Style x:Key="ThemePreviewStyle"
+                                                                   TargetType="Grid">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Visible"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Category}"
+                                                                                 Value="Guns">
+                                                                        <Setter Property="Visibility"
+                                                                                Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+
+                                                            <Style x:Key="GunPreviewStyle"
+                                                                   TargetType="Grid">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Category}"
+                                                                                 Value="Guns">
+                                                                        <Setter Property="Visibility"
+                                                                                Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+
+                                                        </Grid.Resources>
+
+                                                        <Grid Style="{StaticResource ThemePreviewStyle}">
+                                                            <Ellipse Width="112"
+                                                                     Height="112"
+                                                                     Fill="{Binding PreviewSoft}"
+                                                                     Opacity="0.72"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"/>
+
+                                                            <Ellipse Width="76"
+                                                                     Height="76"
+                                                                     Fill="{Binding PreviewAccent}"
+                                                                     Opacity="0.90"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"/>
+
+                                                            <Ellipse Width="42"
+                                                                     Height="42"
+                                                                     Fill="{Binding PreviewSecondary}"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"/>
+
+                                                            <TextBlock Text="✦"
+                                                                       FontSize="20"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="White"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Grid>
+
+                                                        <Grid Style="{StaticResource GunPreviewStyle}">
+
+                                                            <Ellipse Width="170"
+                                                                     Height="100"
+                                                                     Fill="{Binding PreviewSoft}"
+                                                                     Opacity="0.35"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"/>
+
+                                                            <Path Data="{Binding PreviewGeometry}"
+                                                                  Width="245"
+                                                                  Height="88"
+                                                                  Stretch="Uniform"
+                                                                  Fill="{Binding PreviewAccent}"
+                                                                  Stroke="{Binding PreviewSecondary}"
+                                                                  StrokeThickness="1.2"
+                                                                  HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center">
+                                                                <Path.Effect>
+                                                                    <DropShadowEffect BlurRadius="13"
+                                                                                      ShadowDepth="0"
+                                                                                      Opacity="0.42"/>
+                                                                </Path.Effect>
+                                                            </Path>
+
+                                                            <TextBlock Text="GUN PREVIEW"
+                                                                       FontSize="8"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="{Binding PreviewSecondary}"
+                                                                       HorizontalAlignment="Left"
+                                                                       VerticalAlignment="Bottom"
+                                                                       Margin="10,0,0,8"
+                                                                       Opacity="0.8"/>
+                                                        </Grid>
+
+                                                    </Grid>
+                                                </Border>
+
+                                                <Grid Grid.Row="1"
+                                                      Margin="2,12,2,0">
+
+                                                    <TextBlock Text="{Binding Name}"
+                                                               FontSize="16"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="#202329"/>
+
+                                                    <Border HorizontalAlignment="Right"
+                                                            Background="{Binding PreviewSoft}"
+                                                            CornerRadius="7"
+                                                            Padding="7,4">
+
+                                                        <TextBlock Text="{Binding Category}"
+                                                                   FontSize="8"
+                                                                   FontWeight="Bold"
+                                                                   Foreground="{Binding PreviewAccent}"/>
+                                                    </Border>
+                                                </Grid>
+
+                                                <TextBlock Grid.Row="2"
+                                                           Text="{Binding Description}"
+                                                           FontSize="11.5"
+                                                           Foreground="#7B818A"
+                                                           TextWrapping="Wrap"
+                                                           Margin="2,7,2,10"
+                                                           VerticalAlignment="Top"/>
+
+                                                <Grid Grid.Row="3"
+                                                      Margin="2,0,2,0">
+
+                                                    <StackPanel Orientation="Horizontal"
+                                                                VerticalAlignment="Center">
+
+                                                        <Border Width="25"
+                                                                Height="25"
+                                                                Background="#FFF3C4"
+                                                                CornerRadius="12.5">
+
+                                                            <TextBlock Text="C"
+                                                                       FontSize="9"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="#8A6815"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Border>
+
+                                                        <TextBlock Text="{Binding Price}"
+                                                                   FontSize="14"
+                                                                   FontWeight="Bold"
+                                                                   Foreground="#30353B"
+                                                                   Margin="7,0,0,0"
+                                                                   VerticalAlignment="Center"/>
+
+                                                        <TextBlock Text=" coins"
+                                                                   FontSize="10.5"
+                                                                   Foreground="#8A9098"
+                                                                   VerticalAlignment="Center"/>
+                                                    </StackPanel>
+
+                                                    <Button Tag="{Binding}"
+                                                            Content="{Binding ActionText}"
+                                                            Style="{StaticResource StorePurchaseButtonStyle}"
+                                                            HorizontalAlignment="Right"
+                                                            Click="StoreItemButton_Click"/>
+                                                </Grid>
+
+                                            </Grid>
+                                        </Border>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <Border x:Name="StoreEmptyStatePanel"
+                                Visibility="Collapsed"
+                                Background="#FAFBFC"
+                                BorderBrush="#E6E8EC"
+                                BorderThickness="1"
+                                CornerRadius="14"
+                                Padding="28">
+
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+
+                                <Border Width="72"
+                                        Height="72"
+                                        Background="{DynamicResource AccentSoftBrush}"
+                                        CornerRadius="36"
+                                        HorizontalAlignment="Center">
+
+                                    <TextBlock x:Name="StoreCategoryIcon"
+                                               Text="A"
+                                               FontSize="25"
+                                               FontWeight="Bold"
+                                               Foreground="{DynamicResource AccentBrush}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+
+                                <TextBlock x:Name="StoreCategoryEmptyTitle"
+                                           Text="No items available yet"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="#30353B"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,16,0,4"/>
+
+                                <TextBlock x:Name="StoreCategoryEmptyText"
+                                           Text="There are no Store items available yet."
+                                           FontSize="13"
+                                           Foreground="#8A9098"
+                                           TextAlignment="Center"
+                                           HorizontalAlignment="Center"/>
+
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                 </Grid>
             </Border>
 
