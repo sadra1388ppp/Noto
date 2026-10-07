@@ -1667,19 +1667,22 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
+                <Button x:Name="StoreSkinsButton"
+                        Grid.Column="0"
                         Content="SKINS"
                         Tag="Skins"
                         Style="{StaticResource StoreCategoryButtonStyle}"
                         Click="StoreCategoryButton_Click"/>
 
-                <Button Grid.Column="2"
+                <Button x:Name="StoreThemesButton"
+                        Grid.Column="2"
                         Content="THEMES"
                         Tag="Themes"
                         Style="{StaticResource StoreCategoryButtonStyle}"
                         Click="StoreCategoryButton_Click"/>
 
-                <Button Grid.Column="4"
+                <Button x:Name="StoreGunsButton"
+                        Grid.Column="4"
                         Content="GUNS"
                         Tag="Guns"
                         Style="{StaticResource StoreCategoryButtonStyle}"
