@@ -278,23 +278,162 @@
         </Style>
 
         <Style x:Key="DueDateIconButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="36"/>
-            <Setter Property="Height" Value="36"/>
+            <Setter Property="Width" Value="38"/>
+            <Setter Property="Height" Value="38"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#737982"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="0"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
             <Setter Property="Cursor" Value="Hand"/>
 
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Width="38"
+                              Height="38"
+                              RenderTransformOrigin="0.5,0.5">
 
-    </Window.Resources>
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="IconScale"
+                                                ScaleX="1"
+                                                ScaleY="1"/>
+                            </Grid.RenderTransform>
+
+                            <Ellipse x:Name="HoverSurface"
+                                     Width="34"
+                                     Height="34"
+                                     Fill="Transparent"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+
+                            <Ellipse x:Name="HoverGlow"
+                                     Width="30"
+                                     Height="30"
+                                     Fill="{DynamicResource AccentSoftBrush}"
+                                     Opacity="0"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+
+                            <Grid Width="20"
+                                  Height="20"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+
+                                <Path x:Name="CalendarOutline"
+                                      Data="M 5,3.5 L 5,6.5 M 15,3.5 L 15,6.5 M 4.5,5.5 H 15.5 Q 18,5.5 18,8 V 15.5 Q 18,18 15.5,18 H 4.5 Q 2,18 2,15.5 V 8 Q 2,5.5 4.5,5.5 Z"
+                                      Stroke="{TemplateBinding Foreground}"
+                                      StrokeThickness="1.45"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      StrokeLineJoin="Round"
+                                      Fill="Transparent"/>
+
+                                <Path x:Name="CalendarHeader"
+                                      Data="M 2.8,9 H 17.2"
+                                      Stroke="{TemplateBinding Foreground}"
+                                      StrokeThickness="1.45"
+                                      StrokeStartLineCap="Round"/>
+
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Margin="0,10,0,0">
+
+                                    <Ellipse Width="1.8"
+                                             Height="1.8"
+                                             Fill="{TemplateBinding Foreground}"
+                                             Margin="0,0,2.1,0"/>
+
+                                    <Ellipse Width="1.8"
+                                             Height="1.8"
+                                             Fill="{TemplateBinding Foreground}"
+                                             Margin="0,0,2.1,0"/>
+
+                                    <Ellipse Width="1.8"
+                                             Height="1.8"
+                                             Fill="{TemplateBinding Foreground}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HoverSurface"
+                                        Property="Fill"
+                                        Value="{DynamicResource AccentSoftBrush}"/>
+                                <Setter TargetName="HoverGlow"
+                                        Property="Opacity"
+                                        Value="0.22"/>
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource AccentBrush}"/>
+
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1.06"
+                                                         Duration="0:0:0.14"/>
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1.06"
+                                                         Duration="0:0:0.14"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverGlow"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.22"
+                                                         Duration="0:0:0.14"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="HoverSurface"
+                                        Property="Fill"
+                                        Value="{DynamicResource AccentSoftBrush}"/>
+
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="0.98"
+                                                         Duration="0:0:0.07"/>
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="0.98"
+                                                         Duration="0:0:0.07"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger>
+
+                            <Trigger Property="IsMouseDirectlyOver" Value="False">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1"
+                                                         Duration="0:0:0.16"/>
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1"
+                                                         Duration="0:0:0.16"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverGlow"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"
+                                                         Duration="0:0:0.16"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>indow.Resources>
 
     <Grid>
 
@@ -628,67 +767,6 @@
                                         Style="{StaticResource DueDateIconButtonStyle}"
                                         Click="DueDateButton_Click"
                                         ToolTip="Choose a date from the calendar">
-
-                                    <Viewbox Width="18" Height="18">
-                                        <Grid Width="24" Height="24">
-                                            <Border Width="16"
-                                                    Height="15"
-                                                    Margin="0,5,0,0"
-                                                    BorderBrush="{DynamicResource AccentBrush}"
-                                                    BorderThickness="1.8"
-                                                    CornerRadius="3"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"/>
-
-                                            <Border Width="12"
-                                                    Height="3"
-                                                    Margin="0,3,0,0"
-                                                    Background="{DynamicResource AccentBrush}"
-                                                    CornerRadius="1.5"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Top"/>
-
-                                            <Rectangle Width="2"
-                                                       Height="4"
-                                                       Fill="{DynamicResource AccentBrush}"
-                                                       RadiusX="1"
-                                                       RadiusY="1"
-                                                       Margin="4,0,0,0"
-                                                       HorizontalAlignment="Left"
-                                                       VerticalAlignment="Top"/>
-
-                                            <Rectangle Width="2"
-                                                       Height="4"
-                                                       Fill="{DynamicResource AccentBrush}"
-                                                       RadiusX="1"
-                                                       RadiusY="1"
-                                                       Margin="0,0,4,0"
-                                                       HorizontalAlignment="Right"
-                                                       VerticalAlignment="Top"/>
-
-                                            <Grid Margin="0,10,0,0"
-                                                  Width="7"
-                                                  Height="5"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Top">
-                                                <Ellipse Width="2"
-                                                         Height="2"
-                                                         Fill="{DynamicResource AccentBrush}"
-                                                         HorizontalAlignment="Left"
-                                                         VerticalAlignment="Top"/>
-                                                <Ellipse Width="2"
-                                                         Height="2"
-                                                         Fill="{DynamicResource AccentBrush}"
-                                                         HorizontalAlignment="Right"
-                                                         VerticalAlignment="Top"/>
-                                                <Ellipse Width="2"
-                                                         Height="2"
-                                                         Fill="{DynamicResource AccentBrush}"
-                                                         HorizontalAlignment="Center"
-                                                         VerticalAlignment="Bottom"/>
-                                            </Grid>
-                                        </Grid>
-                                    </Viewbox>
                                 </Button>
                             </Grid>
                         </Border>
