@@ -505,6 +505,7 @@
                                              VerticalContentAlignment="Center"
                                              ToolTip="Type a date, for example: tomorrow, Oct 12, or 12/10/2026"
                                              TextChanged="DueDateInput_TextChanged"
+                                             LostFocus="DueDateInput_LostFocus"
                                              KeyDown="DueDateInput_KeyDown"/>
                                 </Grid>
 
