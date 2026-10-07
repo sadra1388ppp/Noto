@@ -203,6 +203,149 @@ public partial class MainWindow : Window
         SyncRewardCatalogState();
     }
 
+    private void RefreshHistory()
+    {
+        var completed = Reminders
+            .Where(r => r.IsCompleted)
+            .OrderByDescending(r => r.DueDate ?? r.CreatedAt)
+            .ThenByDescending(r => r.CreatedAt)
+            .ToList();
+
+        HistoryItems.Clear();
+        foreach (var reminder in completed)
+        {
+            HistoryItems.Add(reminder);
+        }
+
+        HistoryCompletedCountText.Text = completed.Count.ToString();
+        HistoryCoinsText.Text = (completed.Count * 10).ToString();
+        HistoryLatestText.Text = completed.Count == 0 ? "Nothing yet" : completed[0].Title;
+    }
+
+    private void RefreshCalendar()
+    {
+        CalendarMonthText.Text = _calendarMonth.ToString("MMMM yyyy");
+        CalendarDaysGrid.Children.Clear();
+
+        var firstVisibleDay = _calendarMonth.AddDays(-(int)_calendarMonth.DayOfWeek);
+
+        for (var i = 0; i < 42; i++)
+        {
+            var day = firstVisibleDay.AddDays(i);
+            var reminders = Reminders.Where(r => r.DueDate?.Date == day.Date).ToList();
+            var isCurrentMonth = day.Month == _calendarMonth.Month;
+            var isToday = day.Date == DateTime.Today;
+            var isSelected = day.Date == _selectedCalendarDate.Date;
+
+            var background = isSelected
+                ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3478F6"))
+                : isToday
+                    ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#EAF1FF"))
+                    : Brushes.Transparent;
+
+            var foreground = isSelected
+                ? Brushes.White
+                : isCurrentMonth
+                    ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30353B"))
+                    : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B6BBC2"));
+
+            var content = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+            content.Children.Add(new TextBlock
+            {
+                Text = day.Day.ToString(),
+                FontSize = 13,
+                FontWeight = isToday || isSelected ? FontWeights.SemiBold : FontWeights.Normal,
+                Foreground = foreground,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                TextAlignment = TextAlignment.Center
+            });
+
+            if (reminders.Count > 0)
+            {
+                content.Children.Add(new Border
+                {
+                    Width = 5,
+                    Height = 5,
+                    CornerRadius = new CornerRadius(3),
+                    Background = isSelected ? Brushes.White : (Brush)FindResource("AccentBrush"),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Margin = new Thickness(0, 4, 0, 0)
+                });
+            }
+
+            var dayButton = new Button
+            {
+                Content = content,
+                Tag = day,
+                Margin = new Thickness(3),
+                Padding = new Thickness(0),
+                BorderThickness = isSelected ? new Thickness(0) : new Thickness(1),
+                BorderBrush = isSelected
+                    ? Brushes.Transparent
+                    : isToday
+                        ? (Brush)FindResource("AccentBrush")
+                        : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ECEEF1")),
+                Background = background,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                FontSize = 13,
+                ToolTip = reminders.Count == 0 ? null : $"{reminders.Count} reminder{(reminders.Count == 1 ? "" : "s")}"
+            };
+
+            dayButton.Click += (_, _) =>
+            {
+                _selectedCalendarDate = day;
+                RefreshCalendar();
+            };
+
+            CalendarDaysGrid.Children.Add(dayButton);
+        }
+
+        RefreshCalendarDayDetails();
+    }
+
+    private void RefreshCalendarDayDetails()
+    {
+        var reminders = Reminders
+            .Where(r => r.DueDate?.Date == _selectedCalendarDate.Date)
+            .OrderBy(r => r.IsCompleted)
+            .ThenBy(r => r.CreatedAt)
+            .ToList();
+
+        CalendarSelectedDateText.Text = _selectedCalendarDate.Date == DateTime.Today
+            ? "Today"
+            : _selectedCalendarDate.ToString("dddd, MMM d");
+        CalendarSelectedCountText.Text = reminders.Count.ToString();
+        CalendarDayReminders.Clear();
+        foreach (var reminder in reminders)
+        {
+            CalendarDayReminders.Add(reminder);
+        }
+
+        CalendarEmptyText.Visibility = reminders.Count == 0
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
+
+    private void CalendarToday_Click(object sender, RoutedEventArgs e)
+    {
+        _calendarMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        _selectedCalendarDate = DateTime.Today;
+        RefreshCalendar();
+    }
+
+    private void PreviousMonth_Click(object sender, RoutedEventArgs e)
+    {
+        _calendarMonth = _calendarMonth.AddMonths(-1);
+        RefreshCalendar();
+    }
+
+    private void NextMonth_Click(object sender, RoutedEventArgs e)
+    {
+        _calendarMonth = _calendarMonth.AddMonths(1);
+        RefreshCalendar();
+    }
+
     private void AddReminder_Click(object sender, RoutedEventArgs e)
     {
         var title = ReminderInput.Text.Trim();
