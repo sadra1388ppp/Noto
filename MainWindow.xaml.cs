@@ -31,6 +31,7 @@ public partial class MainWindow : Window
     private UserProgress _progress = new();
     private Guid? _selectedListId;
     private Reminder? _pendingCompletionReminder;
+    private bool _ownerMode;
     private readonly TextBlock RewardsStatusText = new();
     private DateTime _calendarMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private DateTime _selectedCalendarDate = DateTime.Today;
@@ -195,14 +196,29 @@ public partial class MainWindow : Window
 
     private void RefreshRewardsView()
     {
-        RewardsCoinsText.Text = _progress.Coins.ToString();
-        StoreCoinsText.Text = _progress.Coins.ToString();
+        var coinBalance = _ownerMode ? "∞" : _progress.Coins.ToString();
+
+        RewardsCoinsText.Text = coinBalance;
+        StoreCoinsText.Text = coinBalance;
         RewardsStatusText.Text =
             string.IsNullOrWhiteSpace(RewardsStatusText.Text)
-                ? "Finish a reminder to earn 10 coins."
+                ? (_ownerMode
+                    ? "Owner mode enabled. Coins are unlimited."
+                    : "Finish a reminder to earn 10 coins.")
                 : RewardsStatusText.Text;
 
         SyncRewardCatalogState();
+    }
+
+    private void ActivateOwnerMode()
+    {
+        if (_ownerMode)
+        {
+            return;
+        }
+
+        _ownerMode = true;
+        RefreshRewardsView();
     }
 
     private void RefreshHistory()
@@ -396,6 +412,16 @@ public partial class MainWindow : Window
 
     private void DueDateInput_TextChanged(object sender, TextChangedEventArgs e)
     {
+        if (string.Equals(
+                NormalizeDateInput(DueDateInput.Text),
+                "im owner",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            ActivateOwnerMode();
+            DueDateInput.Clear();
+            return;
+        }
+
         DueDatePlaceholderText.Visibility =
             string.IsNullOrWhiteSpace(DueDateInput.Text)
                 ? Visibility.Visible
@@ -404,6 +430,16 @@ public partial class MainWindow : Window
 
     private void DueDateInput_LostFocus(object sender, RoutedEventArgs e)
     {
+        if (string.Equals(
+                NormalizeDateInput(DueDateInput.Text),
+                "im owner",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            ActivateOwnerMode();
+            DueDateInput.Clear();
+            return;
+        }
+
         if (TryParseDueDate(DueDateInput.Text, out var parsedDate) && parsedDate.HasValue)
         {
             DueDateInput.Text = parsedDate.Value.ToString("MMM d, yyyy", CultureInfo.InvariantCulture);
@@ -783,8 +819,14 @@ public partial class MainWindow : Window
 
         _progress.RewardedReminderIds.Add(reminder.Id);
         _progress.TotalCompleted++;
-        _progress.Coins += 10;
-        RewardsStatusText.Text = "+10 coins earned. Nice work.";
+        if (!_ownerMode)
+        {
+            _progress.Coins += 10;
+        }
+
+        RewardsStatusText.Text = _ownerMode
+            ? "Owner mode: unlimited coins."
+            : "+10 coins earned. Nice work.";
 
         RefreshRewardsView();
         SaveAll();
@@ -1045,13 +1087,16 @@ public partial class MainWindow : Window
 
         if (!item.IsOwned)
         {
-            if (_progress.Coins < item.Price)
+            if (!_ownerMode && _progress.Coins < item.Price)
             {
                 RewardsStatusText.Text = "Not enough coins for this item.";
                 return;
             }
 
-            _progress.Coins -= item.Price;
+            if (!_ownerMode)
+            {
+                _progress.Coins -= item.Price;
+            }
 
             if (!_progress.OwnedStoreItemIds.Contains(item.Id))
             {
