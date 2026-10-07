@@ -221,6 +221,18 @@ public partial class MainWindow : Window
         RefreshRewardsView();
     }
 
+    private void DeactivateOwnerMode()
+    {
+        if (!_ownerMode)
+        {
+            return;
+        }
+
+        _ownerMode = false;
+        RewardsStatusText.Text = "Owner mode disabled.";
+        RefreshRewardsView();
+    }
+
     private void RefreshHistory()
     {
         var completed = Reminders
@@ -443,12 +455,19 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (string.Equals(
-                NormalizeDateInput(DueDateInput.Text),
-                "im owner",
-                StringComparison.OrdinalIgnoreCase))
+        var command = NormalizeDateInput(DueDateInput.Text);
+
+        if (string.Equals(command, "im owner", StringComparison.OrdinalIgnoreCase))
         {
             ActivateOwnerMode();
+            DueDateInput.Clear();
+            e.Handled = true;
+            return;
+        }
+
+        if (string.Equals(command, "im user", StringComparison.OrdinalIgnoreCase))
+        {
+            DeactivateOwnerMode();
             DueDateInput.Clear();
             e.Handled = true;
             return;
