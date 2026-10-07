@@ -402,6 +402,14 @@ public partial class MainWindow : Window
                 : Visibility.Collapsed;
     }
 
+    private void DueDateInput_LostFocus(object sender, RoutedEventArgs e)
+    {
+        if (TryParseDueDate(DueDateInput.Text, out var parsedDate) && parsedDate.HasValue)
+        {
+            DueDateInput.Text = parsedDate.Value.ToString("MMM d, yyyy", CultureInfo.InvariantCulture);
+        }
+    }
+
     private void DueDateInput_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         if (e.Key == System.Windows.Input.Key.Enter)
