@@ -157,9 +157,17 @@
         <Style x:Key="ReminderCalendarStyle" TargetType="Calendar">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="#30353B"/>
-            <Setter Property="BorderBrush" Value="#E2E5E9"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+
+        <Style x:Key="DueDateButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#30353B"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
     </Window.Resources>
@@ -463,44 +471,156 @@
                              VerticalContentAlignment="Center"
                              ToolTip="Reminder title"/>
 
-                    <Border Grid.Column="1"
-                            Height="46"
-                            Margin="10,0,10,0"
-                            Background="#F8F9FB"
-                            BorderBrush="#E3E6EA"
-                            BorderThickness="1"
-                            CornerRadius="10"
-                            Padding="11,0">
+                    <Grid Grid.Column="1"
+                          Margin="10,0,10,0">
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <Button Height="46"
+                                Style="{StaticResource DueDateButtonStyle}"
+                                Click="DueDateButton_Click">
 
-                            <StackPanel Grid.Column="0"
-                                        VerticalAlignment="Center">
-                                <TextBlock Text="DUE DATE"
-                                           FontSize="8"
-                                           FontWeight="SemiBold"
-                                           Foreground="#969BA3"/>
-                                <TextBlock Text="Choose a date"
-                                           FontSize="10"
-                                           Foreground="#777D86"
-                                           Margin="0,2,0,0"/>
-                            </StackPanel>
+                            <Border Background="#F8F9FB"
+                                    BorderBrush="#E3E6EA"
+                                    BorderThickness="1"
+                                    CornerRadius="11"
+                                    Padding="12,0">
 
-                            <DatePicker x:Name="DueDatePicker"
-                                        Grid.Column="1"
-                                        Margin="8,0,0,0"
-                                        BorderThickness="0"
-                                        Background="Transparent"
-                                        FontSize="12"
-                                        Foreground="#30353B"
-                                        VerticalContentAlignment="Center"
-                                        CalendarStyle="{StaticResource ReminderCalendarStyle}"/>
-                        </Grid>
-                    </Border>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="34"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Width="28"
+                                            Height="28"
+                                            Background="{DynamicResource AccentSoftBrush}"
+                                            CornerRadius="8"
+                                            VerticalAlignment="Center">
+
+                                        <TextBlock Text="□"
+                                                   FontSize="17"
+                                                   FontWeight="Bold"
+                                                   Foreground="{DynamicResource AccentBrush}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Margin="9,0,8,0">
+
+                                        <TextBlock Text="DUE DATE"
+                                                   FontSize="8"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#969BA3"/>
+
+                                        <TextBlock x:Name="DueDateText"
+                                                   Text="No due date"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#30353B"
+                                                   Margin="0,2,0,0"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Column="2"
+                                               Text="›"
+                                               FontSize="20"
+                                               Foreground="#9297A0"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </Button>
+
+                        <Popup x:Name="DueDatePopup"
+                               Placement="Bottom"
+                               PlacementTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
+                               HorizontalOffset="0"
+                               VerticalOffset="8"
+                               StaysOpen="False"
+                               AllowsTransparency="True"
+                               PopupAnimation="Fade">
+
+                            <Border Width="330"
+                                    Background="White"
+                                    BorderBrush="#E1E4E8"
+                                    BorderThickness="1"
+                                    CornerRadius="16"
+                                    Padding="16">
+
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="22"
+                                                      ShadowDepth="5"
+                                                      Opacity="0.18"/>
+                                </Border.Effect>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Margin="2,0,2,10">
+                                        <StackPanel>
+                                            <TextBlock Text="Due date"
+                                                       FontSize="16"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#17191C"/>
+
+                                            <TextBlock x:Name="DueDatePopupText"
+                                                       Text="No date selected"
+                                                       FontSize="11"
+                                                       Foreground="#8A9098"
+                                                       Margin="0,3,0,0"/>
+                                        </StackPanel>
+
+                                        <Button Content="Today"
+                                                Width="58"
+                                                Height="30"
+                                                HorizontalAlignment="Right"
+                                                Background="{DynamicResource AccentSoftBrush}"
+                                                Foreground="{DynamicResource AccentBrush}"
+                                                BorderThickness="0"
+                                                FontSize="11"
+                                                FontWeight="SemiBold"
+                                                Click="DueDateToday_Click"/>
+                                    </Grid>
+
+                                    <Calendar x:Name="DueDateCalendar"
+                                              Grid.Row="1"
+                                              BorderThickness="0"
+                                              Background="White"
+                                              Foreground="#30353B"
+                                              CalendarStyle="{StaticResource ReminderCalendarStyle}"
+                                              SelectedDatesChanged="DueDateCalendar_SelectedDatesChanged"/>
+
+                                    <Grid Grid.Row="2"
+                                          Margin="0,12,0,0">
+                                        <Button Content="Clear date"
+                                                Width="78"
+                                                Height="32"
+                                                HorizontalAlignment="Left"
+                                                Background="Transparent"
+                                                Foreground="#7B818A"
+                                                BorderThickness="0"
+                                                FontSize="11"
+                                                FontWeight="SemiBold"
+                                                Click="ClearDueDate_Click"/>
+
+                                        <Button Content="Done"
+                                                Width="70"
+                                                Height="32"
+                                                HorizontalAlignment="Right"
+                                                Style="{StaticResource PrimaryButtonStyle}"
+                                                FontSize="11"
+                                                Click="CloseDueDate_Click"/>
+                                    </Grid>
+
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
 
                     <Button Grid.Column="2"
                             Content="Add Reminder"
