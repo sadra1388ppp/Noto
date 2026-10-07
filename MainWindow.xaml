@@ -152,6 +152,76 @@
             <Setter Property="Foreground" Value="#24272C"/>
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Grid Width="22"
+                                  Height="22"
+                                  Margin="0,0,10,0"
+                                  VerticalAlignment="Center">
+
+                                <Border x:Name="CheckBoxBorder"
+                                        Width="22"
+                                        Height="22"
+                                        Background="White"
+                                        BorderBrush="#C9CDD3"
+                                        BorderThickness="1.8"
+                                        CornerRadius="7"/>
+
+                                <Path x:Name="CheckMark"
+                                      Data="M 5,11 L 9,15 L 17,7"
+                                      Stroke="White"
+                                      StrokeThickness="2.3"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      Visibility="Collapsed"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <ContentPresenter VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"/>
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CheckBoxBorder"
+                                        Property="BorderBrush"
+                                        Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckBoxBorder"
+                                        Property="Background"
+                                        Value="{DynamicResource AccentBrush}"/>
+
+                                <Setter TargetName="CheckBoxBorder"
+                                        Property="BorderBrush"
+                                        Value="{DynamicResource AccentBrush}"/>
+
+                                <Setter TargetName="CheckMark"
+                                        Property="Visibility"
+                                        Value="Visible"/>
+
+                                <Setter Property="Foreground"
+                                        Value="#9297A0"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="CheckBoxBorder"
+                                        Property="Opacity"
+                                        Value="0.55"/>
+
+                                <Setter Property="Foreground"
+                                        Value="#A0A5AC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="DueDateIconButtonStyle" TargetType="Button">
@@ -229,14 +299,6 @@
                                        VerticalAlignment="Center"/>
                         </Grid>
 
-                    </ListBoxItem>
-
-                    <ListBoxItem Style="{StaticResource SidebarItemStyle}">
-                        <Grid>
-                            <TextBlock Text="History"
-                                       FontSize="15"
-                                       VerticalAlignment="Center"/>
-                        </Grid>
                     </ListBoxItem>
 
                     <ListBoxItem Style="{StaticResource SidebarItemStyle}">
@@ -728,8 +790,8 @@
 
                                             <TextBlock Text="{Binding DueDate, StringFormat='{}{0:d}'}"
                                                        FontSize="12"
-                                                       Foreground="#898F98"
-                                                       Margin="26,5,0,0"/>
+                                                       Foreground="#8C929A"
+                                                       Margin="32,5,0,0"/>
 
                                         </StackPanel>
 
