@@ -497,7 +497,7 @@
                                             CornerRadius="8"
                                             VerticalAlignment="Center">
 
-                                        <TextBlock Text="□"
+                                        <TextBlock Text="▦"
                                                    FontSize="17"
                                                    FontWeight="Bold"
                                                    Foreground="{DynamicResource AccentBrush}"
