@@ -22,10 +22,14 @@ public partial class MainWindow : Window
     public ObservableCollection<ReminderList> CustomLists { get; } = [];
     public ObservableCollection<StoreItem> StoreItems { get; } = [];
     public ObservableCollection<Achievement> Achievements { get; } = [];
+    public ObservableCollection<StoreItem> OwnedStoreItems { get; } = [];
+    public ObservableCollection<Reminder> CalendarDayReminders { get; } = [];
 
     private UserProgress _progress = new();
     private Guid? _selectedListId;
     private Reminder? _pendingCompletionReminder;
+    private DateTime _calendarMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+    private DateTime _selectedCalendarDate = DateTime.Today;
 
     public MainWindow()
     {
@@ -44,6 +48,9 @@ public partial class MainWindow : Window
         ReminderList.ItemsSource = _reminderView;
         CustomListsList.ItemsSource = CustomLists;
         StoreItemsList.ItemsSource = StoreItems;
+        RewardItemsList.ItemsSource = OwnedStoreItems;
+        AchievementItemsList.ItemsSource = OwnedStoreItems;
+        CalendarRemindersList.ItemsSource = CalendarDayReminders;
         EnsureProgressDefaults();
         ApplyTheme(_progress.EquippedThemeId);
         SyncRewardCatalogState();
@@ -52,6 +59,7 @@ public partial class MainWindow : Window
         ShowRemindersView();
         RefreshView();
         RefreshRewardsView();
+        RefreshCalendar();
     }
 
     private void LoadData()
@@ -102,6 +110,12 @@ public partial class MainWindow : Window
         {
             achievement.IsUnlocked = _progress.UnlockedAchievementIds.Contains(achievement.Id);
         }
+
+        OwnedStoreItems.Clear();
+        foreach (var item in StoreItems.Where(item => item.IsOwned))
+        {
+            OwnedStoreItems.Add(item);
+        }
     }
 
     private void AddReminderToCollection(Reminder reminder)
@@ -121,10 +135,12 @@ public partial class MainWindow : Window
 
         _storage.Save(Reminders, CustomLists, _progress);
 
-        if (e.PropertyName == nameof(Reminder.IsCompleted))
+        if (e.PropertyName == nameof(Reminder.IsCompleted) ||
+            e.PropertyName == nameof(Reminder.DueDate))
         {
             _reminderView.Refresh();
             RefreshView();
+            RefreshCalendar();
         }
     }
 
@@ -418,14 +434,18 @@ public partial class MainWindow : Window
         switch (ListsList.SelectedIndex)
         {
             case 1:
-                ShowRewardsView();
+                ShowCalendarView();
                 break;
 
             case 2:
-                ShowStoreView();
+                ShowRewardsView();
                 break;
 
             case 3:
+                ShowStoreView();
+                break;
+
+            case 4:
                 ShowAchievementsView();
                 break;
         }
@@ -449,14 +469,26 @@ public partial class MainWindow : Window
     private void ShowRemindersView()
     {
         ReminderContentPanel.Visibility = Visibility.Visible;
+        CalendarContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Collapsed;
         AchievementsContentPanel.Visibility = Visibility.Collapsed;
     }
 
+    private void ShowCalendarView()
+    {
+        ReminderContentPanel.Visibility = Visibility.Collapsed;
+        CalendarContentPanel.Visibility = Visibility.Visible;
+        RewardsContentPanel.Visibility = Visibility.Collapsed;
+        StoreContentPanel.Visibility = Visibility.Collapsed;
+        AchievementsContentPanel.Visibility = Visibility.Collapsed;
+        RefreshCalendar();
+    }
+
     private void ShowRewardsView()
     {
         ReminderContentPanel.Visibility = Visibility.Collapsed;
+        CalendarContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Visible;
         StoreContentPanel.Visibility = Visibility.Collapsed;
         AchievementsContentPanel.Visibility = Visibility.Collapsed;
@@ -466,6 +498,7 @@ public partial class MainWindow : Window
     private void ShowStoreView()
     {
         ReminderContentPanel.Visibility = Visibility.Collapsed;
+        CalendarContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Visible;
         AchievementsContentPanel.Visibility = Visibility.Collapsed;
@@ -475,9 +508,11 @@ public partial class MainWindow : Window
     private void ShowAchievementsView()
     {
         ReminderContentPanel.Visibility = Visibility.Collapsed;
+        CalendarContentPanel.Visibility = Visibility.Collapsed;
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Collapsed;
         AchievementsContentPanel.Visibility = Visibility.Visible;
+        SyncRewardCatalogState();
     }
 
     private void StoreItemButton_Click(object sender, RoutedEventArgs e)
