@@ -19,6 +19,7 @@ public partial class MainWindow : Window
 {
     private readonly ReminderStorage _storage = new();
     private readonly ICollectionView _reminderView;
+    private readonly ICollectionView _storeView;
 
     public ObservableCollection<Reminder> Reminders { get; } = [];
     public ObservableCollection<ReminderList> CustomLists { get; } = [];
@@ -43,6 +44,9 @@ public partial class MainWindow : Window
         _reminderView = CollectionViewSource.GetDefaultView(Reminders);
         _reminderView.Filter = FilterReminder;
 
+        _storeView = CollectionViewSource.GetDefaultView(StoreItems);
+        _storeView.Filter = FilterStoreItem;
+
         foreach (var item in RewardCatalog.CreateStoreItems())
         {
             StoreItems.Add(item);
@@ -52,7 +56,7 @@ public partial class MainWindow : Window
 
         ReminderList.ItemsSource = _reminderView;
         CustomListsList.ItemsSource = CustomLists;
-        StoreItemsList.ItemsSource = StoreItems;
+        StoreItemsList.ItemsSource = _storeView;
         RewardItemsList.ItemsSource = OwnedStoreItems;
         CalendarRemindersList.ItemsSource = CalendarDayReminders;
         EnsureProgressDefaults();
@@ -105,9 +109,11 @@ public partial class MainWindow : Window
         foreach (var item in StoreItems)
         {
             item.IsOwned = _progress.OwnedStoreItemIds.Contains(item.Id);
-            item.IsEquipped = item.Id.Equals(
-                _progress.EquippedThemeId,
-                StringComparison.OrdinalIgnoreCase);
+            item.IsEquipped =
+                item.Category.Equals("Themes", StringComparison.OrdinalIgnoreCase) &&
+                item.Id.Equals(
+                    _progress.EquippedThemeId,
+                    StringComparison.OrdinalIgnoreCase);
         }
 
         foreach (var achievement in Achievements)
@@ -170,6 +176,17 @@ public partial class MainWindow : Window
 
         return reminder.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
                reminder.Notes.Contains(search, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool FilterStoreItem(object item)
+    {
+        if (item is not StoreItem storeItem)
+        {
+            return false;
+        }
+
+        return _selectedStoreCategory.Equals("All", StringComparison.OrdinalIgnoreCase) ||
+               storeItem.Category.Equals(_selectedStoreCategory, StringComparison.OrdinalIgnoreCase);
     }
 
     private void RefreshView()
@@ -1066,15 +1083,15 @@ public partial class MainWindow : Window
         {
             "Themes" => (
                 "Themes",
-                "Change the look and accent of your Noto workspace.",
+                "Pick a fantasy workspace theme and preview it before you buy.",
                 "T",
-                "We're preparing the first theme collection."),
+                "No themes are available right now."),
 
             "Guns" => (
                 "Guns",
-                "Customize your future game-style collection with unique gun items.",
+                "Preview every gun design before spending your hard-earned coins.",
                 "G",
-                "Gun items will be added to the Store later."),
+                "No gun designs are available right now."),
 
             "Stickers" => (
                 "Stickers",
@@ -1090,9 +1107,9 @@ public partial class MainWindow : Window
 
             _ => (
                 "All",
-                "Browse everything available in the Noto Store.",
+                "Browse themes, gun designs, and everything else available in the Noto Store.",
                 "A",
-                "There are no Store items available yet.")
+                "The Store is empty.")
         };
 
         StoreCategoryTitle.Text = details.Item1;
@@ -1105,6 +1122,16 @@ public partial class MainWindow : Window
         SetStoreCategoryButtonState(StoreGunsButton, category == "Guns");
         SetStoreCategoryButtonState(StoreSkinsButton, category == "Skins");
         SetStoreCategoryButtonState(StoreStickersButton, category == "Stickers");
+
+        _storeView.Refresh();
+
+        var hasItems = _storeView.Cast<StoreItem>().Any();
+        StoreItemsScrollViewer.Visibility = hasItems
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+        StoreEmptyStatePanel.Visibility = hasItems
+            ? Visibility.Collapsed
+            : Visibility.Visible;
     }
 
     private void SetStoreCategoryButtonState(Button button, bool selected)
@@ -1145,6 +1172,36 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (item.Category.Equals("Guns", StringComparison.OrdinalIgnoreCase))
+        {
+            if (item.IsOwned)
+            {
+                RewardsStatusText.Text = $"{item.Name} is already in your collection.";
+                return;
+            }
+
+            if (!_ownerMode && _progress.Coins < item.Price)
+            {
+                RewardsStatusText.Text = "Not enough coins for this item.";
+                return;
+            }
+
+            if (!_ownerMode)
+            {
+                _progress.Coins -= item.Price;
+            }
+
+            if (!_progress.OwnedStoreItemIds.Contains(item.Id))
+            {
+                _progress.OwnedStoreItemIds.Add(item.Id);
+            }
+
+            RewardsStatusText.Text = $"{item.Name} purchased.";
+            SaveAll();
+            RefreshRewardsView();
+            return;
+        }
+
         if (!item.IsOwned)
         {
             if (!_ownerMode && _progress.Coins < item.Price)
@@ -1173,7 +1230,13 @@ public partial class MainWindow : Window
 
     private void EquipStoreItem(StoreItem item)
     {
-        foreach (var storeItem in StoreItems)
+        if (!item.Category.Equals("Themes", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        foreach (var storeItem in StoreItems.Where(
+                     item => item.Category.Equals("Themes", StringComparison.OrdinalIgnoreCase)))
         {
             storeItem.IsEquipped = false;
         }
@@ -1190,6 +1253,21 @@ public partial class MainWindow : Window
     {
         var palette = themeId switch
         {
+            "theme.astral-bloom" => new ThemePalette(
+                Color.FromRgb(139, 92, 246),
+                Color.FromRgb(109, 61, 209),
+                Color.FromRgb(240, 232, 255)),
+
+            "theme.crimson-arcana" => new ThemePalette(
+                Color.FromRgb(217, 70, 122),
+                Color.FromRgb(183, 47, 97),
+                Color.FromRgb(255, 231, 240)),
+
+            "theme.emerald-celestial" => new ThemePalette(
+                Color.FromRgb(18, 191, 163),
+                Color.FromRgb(12, 146, 125),
+                Color.FromRgb(225, 250, 245)),
+
             "theme.ocean" => new ThemePalette(
                 Color.FromRgb(13, 138, 188),
                 Color.FromRgb(7, 108, 151),
