@@ -51,7 +51,6 @@ public partial class MainWindow : Window
         CustomListsList.ItemsSource = CustomLists;
         StoreItemsList.ItemsSource = StoreItems;
         RewardItemsList.ItemsSource = OwnedStoreItems;
-        AchievementItemsList.ItemsSource = OwnedStoreItems;
         CalendarRemindersList.ItemsSource = CalendarDayReminders;
         HistoryItemsList.ItemsSource = HistoryItems;
         EnsureProgressDefaults();
@@ -593,11 +592,11 @@ public partial class MainWindow : Window
                 break;
 
             case 4:
-                ShowStoreView();
+                ShowAchievementsView();
                 break;
 
             case 5:
-                ShowAchievementsView();
+                ShowStoreView();
                 break;
         }
     }
