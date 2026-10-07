@@ -529,6 +529,12 @@ public partial class MainWindow : Window
             return true;
         }
 
+        if (TryParseMonthNameDate(value, out var namedDate))
+        {
+            date = namedDate;
+            return true;
+        }
+
         var formats = new[]
         {
             "yyyy-MM-dd",
@@ -575,6 +581,108 @@ public partial class MainWindow : Window
         }
 
         return false;
+    }
+
+    private static bool TryParseMonthNameDate(string value, out DateTime? date)
+    {
+        date = null;
+
+        var parts = value
+            .Replace(",", " ", StringComparison.Ordinal)
+            .Replace(" of ", " ", StringComparison.OrdinalIgnoreCase)
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        if (parts.Length < 2 || parts.Length > 3)
+        {
+            return false;
+        }
+
+        static string RemoveOrdinalSuffix(string text)
+        {
+            if (text.Length < 3)
+            {
+                return text;
+            }
+
+            var suffix = text[^2..];
+            if (suffix is "st" or "nd" or "rd" or "th")
+            {
+                return text[..^2];
+            }
+
+            return text;
+        }
+
+        var first = RemoveOrdinalSuffix(parts[0]);
+        var second = RemoveOrdinalSuffix(parts[1]);
+
+        int day;
+        string monthName;
+        int year = DateTime.Today.Year;
+
+        if (int.TryParse(first, NumberStyles.Integer, CultureInfo.InvariantCulture, out var firstNumber))
+        {
+            day = firstNumber;
+            monthName = second;
+
+            if (parts.Length == 3 &&
+                int.TryParse(parts[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedYear))
+            {
+                year = parsedYear;
+            }
+        }
+        else if (int.TryParse(second, NumberStyles.Integer, CultureInfo.InvariantCulture, out var secondNumber))
+        {
+            monthName = first;
+            day = secondNumber;
+
+            if (parts.Length == 3 &&
+                int.TryParse(parts[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedYear))
+            {
+                year = parsedYear;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        var monthNames = CultureInfo.GetCultureInfo("en-US").DateTimeFormat.MonthNames;
+
+        var month = Array.FindIndex(
+            monthNames,
+            name => string.Equals(name, monthName, StringComparison.OrdinalIgnoreCase));
+
+        if (month < 0)
+        {
+            var abbreviatedMonthNames = CultureInfo.GetCultureInfo("en-US").DateTimeFormat.AbbreviatedMonthNames;
+
+            month = Array.FindIndex(
+                abbreviatedMonthNames,
+                name => string.Equals(name, monthName, StringComparison.OrdinalIgnoreCase));
+
+            if (month < 0)
+            {
+                return false;
+            }
+        }
+
+        try
+        {
+            var parsedDate = new DateTime(year, month + 1, day);
+
+            if (parts.Length == 2 && parsedDate.Date < DateTime.Today)
+            {
+                parsedDate = parsedDate.AddYears(1);
+            }
+
+            date = parsedDate.Date;
+            return true;
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return false;
+        }
     }
 
     private static DateTime NextOccurrence(DayOfWeek targetDay)
