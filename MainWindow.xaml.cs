@@ -29,6 +29,7 @@ public partial class MainWindow : Window
     private UserProgress _progress = new();
     private Guid? _selectedListId;
     private Reminder? _pendingCompletionReminder;
+    private readonly TextBlock RewardsStatusText = new();
     private DateTime _calendarMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private DateTime _selectedCalendarDate = DateTime.Today;
 
