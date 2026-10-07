@@ -1502,23 +1502,23 @@
                     BorderBrush="#E2E5E9"
                     BorderThickness="1"
                     CornerRadius="18"
-                    Padding="28">
+                    Padding="24">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="96"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Width="96"
-                            Height="96"
+                    <Border Width="88"
+                            Height="88"
                             Background="{DynamicResource AccentSoftBrush}"
-                            CornerRadius="28"
-                            VerticalAlignment="Top">
+                            CornerRadius="24"
+                            VerticalAlignment="Center">
 
                         <Grid>
-                            <Ellipse Width="58"
-                                     Height="58"
+                            <Ellipse Width="56"
+                                     Height="56"
                                      Stroke="#C79620"
                                      StrokeThickness="3"
                                      Fill="#FFD966"
@@ -1527,7 +1527,7 @@
 
                             <TextBlock Text="C"
                                        Foreground="#8A6815"
-                                       FontSize="25"
+                                       FontSize="24"
                                        FontWeight="Bold"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
@@ -1535,40 +1535,42 @@
                     </Border>
 
                     <StackPanel Grid.Column="1"
-                                Margin="24,2,0,0"
+                                Margin="22,0,0,0"
                                 VerticalAlignment="Center">
 
-                        <TextBlock Text="Reminder Champion"
-                                   FontSize="22"
+                        <TextBlock Text="Complete a reminder"
+                                   FontSize="20"
                                    FontWeight="SemiBold"
                                    Foreground="#202329"/>
 
-                        <TextBlock Text="Every time you complete a reminder, you earn"
-                                   FontSize="14"
-                                   Foreground="#666D76"
-                                   Margin="0,8,0,0"/>
+                        <TextBlock Text="Finish a reminder and earn coins every time."
+                                   FontSize="13"
+                                   Foreground="#747A83"
+                                   Margin="0,5,0,11"/>
 
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0,10,0,0">
+                        <Border Width="110"
+                                Height="34"
+                                Background="#FFF8E5"
+                                BorderBrush="#F0D889"
+                                BorderThickness="1"
+                                CornerRadius="9">
 
-                            <TextBlock Text="10"
-                                       FontSize="28"
-                                       FontWeight="Bold"
-                                       Foreground="{DynamicResource AccentBrush}"/>
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
 
-                            <TextBlock Text=" coins"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"
-                                       Foreground="#30353B"
-                                       VerticalAlignment="Bottom"
-                                       Margin="4,0,0,5"/>
-                        </StackPanel>
+                                <TextBlock Text="+10"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="#9A731A"/>
 
-                        <TextBlock Text="Finish your reminder, confirm it, and your coin balance goes up."
-                                   FontSize="12"
-                                   Foreground="#8A9098"
-                                   TextWrapping="Wrap"
-                                   Margin="0,7,0,0"/>
+                                <TextBlock Text=" coins"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
+                                           Foreground="#9A731A"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Grid>
             </Border>
