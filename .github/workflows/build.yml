@@ -20,7 +20,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore
-        run: dotnet restore SimpleReminders.csproj
+        run: dotnet restore Noto.csproj
 
       - name: Build
-        run: dotnet build SimpleReminders.csproj --configuration Release --no-restore
+        run: dotnet build Noto.csproj --configuration Release --no-restore
