@@ -159,7 +159,6 @@
             <Setter Property="Foreground" Value="#30353B"/>
             <Setter Property="BorderBrush" Value="#E2E5E9"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="8"/>
             <Setter Property="FontSize" Value="12"/>
         </Style>
 
@@ -1362,13 +1361,15 @@
                         <Grid>
                             <Ellipse Width="58"
                                      Height="58"
-                                     Fill="{DynamicResource AccentBrush}"
+                                     Stroke="#C79620"
+                                     StrokeThickness="3"
+                                     Fill="#FFD966"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"/>
 
                             <TextBlock Text="C"
-                                       Foreground="White"
-                                       FontSize="22"
+                                       Foreground="#8A6815"
+                                       FontSize="25"
                                        FontWeight="Bold"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
