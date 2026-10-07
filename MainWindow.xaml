@@ -1495,6 +1495,12 @@
 
             <Grid Grid.Row="1"
                   Margin="0,0,0,16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="54"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="54"/>
+                </Grid.RowDefinitions>
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="12"/>
@@ -1506,6 +1512,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button x:Name="StoreAllButton"
+                        Grid.Row="0"
                         Grid.Column="0"
                         Content="ALL"
                         Tag="All"
@@ -1513,6 +1520,7 @@
                         Click="StoreCategoryButton_Click"/>
 
                 <Button x:Name="StoreThemesButton"
+                        Grid.Row="0"
                         Grid.Column="2"
                         Content="THEMES"
                         Tag="Themes"
@@ -1520,14 +1528,24 @@
                         Click="StoreCategoryButton_Click"/>
 
                 <Button x:Name="StoreGunsButton"
+                        Grid.Row="0"
                         Grid.Column="4"
                         Content="GUNS"
                         Tag="Guns"
                         Style="{StaticResource StoreCategoryButtonStyle}"
                         Click="StoreCategoryButton_Click"/>
 
-                <Button x:Name="StoreStickersButton"
+                <Button x:Name="StoreSkinsButton"
+                        Grid.Row="0"
                         Grid.Column="6"
+                        Content="SKINS"
+                        Tag="Skins"
+                        Style="{StaticResource StoreCategoryButtonStyle}"
+                        Click="StoreCategoryButton_Click"/>
+
+                <Button x:Name="StoreStickersButton"
+                        Grid.Row="2"
+                        Grid.Column="0"
                         Content="STICKERS"
                         Tag="Stickers"
                         Style="{StaticResource StoreCategoryButtonStyle}"
