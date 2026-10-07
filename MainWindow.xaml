@@ -592,7 +592,6 @@
                                               BorderThickness="0"
                                               Background="White"
                                               Foreground="#30353B"
-                                              CalendarStyle="{StaticResource ReminderCalendarStyle}"
                                               SelectedDatesChanged="DueDateCalendar_SelectedDatesChanged"/>
 
                                     <Grid Grid.Row="2"
