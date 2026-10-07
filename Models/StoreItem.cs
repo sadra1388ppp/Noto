@@ -18,6 +18,16 @@ public sealed class StoreItem : INotifyPropertyChanged
 
     public int Price { get; init; }
 
+    public string PreviewBackground { get; init; } = "#16181D";
+
+    public string PreviewAccent { get; init; } = "#FFFFFF";
+
+    public string PreviewSecondary { get; init; } = "#8E96A3";
+
+    public string PreviewSoft { get; init; } = "#272C34";
+
+    public string PreviewGeometry { get; init; } = string.Empty;
+
     public bool IsOwned
     {
         get => _isOwned;
@@ -30,11 +40,21 @@ public sealed class StoreItem : INotifyPropertyChanged
         set => SetField(ref _isEquipped, value);
     }
 
-    public string ActionText =>
-        IsEquipped ? "Equipped" :
-        IsOwned ? "Equip" :
-        Price == 0 ? "Free" :
-        $"Buy • {Price}";
+    public string ActionText
+    {
+        get
+        {
+            if (Category.Equals("Guns", StringComparison.OrdinalIgnoreCase))
+            {
+                return IsOwned ? "Owned" : $"Buy • {Price}";
+            }
+
+            return IsEquipped ? "Equipped" :
+                   IsOwned ? "Equip" :
+                   Price == 0 ? "Free" :
+                   $"Buy • {Price}";
+        }
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
