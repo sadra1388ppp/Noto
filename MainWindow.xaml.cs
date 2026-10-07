@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Globalization;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -356,10 +358,27 @@ public partial class MainWindow : Window
             return;
         }
 
+        DateTime? dueDate = null;
+
+        if (!string.IsNullOrWhiteSpace(DueDateInput.Text))
+        {
+            if (!TryParseDueDate(DueDateInput.Text, out dueDate))
+            {
+                MessageBox.Show(
+                    "I couldn't understand that date. Try something like "tomorrow", "Oct 12", or "12/10/2026".",
+                    "Invalid Due Date",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                DueDateInput.Focus();
+                return;
+            }
+        }
+
         var reminder = new Reminder
         {
             Title = title,
-            DueDate = DueDateCalendar.SelectedDate,
+            DueDate = dueDate,
             ListId = _selectedListId?.ToString()
         };
 
@@ -368,33 +387,56 @@ public partial class MainWindow : Window
 
         ReminderInput.Clear();
         DueDateCalendar.SelectedDate = null;
-        DueDateText.Text = "No due date";
-        DueDatePopupText.Text = "No date selected";
+        DueDateInput.Clear();
+        DueDatePopup.IsOpen = false;
         ReminderInput.Focus();
 
         RefreshView();
     }
 
+    private void DueDateInput_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        DueDatePlaceholderText.Visibility =
+            string.IsNullOrWhiteSpace(DueDateInput.Text)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+    }
+
+    private void DueDateInput_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Enter)
+        {
+            AddReminder_Click(sender, new RoutedEventArgs());
+            e.Handled = true;
+        }
+    }
+
     private void DueDateButton_Click(object sender, RoutedEventArgs e)
     {
-        DueDatePopupText.Text = DueDateCalendar.SelectedDate.HasValue
-            ? DueDateCalendar.SelectedDate.Value.ToString("dddd, MMM d, yyyy")
-            : "No date selected";
+        if (TryParseDueDate(DueDateInput.Text, out var parsedDate) && parsedDate.HasValue)
+        {
+            DueDateCalendar.SelectedDate = parsedDate.Value;
+            DueDateCalendar.DisplayDate = parsedDate.Value;
+        }
+        else
+        {
+            DueDateCalendar.SelectedDate = null;
+            DueDateCalendar.DisplayDate = DateTime.Today;
+        }
 
         DueDatePopup.IsOpen = true;
     }
 
     private void DueDateCalendar_SelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var selectedDate = DueDateCalendar.SelectedDate;
+        if (DueDateCalendar.SelectedDate is not DateTime selectedDate)
+        {
+            return;
+        }
 
-        DueDateText.Text = selectedDate.HasValue
-            ? selectedDate.Value.ToString("MMM d, yyyy")
-            : "No due date";
-
-        DueDatePopupText.Text = selectedDate.HasValue
-            ? selectedDate.Value.ToString("dddd, MMM d, yyyy")
-            : "No date selected";
+        DueDateInput.Text = selectedDate.ToString("MMM d, yyyy", CultureInfo.InvariantCulture);
+        DueDateInput.CaretIndex = DueDateInput.Text.Length;
+        DueDatePopup.IsOpen = false;
     }
 
     private void DueDateToday_Click(object sender, RoutedEventArgs e)
@@ -403,16 +445,169 @@ public partial class MainWindow : Window
         DueDateCalendar.DisplayDate = DateTime.Today;
     }
 
+    private void DueDateTomorrow_Click(object sender, RoutedEventArgs e)
+    {
+        var tomorrow = DateTime.Today.AddDays(1);
+        DueDateCalendar.SelectedDate = tomorrow;
+        DueDateCalendar.DisplayDate = tomorrow;
+    }
+
     private void ClearDueDate_Click(object sender, RoutedEventArgs e)
     {
         DueDateCalendar.SelectedDate = null;
-        DueDateText.Text = "No due date";
-        DueDatePopupText.Text = "No date selected";
+        DueDateInput.Clear();
+        DueDatePopup.IsOpen = false;
     }
 
-    private void CloseDueDate_Click(object sender, RoutedEventArgs e)
+    private static bool TryParseDueDate(string input, out DateTime? date)
     {
-        DueDatePopup.IsOpen = false;
+        date = null;
+
+        var value = NormalizeDateInput(input);
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return true;
+        }
+
+        switch (value)
+        {
+            case "today":
+                date = DateTime.Today;
+                return true;
+
+            case "tomorrow":
+                date = DateTime.Today.AddDays(1);
+                return true;
+
+            case "yesterday":
+                date = DateTime.Today.AddDays(-1);
+                return true;
+        }
+
+        if (value.StartsWith("in ", StringComparison.OrdinalIgnoreCase))
+        {
+            var parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 3 &&
+                int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out var amount) &&
+                amount >= 0)
+            {
+                if (parts[2].StartsWith("day", StringComparison.OrdinalIgnoreCase))
+                {
+                    date = DateTime.Today.AddDays(amount);
+                    return true;
+                }
+
+                if (parts[2].StartsWith("week", StringComparison.OrdinalIgnoreCase))
+                {
+                    date = DateTime.Today.AddDays(amount * 7);
+                    return true;
+                }
+            }
+        }
+
+        if (value.StartsWith("next ", StringComparison.OrdinalIgnoreCase))
+        {
+            var dayName = value[5..].Trim();
+            if (Enum.TryParse<DayOfWeek>(dayName, true, out var nextDay))
+            {
+                date = NextOccurrence(nextDay);
+                return true;
+            }
+        }
+
+        if (Enum.TryParse<DayOfWeek>(value, true, out var day))
+        {
+            date = NextOccurrence(day);
+            return true;
+        }
+
+        var formats = new[]
+        {
+            "yyyy-MM-dd",
+            "dd.MM.yyyy",
+            "MM.dd.yyyy",
+            "dd/MM/yyyy",
+            "MM/dd/yyyy",
+            "dd-MM-yyyy",
+            "MM-dd-yyyy"
+        };
+
+        foreach (var format in formats)
+        {
+            if (DateTime.TryParseExact(
+                    value,
+                    format,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out var exactDate))
+            {
+                date = exactDate.Date;
+                return true;
+            }
+        }
+
+        if (DateTime.TryParse(
+                value,
+                CultureInfo.CurrentCulture,
+                DateTimeStyles.AllowWhiteSpaces,
+                out var currentCultureDate))
+        {
+            date = currentCultureDate.Date;
+            return true;
+        }
+
+        if (DateTime.TryParse(
+                value,
+                CultureInfo.GetCultureInfo("en-US"),
+                DateTimeStyles.AllowWhiteSpaces,
+                out var englishDate))
+        {
+            date = englishDate.Date;
+            return true;
+        }
+
+        return false;
+    }
+
+    private static DateTime NextOccurrence(DayOfWeek targetDay)
+    {
+        var daysAhead = ((int)targetDay - (int)DateTime.Today.DayOfWeek + 7) % 7;
+        return DateTime.Today.AddDays(daysAhead == 0 ? 7 : daysAhead);
+    }
+
+    private static string NormalizeDateInput(string input)
+    {
+        var builder = new StringBuilder(input.Trim().ToLowerInvariant());
+
+        for (var i = 0; i < builder.Length; i++)
+        {
+            builder[i] = builder[i] switch
+            {
+                '۰' => '0',
+                '۱' => '1',
+                '۲' => '2',
+                '۳' => '3',
+                '۴' => '4',
+                '۵' => '5',
+                '۶' => '6',
+                '۷' => '7',
+                '۸' => '8',
+                '۹' => '9',
+                '٠' => '0',
+                '١' => '1',
+                '٢' => '2',
+                '٣' => '3',
+                '٤' => '4',
+                '٥' => '5',
+                '٦' => '6',
+                '٧' => '7',
+                '٨' => '8',
+                '٩' => '9',
+                _ => builder[i]
+            };
+        }
+
+        return builder.ToString();
     }
 
     private void ReminderCheckBox_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
