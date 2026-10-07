@@ -412,16 +412,6 @@ public partial class MainWindow : Window
 
     private void DueDateInput_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (string.Equals(
-                NormalizeDateInput(DueDateInput.Text),
-                "im owner",
-                StringComparison.OrdinalIgnoreCase))
-        {
-            ActivateOwnerMode();
-            DueDateInput.Clear();
-            return;
-        }
-
         DueDatePlaceholderText.Visibility =
             string.IsNullOrWhiteSpace(DueDateInput.Text)
                 ? Visibility.Visible
@@ -448,11 +438,24 @@ public partial class MainWindow : Window
 
     private void DueDateInput_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
-        if (e.Key == System.Windows.Input.Key.Enter)
+        if (e.Key != System.Windows.Input.Key.Enter)
         {
-            AddReminder_Click(sender, new RoutedEventArgs());
-            e.Handled = true;
+            return;
         }
+
+        if (string.Equals(
+                NormalizeDateInput(DueDateInput.Text),
+                "im owner",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            ActivateOwnerMode();
+            DueDateInput.Clear();
+            e.Handled = true;
+            return;
+        }
+
+        AddReminder_Click(sender, new RoutedEventArgs());
+        e.Handled = true;
     }
 
     private void DueDateButton_Click(object sender, RoutedEventArgs e)
