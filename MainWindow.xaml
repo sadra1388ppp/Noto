@@ -216,6 +216,14 @@
 
                     <ListBoxItem Style="{StaticResource SidebarItemStyle}">
                         <Grid>
+                            <TextBlock Text="Calendar"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </ListBoxItem>
+
+                    <ListBoxItem Style="{StaticResource SidebarItemStyle}">
+                        <Grid>
                             <TextBlock Text="Rewards"
                                        FontSize="15"
                                        VerticalAlignment="Center"/>
@@ -561,6 +569,211 @@
 
         </Grid>
 
+        <!-- Calendar -->
+        <Grid x:Name="CalendarContentPanel"
+              Grid.Column="1"
+              Margin="42,34,42,34"
+              Visibility="Collapsed">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0"
+                  Margin="0,0,0,22">
+
+                <StackPanel>
+                    <TextBlock Text="Calendar"
+                               FontSize="32"
+                               FontWeight="SemiBold"
+                               Foreground="#17191C"/>
+
+                    <TextBlock Text="See your reminders by date and keep the month in view."
+                               FontSize="14"
+                               Foreground="#7B818A"
+                               Margin="0,6,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+
+                    <Button Content="Today"
+                            Width="72"
+                            Height="38"
+                            Margin="0,0,8,0"
+                            Background="White"
+                            Foreground="#4E555E"
+                            BorderBrush="#E2E5E9"
+                            BorderThickness="1"
+                            FontSize="12"
+                            FontWeight="SemiBold"
+                            Click="CalendarToday_Click"/>
+
+                    <Button Content="‹"
+                            Width="38"
+                            Height="38"
+                            Margin="0,0,5,0"
+                            Background="White"
+                            Foreground="#4E555E"
+                            BorderBrush="#E2E5E9"
+                            BorderThickness="1"
+                            FontSize="22"
+                            Click="PreviousMonth_Click"/>
+
+                    <Button Content="›"
+                            Width="38"
+                            Height="38"
+                            Background="White"
+                            Foreground="#4E555E"
+                            BorderBrush="#E2E5E9"
+                            BorderThickness="1"
+                            FontSize="22"
+                            Click="NextMonth_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Background="White"
+                        BorderBrush="#E2E5E9"
+                        BorderThickness="1"
+                        CornerRadius="16"
+                        Padding="20"
+                        Margin="0,0,18,0">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock x:Name="CalendarMonthText"
+                                   Text="October 2026"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="#202329"
+                                   Margin="2,0,0,16"/>
+
+                        <UniformGrid Grid.Row="1"
+                                     Columns="7"
+                                     Margin="0,0,0,7">
+
+                            <TextBlock Text="SUN" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
+                            <TextBlock Text="MON" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
+                            <TextBlock Text="TUE" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
+                            <TextBlock Text="WED" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
+                            <TextBlock Text="THU" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
+                            <TextBlock Text="FRI" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
+                            <TextBlock Text="SAT" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
+
+                        </UniformGrid>
+
+                        <UniformGrid x:Name="CalendarDaysGrid"
+                                     Grid.Row="2"
+                                     Rows="6"
+                                     Columns="7"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Background="White"
+                        BorderBrush="#E2E5E9"
+                        BorderThickness="1"
+                        CornerRadius="16"
+                        Padding="20">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Text="Selected day"
+                                       FontSize="11"
+                                       FontWeight="SemiBold"
+                                       Foreground="#9297A0"/>
+
+                            <TextBlock x:Name="CalendarSelectedDateText"
+                                       Text="Today"
+                                       FontSize="21"
+                                       FontWeight="SemiBold"
+                                       Foreground="#202329"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <Border Grid.Row="1"
+                                Background="{DynamicResource AccentSoftBrush}"
+                                CornerRadius="10"
+                                Padding="12"
+                                Margin="0,18,0,14">
+
+                            <StackPanel>
+                                <TextBlock Text="REMINDERS"
+                                           FontSize="9"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AccentBrush}"/>
+
+                                <TextBlock x:Name="CalendarSelectedCountText"
+                                           Text="0"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           Foreground="#202329"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Grid Grid.Row="2">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl x:Name="CalendarRemindersList">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#F8F9FA"
+                                                    BorderBrush="#E5E7EA"
+                                                    BorderThickness="1"
+                                                    CornerRadius="10"
+                                                    Padding="11"
+                                                    Margin="0,0,0,8">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Title}"
+                                                               FontSize="13"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="#30353B"
+                                                               TextWrapping="Wrap"/>
+
+                                                    <TextBlock Text="{Binding IsCompleted, StringFormat={}{0:Completed}}"
+                                                               FontSize="11"
+                                                               Foreground="#7B818A"
+                                                               Margin="0,4,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+
+                            <TextBlock x:Name="CalendarEmptyText"
+                                       Text="No reminders for this day."
+                                       FontSize="13"
+                                       Foreground="#8A9098"
+                                       TextWrapping="Wrap"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
         <!-- Rewards -->
         <Grid x:Name="RewardsContentPanel"
               Grid.Column="1"
@@ -568,7 +781,6 @@
               Visibility="Collapsed">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -582,7 +794,7 @@
                                FontWeight="SemiBold"
                                Foreground="#17191C"/>
 
-                    <TextBlock Text="Complete your reminders and build your coin balance."
+                    <TextBlock Text="Everything you've earned from the Store."
                                FontSize="14"
                                Foreground="#7B818A"
                                Margin="0,6,0,0"/>
@@ -597,37 +809,24 @@
                         CornerRadius="13"
                         Padding="12,0">
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
 
                         <Border Width="32"
                                 Height="32"
                                 Background="#FFF3C4"
-                                CornerRadius="16"
-                                VerticalAlignment="Center">
+                                CornerRadius="16">
 
-                            <Grid>
-                                <Ellipse Width="22"
-                                         Height="22"
-                                         Stroke="#C79620"
-                                         StrokeThickness="2"
-                                         Fill="#FFD966"/>
-
-                                <TextBlock Text="C"
-                                           FontSize="11"
-                                           FontWeight="Bold"
-                                           Foreground="#8A6815"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"/>
-                            </Grid>
+                            <TextBlock Text="C"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       Foreground="#8A6815"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
                         </Border>
 
-                        <StackPanel Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Margin="10,0,0,0">
+                        <StackPanel Margin="10,0,0,0"
+                                    VerticalAlignment="Center">
 
                             <TextBlock Text="COIN BALANCE"
                                        FontSize="9"
@@ -640,7 +839,7 @@
                                        FontWeight="SemiBold"
                                        Foreground="#17191C"/>
                         </StackPanel>
-                    </Grid>
+                    </StackPanel>
                 </Border>
             </Grid>
 
@@ -649,101 +848,84 @@
                     BorderBrush="#E2E5E9"
                     BorderThickness="1"
                     CornerRadius="16"
-                    Padding="24"
-                    Margin="0,0,0,22">
+                    Padding="20">
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="RewardItemsList">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <Border Width="64"
-                            Height="64"
-                            Background="{DynamicResource AccentSoftBrush}"
-                            CornerRadius="14"
-                            VerticalAlignment="Center">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="220"
+                                        Background="#FAFBFC"
+                                        BorderBrush="#E4E7EA"
+                                        BorderThickness="1"
+                                        CornerRadius="13"
+                                        Padding="15"
+                                        Margin="0,0,12,12">
 
-                        <Grid>
-                            <Ellipse Width="38"
-                                     Height="38"
-                                     Fill="#FFD966"
-                                     Stroke="#C79620"
-                                     StrokeThickness="2"/>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
 
-                            <TextBlock Text="C"
-                                       FontSize="16"
-                                       FontWeight="Bold"
-                                       Foreground="#8A6815"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
+                                        <Border Grid.Row="0"
+                                                Height="82"
+                                                Background="{DynamicResource AccentSoftBrush}"
+                                                CornerRadius="10"
+                                                Margin="0,0,0,13">
 
-                    <StackPanel Grid.Column="1"
-                                Margin="18,0,30,0"
-                                VerticalAlignment="Center">
+                                            <Grid>
+                                                <Ellipse Width="42"
+                                                         Height="42"
+                                                         Fill="{DynamicResource AccentBrush}"/>
 
-                        <TextBlock Text="Complete a reminder"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"
-                                   Foreground="#202329"/>
+                                                <TextBlock Text="R"
+                                                           Foreground="White"
+                                                           FontSize="17"
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
 
-                        <TextBlock Text="Every reminder you genuinely finish earns 10 coins."
-                                   FontSize="13"
-                                   Foreground="#737A84"
-                                   Margin="0,5,0,0"/>
-                    </StackPanel>
+                                        <TextBlock Grid.Row="1"
+                                                   Text="{Binding Name}"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#202329"/>
 
-                    <Border Grid.Column="2"
-                            Background="#FFF8E5"
-                            BorderBrush="#F0D889"
-                            BorderThickness="1"
-                            CornerRadius="12"
-                            Padding="18,12"
-                            VerticalAlignment="Center">
+                                        <TextBlock Grid.Row="2"
+                                                   Text="{Binding Description}"
+                                                   FontSize="12"
+                                                   Foreground="#7B818A"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,5,0,13"/>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="+10"
-                                       FontSize="24"
-                                       FontWeight="SemiBold"
-                                       Foreground="#9A731A"/>
-
-                            <TextBlock Text=" Coins"
-                                       FontSize="13"
-                                       FontWeight="SemiBold"
-                                       Foreground="#9A731A"
-                                       VerticalAlignment="Center"
-                                       Margin="4,5,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
+                                        <Button Grid.Row="3"
+                                                Content="{Binding ActionText}"
+                                                Tag="{Binding}"
+                                                Height="36"
+                                                Background="{DynamicResource AccentBrush}"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                FontSize="12"
+                                                FontWeight="SemiBold"
+                                                Click="StoreItemButton_Click"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </Border>
-
-            <Border Grid.Row="2"
-                    Background="#F8F9FA"
-                    BorderBrush="#E2E5E9"
-                    BorderThickness="1"
-                    CornerRadius="16"
-                    Padding="24"
-                    VerticalAlignment="Top">
-
-                <StackPanel>
-                    <TextBlock Text="Reward status"
-                               FontSize="17"
-                               FontWeight="SemiBold"
-                               Foreground="#202329"/>
-
-                    <TextBlock x:Name="RewardsStatusText"
-                               Text="Finish a reminder to earn 10 coins."
-                               FontSize="13"
-                               Foreground="#737A84"
-                               TextWrapping="Wrap"
-                               Margin="0,7,0,0"/>
-                </StackPanel>
-            </Border>
-
         </Grid>
 
         <!-- Store -->
@@ -940,7 +1122,7 @@
                            FontWeight="SemiBold"
                            Foreground="#17191C"/>
 
-                <TextBlock Text="Milestones will appear here in a future update."
+                <TextBlock Text="Your Store rewards, collected as achievements."
                            FontSize="14"
                            Foreground="#7B818A"
                            Margin="0,6,0,0"/>
@@ -951,42 +1133,86 @@
                     BorderBrush="#E2E5E9"
                     BorderThickness="1"
                     CornerRadius="16"
-                    Padding="30">
+                    Padding="20">
 
-                <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            MaxWidth="500">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="AchievementItemsList">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <Border Width="72"
-                            Height="72"
-                            Background="{DynamicResource AccentSoftBrush}"
-                            CornerRadius="18"
-                            HorizontalAlignment="Center">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="220"
+                                        Background="#FAFBFC"
+                                        BorderBrush="#E4E7EA"
+                                        BorderThickness="1"
+                                        CornerRadius="13"
+                                        Padding="15"
+                                        Margin="0,0,12,12">
 
-                        <TextBlock Text="A"
-                                   FontSize="28"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource AccentBrush}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                    </Border>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
 
-                    <TextBlock Text="No achievements yet"
-                               FontSize="22"
-                               FontWeight="SemiBold"
-                               Foreground="#202329"
-                               HorizontalAlignment="Center"
-                               Margin="0,18,0,0"/>
+                                        <Border Grid.Row="0"
+                                                Height="82"
+                                                Background="{DynamicResource AccentSoftBrush}"
+                                                CornerRadius="10"
+                                                Margin="0,0,0,13">
 
-                    <TextBlock Text="The achievement system is currently empty. We will add real milestones later."
-                               FontSize="13"
-                               Foreground="#7B818A"
-                               TextAlignment="Center"
-                               TextWrapping="Wrap"
-                               Margin="0,8,0,0"/>
-                </StackPanel>
+                                            <Grid>
+                                                <Ellipse Width="42"
+                                                         Height="42"
+                                                         Fill="{DynamicResource AccentBrush}"/>
+
+                                                <TextBlock Text="A"
+                                                           Foreground="White"
+                                                           FontSize="17"
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+
+                                        <TextBlock Grid.Row="1"
+                                                   Text="{Binding Name}"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#202329"/>
+
+                                        <TextBlock Grid.Row="2"
+                                                   Text="{Binding Description}"
+                                                   FontSize="12"
+                                                   Foreground="#7B818A"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,5,0,13"/>
+
+                                        <Border Grid.Row="3"
+                                                Height="36"
+                                                Background="#EEF8F1"
+                                                CornerRadius="8">
+
+                                            <TextBlock Text="Unlocked"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#31824D"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </Border>
-
         </Grid>
 
         <!-- Completion Confirmation -->
