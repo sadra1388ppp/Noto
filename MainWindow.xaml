@@ -158,23 +158,23 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <StackPanel Orientation="Horizontal">
-                            <Grid Width="22"
-                                  Height="22"
-                                  Margin="0,0,10,0"
+                            <Grid Width="21"
+                                  Height="21"
+                                  Margin="0,0,11,0"
                                   VerticalAlignment="Center">
 
                                 <Border x:Name="CheckBoxBorder"
-                                        Width="22"
-                                        Height="22"
+                                        Width="21"
+                                        Height="21"
                                         Background="White"
-                                        BorderBrush="#C9CDD3"
-                                        BorderThickness="1.8"
-                                        CornerRadius="7"/>
+                                        BorderBrush="#CDD2D8"
+                                        BorderThickness="1.5"
+                                        CornerRadius="6"/>
 
                                 <Path x:Name="CheckMark"
-                                      Data="M 5,11 L 9,15 L 17,7"
+                                      Data="M 4.5,10.5 L 8.5,14.2 L 16.5,6.5"
                                       Stroke="White"
-                                      StrokeThickness="2.3"
+                                      StrokeThickness="2.1"
                                       StrokeStartLineCap="Round"
                                       StrokeEndLineCap="Round"
                                       Visibility="Collapsed"
@@ -191,6 +191,9 @@
                                 <Setter TargetName="CheckBoxBorder"
                                         Property="BorderBrush"
                                         Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="CheckBoxBorder"
+                                        Property="Background"
+                                        Value="{DynamicResource AccentSoftBrush}"/>
                             </Trigger>
 
                             <Trigger Property="IsChecked" Value="True">
@@ -207,16 +210,66 @@
                                         Value="Visible"/>
 
                                 <Setter Property="Foreground"
-                                        Value="#9297A0"/>
+                                        Value="#8E949C"/>
                             </Trigger>
+
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="CheckBoxBorder"
+                                        Property="Background"
+                                        Value="{DynamicResource AccentHoverBrush}"/>
+                            </MultiDataTrigger>
 
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="CheckBoxBorder"
                                         Property="Opacity"
-                                        Value="0.55"/>
-
+                                        Value="0.5"/>
                                 <Setter Property="Foreground"
                                         Value="#A0A5AC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ReminderDeleteButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#9AA0A8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="DeleteBorder"
+                                Width="32"
+                                Height="32"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="9">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="DeleteBorder"
+                                        Property="Background"
+                                        Value="#FFF1F1"/>
+                                <Setter Property="Foreground"
+                                        Value="#D64545"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="DeleteBorder"
+                                        Property="Background"
+                                        Value="#FFE3E3"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -796,12 +849,17 @@
                                         </StackPanel>
 
                                         <Button Grid.Column="1"
-                                                Content="×"
-                                                Width="32"
-                                                Height="32"
-                                                Style="{StaticResource ActionButtonStyle}"
                                                 Tag="{Binding}"
-                                                Click="DeleteReminder_Click"/>
+                                                Style="{StaticResource ReminderDeleteButtonStyle}"
+                                                Click="DeleteReminder_Click"
+                                                ToolTip="Delete reminder">
+                                            <TextBlock Text="×"
+                                                       FontSize="20"
+                                                       FontWeight="Medium"
+                                                       Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Button>
 
                                     </Grid>
 
