@@ -825,22 +825,18 @@ public partial class MainWindow : Window
         switch (ListsList.SelectedIndex)
         {
             case 1:
-                ShowHistoryView();
-                break;
-
-            case 2:
                 ShowCalendarView();
                 break;
 
-            case 3:
+            case 2:
                 ShowRewardsView();
                 break;
 
-            case 4:
+            case 3:
                 ShowAchievementsView();
                 break;
 
-            case 5:
+            case 4:
                 ShowStoreView();
                 break;
         }
