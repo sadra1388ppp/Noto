@@ -359,7 +359,7 @@ public partial class MainWindow : Window
         var reminder = new Reminder
         {
             Title = title,
-            DueDate = DueDatePicker.SelectedDate,
+            DueDate = DueDateCalendar.SelectedDate,
             ListId = _selectedListId?.ToString()
         };
 
@@ -367,10 +367,52 @@ public partial class MainWindow : Window
         SaveAll();
 
         ReminderInput.Clear();
-        DueDatePicker.SelectedDate = null;
+        DueDateCalendar.SelectedDate = null;
+        DueDateText.Text = "No due date";
+        DueDatePopupText.Text = "No date selected";
         ReminderInput.Focus();
 
         RefreshView();
+    }
+
+    private void DueDateButton_Click(object sender, RoutedEventArgs e)
+    {
+        DueDatePopupText.Text = DueDateCalendar.SelectedDate.HasValue
+            ? DueDateCalendar.SelectedDate.Value.ToString("dddd, MMM d, yyyy")
+            : "No date selected";
+
+        DueDatePopup.IsOpen = true;
+    }
+
+    private void DueDateCalendar_SelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        var selectedDate = DueDateCalendar.SelectedDate;
+
+        DueDateText.Text = selectedDate.HasValue
+            ? selectedDate.Value.ToString("MMM d, yyyy")
+            : "No due date";
+
+        DueDatePopupText.Text = selectedDate.HasValue
+            ? selectedDate.Value.ToString("dddd, MMM d, yyyy")
+            : "No date selected";
+    }
+
+    private void DueDateToday_Click(object sender, RoutedEventArgs e)
+    {
+        DueDateCalendar.SelectedDate = DateTime.Today;
+        DueDateCalendar.DisplayDate = DateTime.Today;
+    }
+
+    private void ClearDueDate_Click(object sender, RoutedEventArgs e)
+    {
+        DueDateCalendar.SelectedDate = null;
+        DueDateText.Text = "No due date";
+        DueDatePopupText.Text = "No date selected";
+    }
+
+    private void CloseDueDate_Click(object sender, RoutedEventArgs e)
+    {
+        DueDatePopup.IsOpen = false;
     }
 
     private void ReminderCheckBox_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
