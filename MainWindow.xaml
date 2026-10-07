@@ -1077,68 +1077,43 @@
 
             <Grid Grid.Row="1"
                   Margin="0,0,0,16">
-                <UniformGrid Columns="3">
-                    <Border Background="White"
-                            BorderBrush="#E2E5E9"
-                            BorderThickness="1"
-                            CornerRadius="13"
-                            Padding="16"
-                            Margin="0,0,8,0">
-                        <StackPanel>
-                            <TextBlock Text="COMPLETED"
-                                       FontSize="9"
-                                       FontWeight="SemiBold"
-                                       Foreground="#9297A0"/>
-                            <TextBlock x:Name="HistoryCompletedCountText"
-                                       Text="0"
-                                       FontSize="24"
-                                       FontWeight="SemiBold"
-                                       Foreground="#202329"
-                                       Margin="0,3,0,0"/>
-                        </StackPanel>
-                    </Border>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                    <Border Background="White"
-                            BorderBrush="#E2E5E9"
-                            BorderThickness="1"
-                            CornerRadius="13"
-                            Padding="16"
-                            Margin="4,0">
-                        <StackPanel>
-                            <TextBlock Text="COINS EARNED"
-                                       FontSize="9"
-                                       FontWeight="SemiBold"
-                                       Foreground="#9297A0"/>
-                            <TextBlock x:Name="HistoryCoinsText"
-                                       Text="0"
-                                       FontSize="24"
-                                       FontWeight="SemiBold"
-                                       Foreground="#202329"
-                                       Margin="0,3,0,0"/>
-                        </StackPanel>
-                    </Border>
+                <Button x:Name="StoreAllButton"
+                        Grid.Column="0"
+                        Content="ALL"
+                        Tag="All"
+                        Style="{StaticResource StoreCategoryButtonStyle}"
+                        Click="StoreCategoryButton_Click"/>
 
-                    <Border Background="{DynamicResource AccentSoftBrush}"
-                            BorderBrush="{DynamicResource AccentSoftBrush}"
-                            BorderThickness="1"
-                            CornerRadius="13"
-                            Padding="16"
-                            Margin="8,0,0,0">
-                        <StackPanel>
-                            <TextBlock Text="LATEST"
-                                       FontSize="9"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource AccentBrush}"/>
-                            <TextBlock x:Name="HistoryLatestText"
-                                       Text="Nothing yet"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"
-                                       Foreground="#202329"
-                                       TextTrimming="CharacterEllipsis"
-                                       Margin="0,5,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </UniformGrid>
+                <Button x:Name="StoreThemesButton"
+                        Grid.Column="2"
+                        Content="THEMES"
+                        Tag="Themes"
+                        Style="{StaticResource StoreCategoryButtonStyle}"
+                        Click="StoreCategoryButton_Click"/>
+
+                <Button x:Name="StoreGunsButton"
+                        Grid.Column="4"
+                        Content="GUNS"
+                        Tag="Guns"
+                        Style="{StaticResource StoreCategoryButtonStyle}"
+                        Click="StoreCategoryButton_Click"/>
+
+                <Button x:Name="StoreStickersButton"
+                        Grid.Column="6"
+                        Content="STICKERS"
+                        Tag="Stickers"
+                        Style="{StaticResource StoreCategoryButtonStyle}"
+                        Click="StoreCategoryButton_Click"/>
             </Grid>
 
             <Border Grid.Row="2"
