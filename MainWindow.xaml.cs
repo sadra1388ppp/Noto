@@ -1082,6 +1082,12 @@ public partial class MainWindow : Window
                 "S",
                 "Sticker items will be added to the Store later."),
 
+            "Skins" => (
+                "Skins",
+                "Customize your profile with future skin items.",
+                "S",
+                "Skin items will be added to the Store later."),
+
             _ => (
                 "All",
                 "Browse everything available in the Noto Store.",
@@ -1097,6 +1103,7 @@ public partial class MainWindow : Window
         SetStoreCategoryButtonState(StoreAllButton, category == "All");
         SetStoreCategoryButtonState(StoreThemesButton, category == "Themes");
         SetStoreCategoryButtonState(StoreGunsButton, category == "Guns");
+        SetStoreCategoryButtonState(StoreSkinsButton, category == "Skins");
         SetStoreCategoryButtonState(StoreStickersButton, category == "Stickers");
     }
 
