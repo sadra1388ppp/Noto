@@ -32,7 +32,7 @@ public partial class MainWindow : Window
     private Guid? _selectedListId;
     private Reminder? _pendingCompletionReminder;
     private bool _ownerMode;
-    private string _selectedStoreCategory = "Skins";
+    private string _selectedStoreCategory = "All";
     private readonly TextBlock RewardsStatusText = new();
     private DateTime _calendarMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private DateTime _selectedCalendarDate = DateTime.Today;
@@ -1120,10 +1120,10 @@ public partial class MainWindow : Window
                 "Sticker items will be added to the Store later."),
 
             _ => (
-                "Skins",
-                "Customize your profile with future skin items.",
-                "S",
-                "We're preparing the first skin collection.")
+                "All",
+                "Browse everything available in the Noto Store.",
+                "A",
+                "There are no Store items available yet.")
         };
 
         StoreCategoryTitle.Text = details.Item1;
@@ -1131,7 +1131,7 @@ public partial class MainWindow : Window
         StoreCategoryIcon.Text = details.Item3;
         StoreCategoryEmptyText.Text = details.Item4;
 
-        SetStoreCategoryButtonState(StoreSkinsButton, category == "Skins");
+        SetStoreCategoryButtonState(StoreAllButton, category == "All");
         SetStoreCategoryButtonState(StoreThemesButton, category == "Themes");
         SetStoreCategoryButtonState(StoreGunsButton, category == "Guns");
         SetStoreCategoryButtonState(StoreStickersButton, category == "Stickers");
