@@ -466,6 +466,51 @@
             </Setter>
         </Style>
 
+        <Style x:Key="StoreCategoryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="54"/>
+            <Setter Property="Background" Value="#F7F8FA"/>
+            <Setter Property="Foreground" Value="#555B66"/>
+            <Setter Property="BorderBrush" Value="#E2E5E9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="CategoryBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CategoryBorder"
+                                        Property="Background"
+                                        Value="{DynamicResource AccentSoftBrush}"/>
+                                <Setter TargetName="CategoryBorder"
+                                        Property="BorderBrush"
+                                        Value="{DynamicResource AccentBrush}"/>
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="CategoryBorder"
+                                        Property="Background"
+                                        Value="{DynamicResource AccentSoftBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
     </Window.Resources>
 
     <Grid>
@@ -1537,6 +1582,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -1549,7 +1595,7 @@
                                FontWeight="SemiBold"
                                Foreground="#17191C"/>
 
-                    <TextBlock Text="Spend your coins on themes and personalize the app."
+                    <TextBlock Text="Choose a category and customize your Noto experience."
                                FontSize="14"
                                Foreground="#7B818A"
                                Margin="0,6,0,0"/>
@@ -1611,95 +1657,102 @@
                 </Border>
             </Grid>
 
-            <Border Grid.Row="1"
+            <Grid Grid.Row="1"
+                  Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Content="SKINS"
+                        Tag="Skins"
+                        Style="{StaticResource StoreCategoryButtonStyle}"
+                        Click="StoreCategoryButton_Click"/>
+
+                <Button Grid.Column="2"
+                        Content="THEMES"
+                        Tag="Themes"
+                        Style="{StaticResource StoreCategoryButtonStyle}"
+                        Click="StoreCategoryButton_Click"/>
+
+                <Button Grid.Column="4"
+                        Content="GUNS"
+                        Tag="Guns"
+                        Style="{StaticResource StoreCategoryButtonStyle}"
+                        Click="StoreCategoryButton_Click"/>
+            </Grid>
+
+            <Border Grid.Row="2"
                     Background="White"
                     BorderBrush="#E2E5E9"
                     BorderThickness="1"
                     CornerRadius="16"
-                    Padding="20">
+                    Padding="28">
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <ItemsControl x:Name="StoreItemsList">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                    <StackPanel>
+                        <TextBlock x:Name="StoreCategoryTitle"
+                                   Text="Skins"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="#17191C"/>
 
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
+                        <TextBlock x:Name="StoreCategoryDescription"
+                                   Text="Customize your profile with future skin items."
+                                   FontSize="13"
+                                   Foreground="#7B818A"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
 
-                                <Border Width="220"
-                                        Background="#FAFBFC"
-                                        BorderBrush="#E4E7EA"
-                                        BorderThickness="1"
-                                        CornerRadius="13"
-                                        Padding="15"
-                                        Margin="0,0,12,12">
+                    <Grid Grid.Row="1"
+                          VerticalAlignment="Center">
 
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
+                        <StackPanel HorizontalAlignment="Center">
 
-                                        <Border Grid.Row="0"
-                                                Height="82"
-                                                Background="{DynamicResource AccentSoftBrush}"
-                                                CornerRadius="10"
-                                                Margin="0,0,0,13">
+                            <Border Width="72"
+                                    Height="72"
+                                    Background="{DynamicResource AccentSoftBrush}"
+                                    CornerRadius="36"
+                                    HorizontalAlignment="Center">
 
-                                            <Grid>
-                                                <Ellipse Width="42"
-                                                         Height="42"
-                                                         Fill="{DynamicResource AccentBrush}"
-                                                         HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center"/>
+                                <TextBlock x:Name="StoreCategoryIcon"
+                                           Text="S"
+                                           FontSize="25"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentBrush}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
 
-                                                <TextBlock Text="T"
-                                                           Foreground="White"
-                                                           FontSize="17"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
-                                            </Grid>
-                                        </Border>
+                            <TextBlock Text="No items available yet"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="#30353B"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,16,0,4"/>
 
-                                        <TextBlock Grid.Row="1"
-                                                   Text="{Binding Name}"
-                                                   FontSize="15"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="#202329"/>
+                            <TextBlock x:Name="StoreCategoryEmptyText"
+                                       Text="We're preparing the first skin collection."
+                                       FontSize="13"
+                                       Foreground="#8A9098"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Center"/>
 
-                                        <TextBlock Grid.Row="2"
-                                                   Text="{Binding Description}"
-                                                   FontSize="12"
-                                                   Foreground="#7B818A"
-                                                   TextWrapping="Wrap"
-                                                   Margin="0,5,0,13"/>
+                        </StackPanel>
+                    </Grid>
 
-                                        <Button Grid.Row="3"
-                                                Content="{Binding ActionText}"
-                                                Tag="{Binding}"
-                                                Height="36"
-                                                Background="{DynamicResource AccentBrush}"
-                                                Foreground="White"
-                                                BorderThickness="0"
-                                                FontSize="12"
-                                                FontWeight="SemiBold"
-                                                Click="StoreItemButton_Click"/>
-                                    </Grid>
-
-                                </Border>
-
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-                </ScrollViewer>
+                    <ItemsControl x:Name="StoreItemsList"
+                                  Visibility="Collapsed"/>
+                </Grid>
             </Border>
 
         </Grid>
