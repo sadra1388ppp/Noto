@@ -365,7 +365,7 @@ public partial class MainWindow : Window
             if (!TryParseDueDate(DueDateInput.Text, out dueDate))
             {
                 MessageBox.Show(
-                    "I couldn't understand that date. Try something like "tomorrow", "Oct 12", or "12/10/2026".",
+                    "I couldn't understand that date. Try something like \"tomorrow\", \"Oct 12\", or \"12/10/2026\".",
                     "Invalid Due Date",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
