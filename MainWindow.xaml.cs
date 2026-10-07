@@ -32,6 +32,7 @@ public partial class MainWindow : Window
     private Guid? _selectedListId;
     private Reminder? _pendingCompletionReminder;
     private bool _ownerMode;
+    private string _selectedStoreCategory = "Skins";
     private readonly TextBlock RewardsStatusText = new();
     private DateTime _calendarMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private DateTime _selectedCalendarDate = DateTime.Today;
@@ -1080,7 +1081,68 @@ public partial class MainWindow : Window
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Visible;
         AchievementsContentPanel.Visibility = Visibility.Collapsed;
+
+        SelectStoreCategory(_selectedStoreCategory);
         RefreshRewardsView();
+    }
+
+    private void StoreCategoryButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button &&
+            button.Tag is string category)
+        {
+            SelectStoreCategory(category);
+        }
+    }
+
+    private void SelectStoreCategory(string category)
+    {
+        _selectedStoreCategory = category;
+
+        var details = category switch
+        {
+            "Themes" => (
+                "Themes",
+                "Change the look and accent of your Noto workspace.",
+                "T",
+                "We're preparing the first theme collection."),
+
+            "Guns" => (
+                "Guns",
+                "Customize your future game-style collection with unique gun items.",
+                "G",
+                "Gun items will be added to the Store later."),
+
+            _ => (
+                "Skins",
+                "Customize your profile with future skin items.",
+                "S",
+                "We're preparing the first skin collection.")
+        };
+
+        StoreCategoryTitle.Text = details.Item1;
+        StoreCategoryDescription.Text = details.Item2;
+        StoreCategoryIcon.Text = details.Item3;
+        StoreCategoryEmptyText.Text = details.Item4;
+
+        SetStoreCategoryButtonState(StoreSkinsButton, category == "Skins");
+        SetStoreCategoryButtonState(StoreThemesButton, category == "Themes");
+        SetStoreCategoryButtonState(StoreGunsButton, category == "Guns");
+    }
+
+    private void SetStoreCategoryButtonState(Button button, bool selected)
+    {
+        button.Background = selected
+            ? (Brush)FindResource("AccentSoftBrush")
+            : new SolidColorBrush(Color.FromRgb(247, 248, 250));
+
+        button.Foreground = selected
+            ? (Brush)FindResource("AccentBrush")
+            : new SolidColorBrush(Color.FromRgb(85, 91, 102));
+
+        button.BorderBrush = selected
+            ? (Brush)FindResource("AccentBrush")
+            : new SolidColorBrush(Color.FromRgb(226, 229, 233));
     }
 
     private void ShowAchievementsView()
