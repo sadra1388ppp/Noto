@@ -1113,6 +1113,12 @@ public partial class MainWindow : Window
                 "G",
                 "Gun items will be added to the Store later."),
 
+            "Stickers" => (
+                "Stickers",
+                "Collect stickers and personalize your future Noto profile.",
+                "S",
+                "Sticker items will be added to the Store later."),
+
             _ => (
                 "Skins",
                 "Customize your profile with future skin items.",
@@ -1128,6 +1134,7 @@ public partial class MainWindow : Window
         SetStoreCategoryButtonState(StoreSkinsButton, category == "Skins");
         SetStoreCategoryButtonState(StoreThemesButton, category == "Themes");
         SetStoreCategoryButtonState(StoreGunsButton, category == "Guns");
+        SetStoreCategoryButtonState(StoreStickersButton, category == "Stickers");
     }
 
     private void SetStoreCategoryButtonState(Button button, bool selected)
