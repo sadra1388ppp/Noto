@@ -367,6 +367,12 @@ public partial class MainWindow : Window
     private void RefreshCalendar()
     {
         CalendarMonthText.Text = _calendarMonth.ToString("MMMM yyyy");
+        var monthReminderCount = Reminders.Count(r =>
+            r.DueDate.HasValue &&
+            r.DueDate.Value.Year == _calendarMonth.Year &&
+            r.DueDate.Value.Month == _calendarMonth.Month);
+        CalendarMonthSummaryText.Text =
+            $"{monthReminderCount} reminder{(monthReminderCount == 1 ? "" : "s")} scheduled";
         CalendarDaysGrid.Children.Clear();
 
         var firstVisibleDay = _calendarMonth.AddDays(-(int)_calendarMonth.DayOfWeek);
@@ -455,9 +461,10 @@ public partial class MainWindow : Window
                 FontSize = 13,
                 Cursor = System.Windows.Input.Cursors.Hand,
                 Focusable = false,
+                Style = (Style)FindResource("CalendarDayButtonStyle"),
                 ToolTip = reminders.Count == 0
-                    ? null
-                    : $"{reminders.Count} reminder{(reminders.Count == 1 ? "" : "s")}"
+                    ? $"{day:dddd, MMM d}"
+                    : $"{day:dddd, MMM d} • {reminders.Count} reminder{(reminders.Count == 1 ? "" : "s")}"
             };
 
             dayButton.Click += (_, _) =>
@@ -484,6 +491,11 @@ public partial class MainWindow : Window
             ? "Today"
             : _selectedCalendarDate.ToString("dddd, MMM d");
         CalendarSelectedCountText.Text = reminders.Count.ToString();
+        var completedCount = reminders.Count(r => r.IsCompleted);
+        var pendingCount = reminders.Count - completedCount;
+        CalendarSelectedMetaText.Text = reminders.Count == 0
+            ? "No reminders scheduled"
+            : $"{completedCount} completed · {pendingCount} pending";
         CalendarDayReminders.Clear();
         foreach (var reminder in reminders)
         {
