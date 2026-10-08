@@ -564,7 +564,277 @@
 
     </Window.Resources>
 
-    <Grid>
+    <Grid x:Name="RootLayout">
+
+        <!-- Halloween atmospheric overlay -->
+        <Canvas x:Name="HalloweenEffectsOverlay"
+                Grid.ColumnSpan="2"
+                IsHitTestVisible="False"
+                Panel.ZIndex="200"
+                Visibility="Collapsed"
+                ClipToBounds="False">
+
+            <!-- Purple moon glow -->
+            <Ellipse Width="280"
+                     Height="280"
+                     Canvas.Right="-55"
+                     Canvas.Top="18"
+                     Opacity="0.18">
+                <Ellipse.Fill>
+                    <RadialGradientBrush Center="0.5,0.5">
+                        <GradientStop Color="#FFE9C7FF" Offset="0"/>
+                        <GradientStop Color="#FF9A5CFF" Offset="0.38"/>
+                        <GradientStop Color="#00120B1B" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Width="172"
+                     Height="172"
+                     Canvas.Right="28"
+                     Canvas.Top="44"
+                     Fill="#FFD7C1FF"
+                     Opacity="0.92">
+                <Ellipse.Effect>
+                    <DropShadowEffect BlurRadius="42"
+                                      ShadowDepth="0"
+                                      Color="#FF9B5CFF"
+                                      Opacity="0.8"/>
+                </Ellipse.Effect>
+            </Ellipse>
+
+            <Ellipse Width="158"
+                     Height="158"
+                     Canvas.Right="33"
+                     Canvas.Top="49"
+                     Fill="#FF1A1027"/>
+
+            <!-- Left hanging pumpkin -->
+            <Canvas Canvas.Left="270"
+                    Canvas.Top="-8"
+                    Width="86"
+                    Height="104"
+                    RenderTransformOrigin="0.5,0"
+                    IsHitTestVisible="False">
+                <Canvas.RenderTransform>
+                    <RotateTransform x:Name="HalloweenPumpkinLeftRotate" Angle="-2"/>
+                </Canvas.RenderTransform>
+
+                <Line X1="43"
+                      Y1="0"
+                      X2="43"
+                      Y2="28"
+                      Stroke="#FF4E4257"
+                      StrokeThickness="2"/>
+
+                <Line X1="43"
+                      Y1="2"
+                      X2="43"
+                      Y2="28"
+                      Stroke="#FF9A8CA6"
+                      StrokeThickness="1"/>
+
+                <Ellipse Width="24"
+                         Height="34"
+                         Canvas.Left="22"
+                         Canvas.Top="28"
+                         Fill="#FFF06A1B"/>
+                <Ellipse Width="34"
+                         Height="41"
+                         Canvas.Left="9"
+                         Canvas.Top="24"
+                         Fill="#FFFF8124"/>
+                <Ellipse Width="34"
+                         Height="41"
+                         Canvas.Left="43"
+                         Canvas.Top="24"
+                         Fill="#FFFF7820"/>
+
+                <Rectangle Width="10"
+                           Height="12"
+                           RadiusX="3"
+                           RadiusY="3"
+                           Canvas.Left="38"
+                           Canvas.Top="18"
+                           Fill="#FF5F7A2C"/>
+
+                <Polygon Points="25,40 31,35 37,40"
+                         Fill="#FF251529"/>
+                <Polygon Points="49,40 55,35 61,40"
+                         Fill="#FF251529"/>
+                <Path Data="M 27,52 Q 43,63 59,52"
+                      Stroke="#FF251529"
+                      StrokeThickness="3"
+                      StrokeStartLineCap="Round"
+                      StrokeEndLineCap="Round"
+                      Fill="Transparent"/>
+            </Canvas>
+
+            <!-- Right hanging pumpkin -->
+            <Canvas Canvas.Right="142"
+                    Canvas.Top="0"
+                    Width="96"
+                    Height="116"
+                    RenderTransformOrigin="0.5,0"
+                    IsHitTestVisible="False">
+                <Canvas.RenderTransform>
+                    <RotateTransform x:Name="HalloweenPumpkinRightRotate" Angle="3"/>
+                </Canvas.RenderTransform>
+
+                <Line X1="48"
+                      Y1="0"
+                      X2="48"
+                      Y2="30"
+                      Stroke="#FF4E4257"
+                      StrokeThickness="2"/>
+                <Line X1="48"
+                      Y1="2"
+                      X2="48"
+                      Y2="30"
+                      Stroke="#FFB29FBF"
+                      StrokeThickness="1"/>
+
+                <Ellipse Width="28"
+                         Height="39"
+                         Canvas.Left="25"
+                         Canvas.Top="29"
+                         Fill="#FFF26D1B"/>
+                <Ellipse Width="38"
+                         Height="46"
+                         Canvas.Left="7"
+                         Canvas.Top="25"
+                         Fill="#FFFF8428"/>
+                <Ellipse Width="38"
+                         Height="46"
+                         Canvas.Left="51"
+                         Canvas.Top="25"
+                         Fill="#FFFF7620"/>
+
+                <Rectangle Width="11"
+                           Height="13"
+                           RadiusX="3"
+                           RadiusY="3"
+                           Canvas.Left="42"
+                           Canvas.Top="18"
+                           Fill="#FF5F7A2C"/>
+
+                <Polygon Points="25,43 32,37 38,43"
+                         Fill="#FF28172E"/>
+                <Polygon Points="55,43 62,37 68,43"
+                         Fill="#FF28172E"/>
+                <Path Data="M 27,56 Q 48,69 69,56"
+                      Stroke="#FF28172E"
+                      StrokeThickness="3.2"
+                      StrokeStartLineCap="Round"
+                      StrokeEndLineCap="Round"
+                      Fill="Transparent"/>
+            </Canvas>
+
+            <!-- Cobweb corners -->
+            <Canvas Canvas.Left="4"
+                    Canvas.Top="3"
+                    Width="170"
+                    Height="145"
+                    Opacity="0.48">
+                <Line X1="0" Y1="0" X2="165" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <Line X1="0" Y1="0" X2="0" Y2="140" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <Line X1="0" Y1="0" X2="126" Y2="108" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <Line X1="0" Y1="38" X2="75" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <Line X1="0" Y1="72" X2="108" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <ArcSegment/>
+            </Canvas>
+
+            <Canvas Canvas.Right="0"
+                    Canvas.Top="0"
+                    Width="180"
+                    Height="155"
+                    Opacity="0.42">
+                <Line X1="180" Y1="0" X2="0" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <Line X1="180" Y1="0" X2="180" Y2="150" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <Line X1="180" Y1="0" X2="50" Y2="110" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <Line X1="180" Y1="35" X2="110" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
+                <Line X1="180" Y1="72" X2="76" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
+            </Canvas>
+
+            <!-- Drifting fog -->
+            <Ellipse x:Name="HalloweenFogAOpacity"
+                     Width="620"
+                     Height="170"
+                     Canvas.Left="-120"
+                     Canvas.Bottom="30"
+                     Fill="#FFB58DE8"
+                     Opacity="0.18">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="32"/>
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse x:Name="HalloweenFogBOpacity"
+                     Width="740"
+                     Height="190"
+                     Canvas.Right="-180"
+                     Canvas.Bottom="0"
+                     Fill="#FF5F87B8"
+                     Opacity="0.12">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="38"/>
+                </Ellipse.Effect>
+            </Ellipse>
+
+            <!-- Flying bat silhouette -->
+            <Canvas Canvas.Left="0"
+                    Canvas.Top="126"
+                    Width="60"
+                    Height="28">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="HalloweenBatTranslate" X="-30"/>
+                </Canvas.RenderTransform>
+                <Path Data="M 0,16 L 10,7 L 19,12 L 30,5 L 41,12 L 50,7 L 60,16 L 52,15 L 45,22 L 36,17 L 30,25 L 24,17 L 15,22 L 8,15 Z"
+                      Fill="#FF17101F"
+                      Opacity="0.9"/>
+            </Canvas>
+
+            <!-- Floating Halloween sparks -->
+            <Ellipse x:Name="HalloweenSparkleOpacity"
+                     Width="7"
+                     Height="7"
+                     Canvas.Left="470"
+                     Canvas.Top="105"
+                     Fill="#FFFFA23D"/>
+            <Ellipse Width="4"
+                     Height="4"
+                     Canvas.Left="520"
+                     Canvas.Top="154"
+                     Fill="#FFC27BFF"
+                     Opacity="0.8"/>
+            <Ellipse Width="5"
+                     Height="5"
+                     Canvas.Left="760"
+                     Canvas.Top="215"
+                     Fill="#FFFF9E35"
+                     Opacity="0.7"/>
+            <Ellipse Width="4"
+                     Height="4"
+                     Canvas.Left="820"
+                     Canvas.Top="135"
+                     Fill="#FFB77CFF"
+                     Opacity="0.78"/>
+
+        </Canvas>
+
+        <Grid x:Name="HalloweenBackdrop"
+              Grid.ColumnSpan="2"
+              Panel.ZIndex="0"
+              IsHitTestVisible="False"
+              Visibility="Collapsed">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0"
+                                     EndPoint="1,1">
+                    <GradientStop Color="#FF0B0710" Offset="0"/>
+                    <GradientStop Color="#FF160C20" Offset="0.42"/>
+                    <GradientStop Color="#FF241028" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+        </Grid>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="245"/>
