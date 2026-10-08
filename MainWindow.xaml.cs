@@ -1087,12 +1087,6 @@ public partial class MainWindow : Window
                 "T",
                 "No themes are available right now."),
 
-            "Guns" => (
-                "Guns",
-                "Preview every gun design before spending your hard-earned coins.",
-                "G",
-                "No gun designs are available right now."),
-
             "Stickers" => (
                 "Stickers",
                 "Collect stickers and personalize your future Noto profile.",
@@ -1107,7 +1101,7 @@ public partial class MainWindow : Window
 
             _ => (
                 "All",
-                "Browse themes, gun designs, and everything else available in the Noto Store.",
+                "Browse themes and everything else available in the Noto Store.",
                 "A",
                 "The Store is empty.")
         };
@@ -1119,7 +1113,6 @@ public partial class MainWindow : Window
 
         SetStoreCategoryButtonState(StoreAllButton, category == "All");
         SetStoreCategoryButtonState(StoreThemesButton, category == "Themes");
-        SetStoreCategoryButtonState(StoreGunsButton, category == "Guns");
         SetStoreCategoryButtonState(StoreSkinsButton, category == "Skins");
         SetStoreCategoryButtonState(StoreStickersButton, category == "Stickers");
 
@@ -1169,36 +1162,6 @@ public partial class MainWindow : Window
 
         if (item.IsEquipped)
         {
-            return;
-        }
-
-        if (item.Category.Equals("Guns", StringComparison.OrdinalIgnoreCase))
-        {
-            if (item.IsOwned)
-            {
-                RewardsStatusText.Text = $"{item.Name} is already in your collection.";
-                return;
-            }
-
-            if (!_ownerMode && _progress.Coins < item.Price)
-            {
-                RewardsStatusText.Text = "Not enough coins for this item.";
-                return;
-            }
-
-            if (!_ownerMode)
-            {
-                _progress.Coins -= item.Price;
-            }
-
-            if (!_progress.OwnedStoreItemIds.Contains(item.Id))
-            {
-                _progress.OwnedStoreItemIds.Add(item.Id);
-            }
-
-            RewardsStatusText.Text = $"{item.Name} purchased.";
-            SaveAll();
-            RefreshRewardsView();
             return;
         }
 
