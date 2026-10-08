@@ -566,6 +566,11 @@
 
     <Grid x:Name="RootLayout">
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="245"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
         <!-- Halloween atmospheric overlay -->
         <Canvas x:Name="HalloweenEffectsOverlay"
                 Grid.ColumnSpan="2"
@@ -834,11 +839,6 @@
                 </LinearGradientBrush>
             </Grid.Background>
         </Grid>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="245"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
         <Border Grid.Column="0"
