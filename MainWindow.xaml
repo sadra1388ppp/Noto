@@ -6,7 +6,7 @@
         Height="700"
         MinWidth="900"
         MinHeight="600"
-        Background="#F7F8FA"
+        Background="{DynamicResource WindowBackgroundBrush}"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -14,6 +14,19 @@
         <SolidColorBrush x:Key="AccentBrush" Color="#3478F6"/>
         <SolidColorBrush x:Key="AccentHoverBrush" Color="#2865DB"/>
         <SolidColorBrush x:Key="AccentSoftBrush" Color="#EAF1FF"/>
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#F7F8FA"/>
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="SurfaceSoftBrush" Color="#FAFBFC"/>
+        <SolidColorBrush x:Key="ContentSoftBrush" Color="#F8F9FA"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#E2E5E9"/>
+        <SolidColorBrush x:Key="InputBorderBrush" Color="#CDD2D8"/>
+        <SolidColorBrush x:Key="HoverSurfaceBrush" Color="#F1F3F6"/>
+        <SolidColorBrush x:Key="PrimaryTextBrush" Color="#17191C"/>
+        <SolidColorBrush x:Key="TextBrush" Color="#202329"/>
+        <SolidColorBrush x:Key="BodyTextBrush" Color="#30353B"/>
+        <SolidColorBrush x:Key="SecondaryTextBrush" Color="#555B66"/>
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#7B818A"/>
+        <SolidColorBrush x:Key="SubtleTextBrush" Color="#8A9098"/>
 
         <Style x:Key="SidebarItemStyle" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="12,9"/>
@@ -37,7 +50,7 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="ItemBorder"
                                         Property="Background"
-                                        Value="#F1F3F6"/>
+                                        Value="{DynamicResource HoverSurfaceBrush}"/>
                             </Trigger>
 
                             <Trigger Property="IsSelected" Value="True">
@@ -166,8 +179,8 @@
                                 <Border x:Name="CheckBoxBorder"
                                         Width="21"
                                         Height="21"
-                                        Background="White"
-                                        BorderBrush="#CDD2D8"
+                                        Background="{DynamicResource SurfaceBrush}"
+                                        BorderBrush="{DynamicResource InputBorderBrush}"
                                         BorderThickness="1.5"
                                         CornerRadius="6"/>
 
@@ -579,250 +592,259 @@
                 Visibility="Collapsed"
                 ClipToBounds="False">
 
-            <!-- Purple moon glow -->
-            <Ellipse Width="280"
-                     Height="280"
-                     Canvas.Right="-55"
-                     Canvas.Top="18"
-                     Opacity="0.18">
+            <!-- Soft moonlight: no black circle, just a glowing moon with subtle craters -->
+            <Ellipse Width="220"
+                     Height="220"
+                     Canvas.Right="6"
+                     Canvas.Top="20"
+                     Opacity="0.16">
                 <Ellipse.Fill>
-                    <RadialGradientBrush Center="0.5,0.5">
-                        <GradientStop Color="#FFE9C7FF" Offset="0"/>
-                        <GradientStop Color="#FF9A5CFF" Offset="0.38"/>
-                        <GradientStop Color="#00120B1B" Offset="1"/>
+                    <RadialGradientBrush Center="0.45,0.42">
+                        <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                        <GradientStop Color="#FFE4C7FF" Offset="0.32"/>
+                        <GradientStop Color="#009A5CFF" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
 
-            <Ellipse Width="172"
-                     Height="172"
-                     Canvas.Right="28"
-                     Canvas.Top="44"
-                     Fill="#FFD7C1FF"
-                     Opacity="0.92">
+            <Ellipse Width="146"
+                     Height="146"
+                     Canvas.Right="38"
+                     Canvas.Top="48"
+                     Fill="#FFE8D8FF"
+                     Opacity="0.94">
                 <Ellipse.Effect>
-                    <DropShadowEffect BlurRadius="42"
+                    <DropShadowEffect BlurRadius="36"
                                       ShadowDepth="0"
-                                      Color="#FF9B5CFF"
-                                      Opacity="0.8"/>
+                                      Color="#FFA96BFF"
+                                      Opacity="0.55"/>
                 </Ellipse.Effect>
             </Ellipse>
 
-            <Ellipse Width="158"
-                     Height="158"
-                     Canvas.Right="33"
-                     Canvas.Top="49"
-                     Fill="#FF1A1027"/>
+            <Ellipse Width="22" Height="14" Canvas.Right="70" Canvas.Top="80" Fill="#FFD2B8ED" Opacity="0.38"/>
+            <Ellipse Width="12" Height="9" Canvas.Right="96" Canvas.Top="122" Fill="#FFD2B8ED" Opacity="0.34"/>
+            <Ellipse Width="17" Height="11" Canvas.Right="68" Canvas.Top="146" Fill="#FFD2B8ED" Opacity="0.28"/>
 
             <!-- Left hanging pumpkin -->
-            <Canvas Canvas.Left="270"
-                    Canvas.Top="-8"
-                    Width="86"
-                    Height="104"
+            <Canvas Canvas.Left="258"
+                    Canvas.Top="-10"
+                    Width="112"
+                    Height="136"
                     RenderTransformOrigin="0.5,0"
                     IsHitTestVisible="False">
                 <Canvas.RenderTransform>
-                    <RotateTransform x:Name="HalloweenPumpkinLeftRotate" Angle="-2"/>
+                    <RotateTransform x:Name="HalloweenPumpkinLeftRotate" Angle="-2.5"/>
                 </Canvas.RenderTransform>
 
-                <Line X1="43"
-                      Y1="0"
-                      X2="43"
-                      Y2="28"
-                      Stroke="#FF4E4257"
-                      StrokeThickness="2"/>
+                <Line X1="56" Y1="0" X2="56" Y2="34" Stroke="#FF4A3D54" StrokeThickness="2"/>
+                <Line X1="56" Y1="2" X2="56" Y2="34" Stroke="#FFBCA9C8" StrokeThickness="1"/>
 
-                <Line X1="43"
-                      Y1="2"
-                      X2="43"
-                      Y2="28"
-                      Stroke="#FF9A8CA6"
-                      StrokeThickness="1"/>
+                <Path Data="M 54,31 C 43,24 30,28 24,40 C 16,55 19,79 31,93 C 43,107 68,107 81,92 C 94,77 96,53 86,39 C 78,28 66,24 57,31 Z"
+                      Fill="#FFED7423"
+                      Stroke="#FFB95118"
+                      StrokeThickness="1.2"/>
 
-                <Ellipse Width="24"
-                         Height="34"
-                         Canvas.Left="22"
-                         Canvas.Top="28"
-                         Fill="#FFF06A1B"/>
-                <Ellipse Width="34"
-                         Height="41"
-                         Canvas.Left="9"
-                         Canvas.Top="24"
-                         Fill="#FFFF8124"/>
-                <Ellipse Width="34"
-                         Height="41"
-                         Canvas.Left="43"
-                         Canvas.Top="24"
-                         Fill="#FFFF7820"/>
+                <Path Data="M 55,31 C 45,43 43,77 55,97 C 65,78 67,45 55,31 Z"
+                      Fill="#FFFF9B45"
+                      Opacity="0.22"/>
 
-                <Rectangle Width="10"
-                           Height="12"
-                           RadiusX="3"
-                           RadiusY="3"
-                           Canvas.Left="38"
-                           Canvas.Top="18"
-                           Fill="#FF5F7A2C"/>
-
-                <Polygon Points="25,40 31,35 37,40"
-                         Fill="#FF251529"/>
-                <Polygon Points="49,40 55,35 61,40"
-                         Fill="#FF251529"/>
-                <Path Data="M 27,52 Q 43,63 59,52"
-                      Stroke="#FF251529"
+                <Path Data="M 35,36 C 28,51 29,77 38,91"
+                      Stroke="#FFB94C17"
                       StrokeThickness="3"
+                      Opacity="0.72"
                       StrokeStartLineCap="Round"
-                      StrokeEndLineCap="Round"
-                      Fill="Transparent"/>
+                      StrokeEndLineCap="Round"/>
+                <Path Data="M 76,36 C 84,52 83,77 74,91"
+                      Stroke="#FFB94C17"
+                      StrokeThickness="3"
+                      Opacity="0.72"
+                      StrokeStartLineCap="Round"
+                      StrokeEndLineCap="Round"/>
+
+                <Path Data="M 49,30 C 47,23 51,18 59,17 C 63,20 64,26 61,32 Z"
+                      Fill="#FF4D672B"/>
+                <Path Data="M 59,20 Q 64,13 69,17 Q 66,23 62,26"
+                      Stroke="#FF6B8242"
+                      StrokeThickness="2"
+                      Fill="Transparent"
+                      StrokeStartLineCap="Round"
+                      StrokeEndLineCap="Round"/>
+
+                <Path Data="M 30,55 L 43,49 L 49,58 L 38,63 Z"
+                      Fill="#FF211723"/>
+                <Path Data="M 64,58 L 70,49 L 83,55 L 75,63 Z"
+                      Fill="#FF211723"/>
+
+                <Path Data="M 35,72 Q 54,85 76,71 Q 68,94 53,94 Q 41,92 35,72 Z"
+                      Fill="#FF211723"/>
+                <Path Data="M 45,81 L 49,88 L 54,81 L 59,89 L 64,81"
+                      Stroke="#FFFFB95E"
+                      StrokeThickness="1.2"
+                      Fill="Transparent"
+                      Opacity="0.8"/>
+
+                <Ellipse Width="12" Height="5" Canvas.Left="33" Canvas.Top="47" Fill="#FFFFC47A" Opacity="0.20"/>
             </Canvas>
 
             <!-- Right hanging pumpkin -->
-            <Canvas Canvas.Right="142"
-                    Canvas.Top="0"
-                    Width="96"
-                    Height="116"
+            <Canvas Canvas.Right="130"
+                    Canvas.Top="-4"
+                    Width="124"
+                    Height="150"
                     RenderTransformOrigin="0.5,0"
                     IsHitTestVisible="False">
                 <Canvas.RenderTransform>
                     <RotateTransform x:Name="HalloweenPumpkinRightRotate" Angle="3"/>
                 </Canvas.RenderTransform>
 
-                <Line X1="48"
-                      Y1="0"
-                      X2="48"
-                      Y2="30"
-                      Stroke="#FF4E4257"
-                      StrokeThickness="2"/>
-                <Line X1="48"
-                      Y1="2"
-                      X2="48"
-                      Y2="30"
-                      Stroke="#FFB29FBF"
-                      StrokeThickness="1"/>
+                <Line X1="62" Y1="0" X2="62" Y2="40" Stroke="#FF4A3D54" StrokeThickness="2"/>
+                <Line X1="62" Y1="2" X2="62" Y2="40" Stroke="#FFC6B4D2" StrokeThickness="1"/>
 
-                <Ellipse Width="28"
-                         Height="39"
-                         Canvas.Left="25"
-                         Canvas.Top="29"
-                         Fill="#FFF26D1B"/>
-                <Ellipse Width="38"
-                         Height="46"
-                         Canvas.Left="7"
-                         Canvas.Top="25"
-                         Fill="#FFFF8428"/>
-                <Ellipse Width="38"
-                         Height="46"
-                         Canvas.Left="51"
-                         Canvas.Top="25"
-                         Fill="#FFFF7620"/>
+                <Path Data="M 60,36 C 48,27 33,31 26,44 C 17,61 21,88 34,105 C 47,121 78,120 91,104 C 104,87 106,62 96,46 C 88,33 71,27 60,36 Z"
+                      Fill="#FFF17824"
+                      Stroke="#FFC05A18"
+                      StrokeThickness="1.2"/>
 
-                <Rectangle Width="11"
-                           Height="13"
-                           RadiusX="3"
-                           RadiusY="3"
-                           Canvas.Left="42"
-                           Canvas.Top="18"
-                           Fill="#FF5F7A2C"/>
+                <Path Data="M 60,36 C 52,51 50,88 61,111 C 71,90 73,50 60,36 Z"
+                      Fill="#FFFFA651"
+                      Opacity="0.20"/>
 
-                <Polygon Points="25,43 32,37 38,43"
-                         Fill="#FF28172E"/>
-                <Polygon Points="55,43 62,37 68,43"
-                         Fill="#FF28172E"/>
-                <Path Data="M 27,56 Q 48,69 69,56"
-                      Stroke="#FF28172E"
+                <Path Data="M 37,41 C 29,59 31,88 42,103"
+                      Stroke="#FFB94C17"
                       StrokeThickness="3.2"
+                      Opacity="0.72"
                       StrokeStartLineCap="Round"
-                      StrokeEndLineCap="Round"
+                      StrokeEndLineCap="Round"/>
+                <Path Data="M 84,41 C 93,59 91,88 81,104"
+                      Stroke="#FFB94C17"
+                      StrokeThickness="3.2"
+                      Opacity="0.72"
+                      StrokeStartLineCap="Round"
+                      StrokeEndLineCap="Round"/>
+
+                <Path Data="M 56,35 C 54,27 59,21 68,21 C 72,24 72,31 69,36 Z"
+                      Fill="#FF4E682E"/>
+                <Path Data="M 66,24 Q 72,17 78,22 Q 75,28 69,31"
+                      Stroke="#FF70864A"
+                      StrokeThickness="2"
+                      Fill="Transparent"
+                      StrokeStartLineCap="Round"
+                      StrokeEndLineCap="Round"/>
+
+                <Path Data="M 34,61 L 48,54 L 53,64 L 42,68 Z"
+                      Fill="#FF251828"/>
+                <Path Data="M 68,64 L 74,54 L 89,61 L 79,69 Z"
+                      Fill="#FF251828"/>
+
+                <Path Data="M 39,80 Q 59,95 82,79 Q 74,104 59,105 Q 45,102 39,80 Z"
+                      Fill="#FF251828"/>
+                <Path Data="M 49,90 L 53,98 L 59,89 L 65,99 L 71,90"
+                      Stroke="#FFFFC26F"
+                      StrokeThickness="1.2"
+                      Fill="Transparent"
+                      Opacity="0.78"/>
+
+                <Ellipse Width="13" Height="5" Canvas.Left="36" Canvas.Top="52" Fill="#FFFFC47A" Opacity="0.18"/>
+            </Canvas>
+
+            <!-- Organic cobweb corners -->
+            <Canvas Canvas.Left="4" Canvas.Top="3" Width="170" Height="150" Opacity="0.46">
+                <Path Data="M 0,0 C 55,10 105,12 166,0 M 0,0 C 12,46 14,95 0,148 M 0,0 C 46,28 92,70 129,112"
+                      Stroke="#FFBFA9CA"
+                      StrokeThickness="1"
+                      Fill="Transparent"/>
+                <Path Data="M 3,27 Q 34,12 68,8 Q 83,8 101,4 M 9,51 Q 44,35 78,25 Q 96,20 116,10 M 14,80 Q 50,62 91,43 Q 111,32 132,17"
+                      Stroke="#FFBFA9CA"
+                      StrokeThickness="1"
                       Fill="Transparent"/>
             </Canvas>
 
-            <!-- Cobweb corners -->
-            <Canvas Canvas.Left="4"
-                    Canvas.Top="3"
-                    Width="170"
-                    Height="145"
-                    Opacity="0.48">
-                <Line X1="0" Y1="0" X2="165" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <Line X1="0" Y1="0" X2="0" Y2="140" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <Line X1="0" Y1="0" X2="126" Y2="108" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <Line X1="0" Y1="38" X2="75" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <Line X1="0" Y1="72" X2="108" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
-            </Canvas>
-
-            <Canvas Canvas.Right="0"
-                    Canvas.Top="0"
-                    Width="180"
-                    Height="155"
-                    Opacity="0.42">
-                <Line X1="180" Y1="0" X2="0" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <Line X1="180" Y1="0" X2="180" Y2="150" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <Line X1="180" Y1="0" X2="50" Y2="110" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <Line X1="180" Y1="35" X2="110" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <Line X1="180" Y1="72" X2="76" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
-            </Canvas>
-
-            <!-- Drifting fog -->
+            <!-- Drifting fog layers -->
             <Ellipse x:Name="HalloweenFogAOpacity"
-                     Width="620"
-                     Height="170"
-                     Canvas.Left="-120"
-                     Canvas.Bottom="30"
-                     Fill="#FFB58DE8"
-                     Opacity="0.18">
+                     Width="650"
+                     Height="185"
+                     Canvas.Left="-150"
+                     Canvas.Bottom="24"
+                     Fill="#FFA96BFF"
+                     Opacity="0.15">
                 <Ellipse.Effect>
-                    <BlurEffect Radius="32"/>
-                </Ellipse.Effect>
-            </Ellipse>
-            <Ellipse x:Name="HalloweenFogBOpacity"
-                     Width="740"
-                     Height="190"
-                     Canvas.Right="-180"
-                     Canvas.Bottom="0"
-                     Fill="#FF5F87B8"
-                     Opacity="0.12">
-                <Ellipse.Effect>
-                    <BlurEffect Radius="38"/>
+                    <BlurEffect Radius="34"/>
                 </Ellipse.Effect>
             </Ellipse>
 
-            <!-- Flying bat silhouette -->
-            <Canvas Canvas.Left="0"
-                    Canvas.Top="126"
-                    Width="60"
-                    Height="28">
+            <Ellipse x:Name="HalloweenFogBOpacity"
+                     Width="780"
+                     Height="205"
+                     Canvas.Right="-210"
+                     Canvas.Bottom="-8"
+                     Fill="#FF6A8DB8"
+                     Opacity="0.10">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="40"/>
+                </Ellipse.Effect>
+            </Ellipse>
+
+            <!-- Flying bat with curved wings -->
+            <Canvas Canvas.Left="0" Canvas.Top="120" Width="86" Height="42">
                 <Canvas.RenderTransform>
-                    <TranslateTransform x:Name="HalloweenBatTranslate" X="-30"/>
+                    <TranslateTransform x:Name="HalloweenBatTranslate" X="-70"/>
                 </Canvas.RenderTransform>
-                <Path Data="M 0,16 L 10,7 L 19,12 L 30,5 L 41,12 L 50,7 L 60,16 L 52,15 L 45,22 L 36,17 L 30,25 L 24,17 L 15,22 L 8,15 Z"
-                      Fill="#FF17101F"
-                      Opacity="0.9"/>
+
+                <Path Data="M 43,19
+                            C 37,13 31,11 24,13
+                            C 18,15 12,11 3,8
+                            C 8,16 10,22 18,25
+                            C 12,27 8,32 4,37
+                            C 15,35 25,33 33,27
+                            C 37,31 40,34 43,34
+                            C 46,34 49,31 53,27
+                            C 61,33 71,35 82,37
+                            C 78,32 74,27 68,25
+                            C 76,22 78,16 83,8
+                            C 74,11 68,15 62,13
+                            C 55,11 49,13 43,19 Z"
+                      Fill="#FF15101D"
+                      Opacity="0.92"/>
+
+                <Ellipse Width="13"
+                         Height="21"
+                         Canvas.Left="37"
+                         Canvas.Top="14"
+                         Fill="#FF17111F"/>
+
+                <Ellipse Width="2.7" Height="2.7" Canvas.Left="40" Canvas.Top="20" Fill="#FFFF9B45" Opacity="0.9"/>
+                <Ellipse Width="2.7" Height="2.7" Canvas.Left="45" Canvas.Top="20" Fill="#FFFF9B45" Opacity="0.9"/>
             </Canvas>
 
-            <!-- Floating Halloween sparks -->
+            <!-- Floating embers and fireflies -->
             <Ellipse x:Name="HalloweenSparkleOpacity"
                      Width="7"
                      Height="7"
-                     Canvas.Left="470"
-                     Canvas.Top="105"
+                     Canvas.Left="462"
+                     Canvas.Top="102"
                      Fill="#FFFFA23D"/>
-            <Ellipse Width="4"
-                     Height="4"
-                     Canvas.Left="520"
-                     Canvas.Top="154"
-                     Fill="#FFC27BFF"
-                     Opacity="0.8"/>
-            <Ellipse Width="5"
-                     Height="5"
-                     Canvas.Left="760"
-                     Canvas.Top="215"
-                     Fill="#FFFF9E35"
-                     Opacity="0.7"/>
-            <Ellipse Width="4"
-                     Height="4"
-                     Canvas.Left="820"
-                     Canvas.Top="135"
-                     Fill="#FFB77CFF"
-                     Opacity="0.78"/>
 
+            <Ellipse Width="5" Height="5" Canvas.Left="520" Canvas.Top="168" Fill="#FFC27BFF" Opacity="0.72"/>
+            <Ellipse Width="4" Height="4" Canvas.Left="632" Canvas.Top="126" Fill="#FFFFB85B" Opacity="0.78"/>
+            <Ellipse Width="6" Height="6" Canvas.Left="742" Canvas.Top="214" Fill="#FFB77CFF" Opacity="0.68"/>
+            <Ellipse Width="4" Height="4" Canvas.Left="804" Canvas.Top="156" Fill="#FFFFA23D" Opacity="0.74"/>
+            <Ellipse Width="5" Height="5" Canvas.Left="880" Canvas.Top="238" Fill="#FFC27BFF" Opacity="0.72"/>
+            <Ellipse Width="3" Height="3" Canvas.Left="946" Canvas.Top="188" Fill="#FFFFC46F" Opacity="0.8"/>
+
+            <!-- Subtle top vignette -->
+            <Border Width="1000"
+                    Height="170"
+                    Canvas.Left="80"
+                    Canvas.Top="-90"
+                    CornerRadius="90"
+                    Opacity="0.16">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#FF5A2E78" Offset="0"/>
+                        <GradientStop Color="#00000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
         </Canvas>
 
         <Grid x:Name="HalloweenBackdrop"
@@ -842,8 +864,8 @@
 
         <!-- Sidebar -->
         <Border Grid.Column="0"
-                Background="White"
-                BorderBrush="#E6E8EB"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="0,0,1,0">
 
             <Grid Margin="18">
@@ -860,7 +882,7 @@
                            Text="Reminders"
                            FontSize="27"
                            FontWeight="SemiBold"
-                           Foreground="#15171A"
+                           Foreground="{DynamicResource PrimaryTextBrush}"
                            Margin="6,6,0,24"/>
 
                 <ListBox Grid.Row="1"
@@ -885,7 +907,7 @@
                                        Grid.Column="1"
                                        Text="0"
                                        FontSize="12"
-                                       Foreground="#9297A0"
+                                       Foreground="{DynamicResource SubtleTextBrush}"
                                        VerticalAlignment="Center"/>
                         </Grid>
 
@@ -978,7 +1000,7 @@
                                         <TextBlock Grid.Column="1"
                                                    Text="{Binding Name}"
                                                    FontSize="15"
-                                                   Foreground="#555B66"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
                                                    VerticalAlignment="Center"
                                                    TextTrimming="CharacterEllipsis"/>
 
@@ -1070,7 +1092,7 @@
                                Text="All Reminders"
                                FontSize="32"
                                FontWeight="SemiBold"
-                               Foreground="#17191C"/>
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                     <TextBlock Text="Everything you want to remember, in one place."
                                FontSize="14"
@@ -1081,7 +1103,7 @@
                 <Border Width="255"
                         Height="40"
                         HorizontalAlignment="Right"
-                        Background="White"
+                        Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="#E1E4E8"
                         BorderThickness="1"
                         CornerRadius="9">
@@ -1100,8 +1122,8 @@
 
             <!-- Add Reminder -->
             <Border Grid.Row="1"
-                    Background="White"
-                    BorderBrush="#E2E5E9"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="14"
                     Padding="12"
@@ -1129,7 +1151,7 @@
 
                         <Border Height="46"
                                 Background="#F8F9FB"
-                                BorderBrush="#E2E5E9"
+                                BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
                                 CornerRadius="11"
                                 Padding="12,0">
@@ -1153,7 +1175,7 @@
                                              BorderThickness="0"
                                              Padding="0"
                                              FontSize="13"
-                                             Foreground="#30353B"
+                                             Foreground="{DynamicResource BodyTextBrush}"
                                              VerticalContentAlignment="Center"
                                              ToolTip="Type a date, for example: tomorrow, Oct 12, or 12/10/2026"
                                              TextChanged="DueDateInput_TextChanged"
@@ -1179,7 +1201,7 @@
                                PopupAnimation="Fade">
 
                             <Border Width="320"
-                                    Background="White"
+                                    Background="{DynamicResource SurfaceBrush}"
                                     BorderBrush="#E0E4E8"
                                     BorderThickness="1"
                                     CornerRadius="16"
@@ -1197,11 +1219,11 @@
                                             <TextBlock Text="Choose a due date"
                                                        FontSize="16"
                                                        FontWeight="SemiBold"
-                                                       Foreground="#17191C"/>
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                                             <TextBlock Text="Pick a date or type one directly above."
                                                        FontSize="11"
-                                                       Foreground="#8A9098"
+                                                       Foreground="{DynamicResource SubtleTextBrush}"
                                                        Margin="0,3,0,0"/>
                                         </StackPanel>
 
@@ -1219,8 +1241,8 @@
 
                                     <Calendar x:Name="DueDateCalendar"
                                               BorderThickness="0"
-                                              Background="White"
-                                              Foreground="#30353B"
+                                              Background="{DynamicResource SurfaceBrush}"
+                                              Foreground="{DynamicResource BodyTextBrush}"
                                               SelectedDatesChanged="DueDateCalendar_SelectedDatesChanged"/>
 
                                     <Grid Margin="0,12,0,0">
@@ -1297,8 +1319,8 @@
 
                             <DataTemplate>
 
-                                <Border Background="White"
-                                        BorderBrush="#E5E7EA"
+                                <Border Background="{DynamicResource SurfaceBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
                                         CornerRadius="10"
                                         Padding="14">
@@ -1389,11 +1411,11 @@
                     <TextBlock Text="Calendar"
                                FontSize="32"
                                FontWeight="SemiBold"
-                               Foreground="#17191C"/>
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                     <TextBlock Text="See your reminders by date and keep the month in view."
                                FontSize="14"
-                               Foreground="#7B818A"
+                               Foreground="{DynamicResource MutedTextBrush}"
                                Margin="0,6,0,0"/>
                 </StackPanel>
 
@@ -1405,9 +1427,9 @@
                             Width="72"
                             Height="38"
                             Margin="0,0,8,0"
-                            Background="White"
+                            Background="{DynamicResource SurfaceBrush}"
                             Foreground="#4E555E"
-                            BorderBrush="#E2E5E9"
+                            BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             FontSize="12"
                             FontWeight="SemiBold"
@@ -1417,9 +1439,9 @@
                             Width="38"
                             Height="38"
                             Margin="0,0,5,0"
-                            Background="White"
+                            Background="{DynamicResource SurfaceBrush}"
                             Foreground="#4E555E"
-                            BorderBrush="#E2E5E9"
+                            BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             FontSize="22"
                             Click="PreviousMonth_Click"/>
@@ -1427,9 +1449,9 @@
                     <Button Content="›"
                             Width="38"
                             Height="38"
-                            Background="White"
+                            Background="{DynamicResource SurfaceBrush}"
                             Foreground="#4E555E"
-                            BorderBrush="#E2E5E9"
+                            BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             FontSize="22"
                             Click="NextMonth_Click"/>
@@ -1443,8 +1465,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0"
-                        Background="White"
-                        BorderBrush="#E2E5E9"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="16"
                         Padding="20"
@@ -1461,7 +1483,7 @@
                                    Text="October 2026"
                                    FontSize="20"
                                    FontWeight="SemiBold"
-                                   Foreground="#202329"
+                                   Foreground="{DynamicResource TextBrush}"
                                    Margin="2,0,0,16"/>
 
                         <UniformGrid Grid.Row="1"
@@ -1486,8 +1508,8 @@
                 </Border>
 
                 <Border Grid.Column="1"
-                        Background="White"
-                        BorderBrush="#E2E5E9"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="16"
                         Padding="20">
@@ -1503,13 +1525,13 @@
                             <TextBlock Text="Selected day"
                                        FontSize="11"
                                        FontWeight="SemiBold"
-                                       Foreground="#9297A0"/>
+                                       Foreground="{DynamicResource SubtleTextBrush}"/>
 
                             <TextBlock x:Name="CalendarSelectedDateText"
                                        Text="Today"
                                        FontSize="21"
                                        FontWeight="SemiBold"
-                                       Foreground="#202329"
+                                       Foreground="{DynamicResource TextBrush}"
                                        Margin="0,4,0,0"/>
                         </StackPanel>
 
@@ -1529,7 +1551,7 @@
                                            Text="0"
                                            FontSize="22"
                                            FontWeight="SemiBold"
-                                           Foreground="#202329"
+                                           Foreground="{DynamicResource TextBrush}"
                                            Margin="0,2,0,0"/>
                             </StackPanel>
                         </Border>
@@ -1539,8 +1561,8 @@
                                 <ItemsControl x:Name="CalendarRemindersList">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#F8F9FA"
-                                                    BorderBrush="#E5E7EA"
+                                            <Border Background="{DynamicResource ContentSoftBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
                                                     BorderThickness="1"
                                                     CornerRadius="10"
                                                     Padding="11"
@@ -1549,12 +1571,12 @@
                                                     <TextBlock Text="{Binding Title}"
                                                                FontSize="13"
                                                                FontWeight="SemiBold"
-                                                               Foreground="#30353B"
+                                                               Foreground="{DynamicResource BodyTextBrush}"
                                                                TextWrapping="Wrap"/>
 
                                                     <TextBlock Text="{Binding IsCompleted, StringFormat={}{0:Completed}}"
                                                                FontSize="11"
-                                                               Foreground="#7B818A"
+                                                               Foreground="{DynamicResource MutedTextBrush}"
                                                                Margin="0,4,0,0"/>
                                                 </StackPanel>
                                             </Border>
@@ -1566,7 +1588,7 @@
                             <TextBlock x:Name="CalendarEmptyText"
                                        Text="No reminders for this day."
                                        FontSize="13"
-                                       Foreground="#8A9098"
+                                       Foreground="{DynamicResource SubtleTextBrush}"
                                        TextWrapping="Wrap"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
@@ -1594,19 +1616,19 @@
                     <TextBlock Text="Rewards"
                                FontSize="32"
                                FontWeight="SemiBold"
-                               Foreground="#17191C"/>
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                     <TextBlock Text="Everything you've earned from the Store."
                                FontSize="14"
-                               Foreground="#7B818A"
+                               Foreground="{DynamicResource MutedTextBrush}"
                                Margin="0,6,0,0"/>
                 </StackPanel>
 
                 <Border Width="180"
                         Height="52"
                         HorizontalAlignment="Right"
-                        Background="White"
-                        BorderBrush="#E2E5E9"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="13"
                         Padding="12,0">
@@ -1633,21 +1655,21 @@
                             <TextBlock Text="COIN BALANCE"
                                        FontSize="9"
                                        FontWeight="SemiBold"
-                                       Foreground="#9297A0"/>
+                                       Foreground="{DynamicResource SubtleTextBrush}"/>
 
                             <TextBlock x:Name="RewardsCoinsText"
                                        Text="0"
                                        FontSize="18"
                                        FontWeight="SemiBold"
-                                       Foreground="#17191C"/>
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
             </Grid>
 
             <Border Grid.Row="1"
-                    Background="White"
-                    BorderBrush="#E2E5E9"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="16"
                     Padding="20">
@@ -1663,7 +1685,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Width="220"
-                                        Background="#FAFBFC"
+                                        Background="{DynamicResource SurfaceSoftBrush}"
                                         BorderBrush="#E4E7EA"
                                         BorderThickness="1"
                                         CornerRadius="13"
@@ -1702,12 +1724,12 @@
                                                    Text="{Binding Name}"
                                                    FontSize="15"
                                                    FontWeight="SemiBold"
-                                                   Foreground="#202329"/>
+                                                   Foreground="{DynamicResource TextBrush}"/>
 
                                         <TextBlock Grid.Row="2"
                                                    Text="{Binding Description}"
                                                    FontSize="12"
-                                                   Foreground="#7B818A"
+                                                   Foreground="{DynamicResource MutedTextBrush}"
                                                    TextWrapping="Wrap"
                                                    Margin="0,5,0,13"/>
 
@@ -1749,19 +1771,19 @@
                     <TextBlock Text="Store"
                                FontSize="32"
                                FontWeight="SemiBold"
-                               Foreground="#17191C"/>
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                     <TextBlock Text="Choose a category and customize your Noto experience."
                                FontSize="14"
-                               Foreground="#7B818A"
+                               Foreground="{DynamicResource MutedTextBrush}"
                                Margin="0,6,0,0"/>
                 </StackPanel>
 
                 <Border Width="180"
                         Height="52"
                         HorizontalAlignment="Right"
-                        Background="White"
-                        BorderBrush="#E2E5E9"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="13"
                         Padding="12,0">
@@ -1801,13 +1823,13 @@
                             <TextBlock Text="YOUR COINS"
                                        FontSize="9"
                                        FontWeight="SemiBold"
-                                       Foreground="#9297A0"/>
+                                       Foreground="{DynamicResource SubtleTextBrush}"/>
 
                             <TextBlock x:Name="StoreCoinsText"
                                        Text="0"
                                        FontSize="18"
                                        FontWeight="SemiBold"
-                                       Foreground="#17191C"/>
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -1853,8 +1875,8 @@
 </Grid>
 
             <Border Grid.Row="2"
-                    Background="White"
-                    BorderBrush="#E2E5E9"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="16"
                     Padding="22">
@@ -1872,12 +1894,12 @@
                                        Text="Featured Collection"
                                        FontSize="18"
                                        FontWeight="SemiBold"
-                                       Foreground="#17191C"/>
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                             <TextBlock x:Name="StoreCategoryDescription"
                                        Text="Preview every item before you spend your coins."
                                        FontSize="12"
-                                       Foreground="#8A9098"
+                                       Foreground="{DynamicResource SubtleTextBrush}"
                                        Margin="0,4,0,0"/>
                         </StackPanel>
 
@@ -1911,8 +1933,8 @@
 
                                         <Border Width="300"
                                                 Height="286"
-                                                Background="#FAFBFC"
-                                                BorderBrush="#E3E6EA"
+                                                Background="{DynamicResource SurfaceSoftBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
                                                 BorderThickness="1"
                                                 CornerRadius="16"
                                                 Padding="14"
@@ -1930,49 +1952,114 @@
                                                         Background="{Binding PreviewBackground}"
                                                         CornerRadius="12"
                                                         ClipToBounds="True">
-
                                                     <Grid>
+                                                        <Rectangle Fill="#160D21"
+                                                                   Opacity="0.22"/>
 
-                                                        <Grid.Resources>
+                                                        <!-- Moon -->
+                                                        <Ellipse Width="74"
+                                                                 Height="74"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Top"
+                                                                 Margin="0,10,14,0"
+                                                                 Fill="#FFE8D8FF"
+                                                                 Opacity="0.96"/>
 
-                                                            <Style x:Key="ThemePreviewStyle"
-                                                                   TargetType="Grid">
-                                                                <Setter Property="Visibility"
-                                                                        Value="Visible"/>
-</Style>
+                                                        <Ellipse Width="34"
+                                                                 Height="34"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Top"
+                                                                 Margin="0,28,50,0"
+                                                                 Fill="{Binding PreviewBackground}"
+                                                                 Opacity="0.98"/>
 
-</Grid.Resources>
+                                                        <!-- Moon glow -->
+                                                        <Ellipse Width="112"
+                                                                 Height="112"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Top"
+                                                                 Margin="0,-10,-5,0"
+                                                                 Fill="{Binding PreviewSoft}"
+                                                                 Opacity="0.25"/>
 
-                                                        <Grid Style="{StaticResource ThemePreviewStyle}">
-                                                            <Ellipse Width="112"
-                                                                     Height="112"
-                                                                     Fill="{Binding PreviewSoft}"
-                                                                     Opacity="0.72"
-                                                                     HorizontalAlignment="Center"
-                                                                     VerticalAlignment="Center"/>
+                                                        <!-- Stars -->
+                                                        <TextBlock Text="✦"
+                                                                   FontSize="13"
+                                                                   Foreground="#FFFFC56E"
+                                                                   Margin="22,18,0,0"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Top"/>
+                                                        <TextBlock Text="·"
+                                                                   FontSize="17"
+                                                                   Foreground="#FFC58EFF"
+                                                                   Margin="54,40,0,0"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Top"/>
+                                                        <TextBlock Text="✦"
+                                                                   FontSize="9"
+                                                                   Foreground="#FFB77CFF"
+                                                                   Margin="92,22,0,0"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Top"/>
 
-                                                            <Ellipse Width="76"
-                                                                     Height="76"
-                                                                     Fill="{Binding PreviewAccent}"
-                                                                     Opacity="0.90"
-                                                                     HorizontalAlignment="Center"
-                                                                     VerticalAlignment="Center"/>
+                                                        <!-- Haunted skyline -->
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    HorizontalAlignment="Center"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Margin="0,0,0,20">
+                                                            <Rectangle Width="34" Height="36" Fill="#FF1D1225"/>
+                                                            <Polygon Points="10,0 24,0 30,8 4,8"
+                                                                     Fill="#FF1D1225"
+                                                                     Margin="-34,0,0,28"/>
+                                                            <Rectangle Width="56" Height="48" Fill="#FF140C1B"/>
+                                                            <Rectangle Width="30" Height="30" Fill="#FF1D1225"/>
+                                                        </StackPanel>
 
-                                                            <Ellipse Width="42"
-                                                                     Height="42"
-                                                                     Fill="{Binding PreviewSecondary}"
-                                                                     HorizontalAlignment="Center"
-                                                                     VerticalAlignment="Center"/>
+                                                        <!-- Foreground hill -->
+                                                        <Path Data="M 0,96 Q 70,74 140,96 T 300,94 L 300,118 L 0,118 Z"
+                                                              Fill="#FF0F0914"
+                                                              Opacity="0.96"/>
 
-                                                            <TextBlock Text="✦"
-                                                                       FontSize="20"
-                                                                       FontWeight="Bold"
-                                                                       Foreground="White"
-                                                                       HorizontalAlignment="Center"
-                                                                       VerticalAlignment="Center"/>
-                                                        </Grid>
+                                                        <!-- Pumpkin -->
+                                                        <Canvas Width="68"
+                                                                Height="68"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Bottom"
+                                                                Margin="24,0,0,14">
+                                                            <Ellipse Width="26" Height="40" Canvas.Left="22" Canvas.Top="20" Fill="#FFF17824"/>
+                                                            <Ellipse Width="32" Height="46" Canvas.Left="7" Canvas.Top="18" Fill="#FFFF872B"/>
+                                                            <Ellipse Width="32" Height="46" Canvas.Left="36" Canvas.Top="18" Fill="#FFFF7520"/>
+                                                            <Path Data="M 33,22 C 29,16 34,12 40,13 C 44,16 42,21 39,24 Z"
+                                                                  Fill="#FF526C31"/>
+                                                            <Path Data="M 14,37 L 26,31 L 30,39 L 21,43 Z"
+                                                                  Fill="#FF24172A"/>
+                                                            <Path Data="M 39,39 L 43,31 L 55,37 L 48,43 Z"
+                                                                  Fill="#FF24172A"/>
+                                                            <Path Data="M 20,48 Q 34,58 49,48 Q 43,59 34,60 Q 26,58 20,48 Z"
+                                                                  Fill="#FF24172A"/>
+                                                        </Canvas>
 
-</Grid>
+                                                        <!-- Bat -->
+                                                        <Path Data="M 224,35 C 218,28 212,27 205,29 C 199,32 193,28 186,25 C 190,33 195,37 201,39 C 195,41 190,45 187,49 C 196,47 205,45 211,41 C 215,46 219,48 223,48 C 227,48 231,46 235,41 C 241,45 250,47 259,49 C 256,45 251,41 245,39 C 251,37 256,33 260,25 C 252,28 247,32 241,29 C 234,27 229,28 224,35 Z"
+                                                              Fill="#FF17101F"
+                                                              Opacity="0.94"
+                                                              Margin="0,20,18,0"
+                                                              HorizontalAlignment="Right"
+                                                              VerticalAlignment="Top"/>
+
+                                                        <!-- Mist -->
+                                                        <Ellipse Width="210"
+                                                                 Height="42"
+                                                                 Fill="#FFE2CFFF"
+                                                                 Opacity="0.10"
+                                                                 HorizontalAlignment="Left"
+                                                                 VerticalAlignment="Bottom"
+                                                                 Margin="0,0,0,9">
+                                                            <Ellipse.Effect>
+                                                                <BlurEffect Radius="12"/>
+                                                            </Ellipse.Effect>
+                                                        </Ellipse>
+                                                    </Grid>
                                                 </Border>
 
                                                 <Grid Grid.Row="1"
@@ -1981,7 +2068,7 @@
                                                     <TextBlock Text="{Binding Name}"
                                                                FontSize="16"
                                                                FontWeight="SemiBold"
-                                                               Foreground="#202329"/>
+                                                               Foreground="{DynamicResource TextBrush}"/>
 
                                                     <Border HorizontalAlignment="Right"
                                                             Background="{Binding PreviewSoft}"
@@ -1998,7 +2085,7 @@
                                                 <TextBlock Grid.Row="2"
                                                            Text="{Binding Description}"
                                                            FontSize="11.5"
-                                                           Foreground="#7B818A"
+                                                           Foreground="{DynamicResource MutedTextBrush}"
                                                            TextWrapping="Wrap"
                                                            Margin="2,7,2,10"
                                                            VerticalAlignment="Top"/>
@@ -2025,13 +2112,13 @@
                                                         <TextBlock Text="{Binding Price}"
                                                                    FontSize="14"
                                                                    FontWeight="Bold"
-                                                                   Foreground="#30353B"
+                                                                   Foreground="{DynamicResource BodyTextBrush}"
                                                                    Margin="7,0,0,0"
                                                                    VerticalAlignment="Center"/>
 
                                                         <TextBlock Text=" coins"
                                                                    FontSize="10.5"
-                                                                   Foreground="#8A9098"
+                                                                   Foreground="{DynamicResource SubtleTextBrush}"
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
 
@@ -2052,8 +2139,8 @@
 
                         <Border x:Name="StoreEmptyStatePanel"
                                 Visibility="Collapsed"
-                                Background="#FAFBFC"
-                                BorderBrush="#E6E8EC"
+                                Background="{DynamicResource SurfaceSoftBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
                                 CornerRadius="14"
                                 Padding="28">
@@ -2080,14 +2167,14 @@
                                            Text="No items available yet"
                                            FontSize="16"
                                            FontWeight="SemiBold"
-                                           Foreground="#30353B"
+                                           Foreground="{DynamicResource BodyTextBrush}"
                                            HorizontalAlignment="Center"
                                            Margin="0,16,0,4"/>
 
                                 <TextBlock x:Name="StoreCategoryEmptyText"
                                            Text="There are no Store items available yet."
                                            FontSize="13"
-                                           Foreground="#8A9098"
+                                           Foreground="{DynamicResource SubtleTextBrush}"
                                            TextAlignment="Center"
                                            HorizontalAlignment="Center"/>
 
@@ -2115,11 +2202,11 @@
                 <TextBlock Text="Achievements"
                            FontSize="32"
                            FontWeight="SemiBold"
-                           Foreground="#17191C"/>
+                           Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                 <TextBlock Text="Complete reminders, earn coins, and keep building your streak."
                            FontSize="14"
-                           Foreground="#7B818A"
+                           Foreground="{DynamicResource MutedTextBrush}"
                            Margin="0,6,0,0"/>
             </StackPanel>
 
@@ -2127,8 +2214,8 @@
                     Height="180"
                     VerticalAlignment="Top"
                     Margin="0,4,0,0"
-                    Background="White"
-                    BorderBrush="#E2E5E9"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="18"
                     Padding="24">
@@ -2170,7 +2257,7 @@
                         <TextBlock Text="Complete a reminder"
                                    FontSize="20"
                                    FontWeight="SemiBold"
-                                   Foreground="#202329"/>
+                                   Foreground="{DynamicResource TextBrush}"/>
 
                         <TextBlock Text="Finish a reminder and earn coins every time."
                                    FontSize="13"
@@ -2213,7 +2300,7 @@
               Background="#66000000">
 
             <Border Width="470"
-                    Background="White"
+                    Background="{DynamicResource SurfaceBrush}"
                     CornerRadius="20"
                     Padding="28"
                     HorizontalAlignment="Center"
@@ -2244,7 +2331,7 @@
                     <TextBlock Text="One quick question"
                                FontSize="23"
                                FontWeight="SemiBold"
-                               Foreground="#17191C"
+                               Foreground="{DynamicResource PrimaryTextBrush}"
                                Margin="0,20,0,0"/>
 
                     <TextBlock Text="Did you actually finish this, or are you trying to fool me?"
@@ -2253,8 +2340,8 @@
                                TextWrapping="Wrap"
                                Margin="0,8,0,0"/>
 
-                    <Border Background="#F7F8FA"
-                            BorderBrush="#E5E7EA"
+                    <Border Background="{DynamicResource WindowBackgroundBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             CornerRadius="11"
                             Padding="13"
@@ -2269,7 +2356,7 @@
 
                     <TextBlock Text="Confirming this reminder will add 10 coins."
                                FontSize="12"
-                               Foreground="#8A9098"
+                               Foreground="{DynamicResource SubtleTextBrush}"
                                Margin="0,10,0,0"/>
 
                     <Grid Margin="0,24,0,0">
