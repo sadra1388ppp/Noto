@@ -75,9 +75,9 @@ public partial class MainWindow : Window
 
     private static readonly DoubleAnimation HalloweenBatAnimation = new()
     {
-        From = -30,
-        To = 420,
-        Duration = TimeSpan.FromSeconds(8),
+        From = -130,
+        To = 1000,
+        Duration = TimeSpan.FromSeconds(10.5),
         RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
     };
 
