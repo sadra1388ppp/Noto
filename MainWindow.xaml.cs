@@ -36,6 +36,59 @@ public partial class MainWindow : Window
     private readonly TextBlock RewardsStatusText = new();
     private DateTime _calendarMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private DateTime _selectedCalendarDate = DateTime.Today;
+    private static readonly DoubleAnimation HalloweenPumpkinLeftAnimation = new()
+    {
+        From = -6,
+        To = 6,
+        Duration = TimeSpan.FromSeconds(2.8),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation HalloweenPumpkinRightAnimation = new()
+    {
+        From = 5,
+        To = -5,
+        Duration = TimeSpan.FromSeconds(3.4),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation HalloweenFogAnimationA = new()
+    {
+        From = 0.14,
+        To = 0.34,
+        Duration = TimeSpan.FromSeconds(4.5),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation HalloweenFogAnimationB = new()
+    {
+        From = 0.08,
+        To = 0.24,
+        Duration = TimeSpan.FromSeconds(6.0),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation HalloweenBatAnimation = new()
+    {
+        From = -30,
+        To = 420,
+        Duration = TimeSpan.FromSeconds(8),
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation HalloweenSparkleAnimation = new()
+    {
+        From = 0.25,
+        To = 0.95,
+        Duration = TimeSpan.FromSeconds(1.6),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
 
     public MainWindow()
     {
@@ -98,7 +151,16 @@ public partial class MainWindow : Window
             _progress.OwnedStoreItemIds.Add("theme.default");
         }
 
-        if (string.IsNullOrWhiteSpace(_progress.EquippedThemeId))
+        // Keep only the current theme inventory. Older removed themes are migrated out.
+        _progress.OwnedStoreItemIds = _progress.OwnedStoreItemIds
+            .Where(id => id.Equals("theme.default", StringComparison.OrdinalIgnoreCase) ||
+                         id.Equals("theme.halloween-night", StringComparison.OrdinalIgnoreCase))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        if (string.IsNullOrWhiteSpace(_progress.EquippedThemeId) ||
+            (!_progress.EquippedThemeId.Equals("theme.default", StringComparison.OrdinalIgnoreCase) &&
+             !_progress.EquippedThemeId.Equals("theme.halloween-night", StringComparison.OrdinalIgnoreCase)))
         {
             _progress.EquippedThemeId = "theme.default";
         }
@@ -1209,40 +1271,10 @@ public partial class MainWindow : Window
     {
         var palette = themeId switch
         {
-            "theme.astral-bloom" => new ThemePalette(
-                Color.FromRgb(139, 92, 246),
-                Color.FromRgb(109, 61, 209),
-                Color.FromRgb(240, 232, 255)),
-
-            "theme.crimson-arcana" => new ThemePalette(
-                Color.FromRgb(217, 70, 122),
-                Color.FromRgb(183, 47, 97),
-                Color.FromRgb(255, 231, 240)),
-
-            "theme.emerald-celestial" => new ThemePalette(
-                Color.FromRgb(18, 191, 163),
-                Color.FromRgb(12, 146, 125),
-                Color.FromRgb(225, 250, 245)),
-
-            "theme.ocean" => new ThemePalette(
-                Color.FromRgb(13, 138, 188),
-                Color.FromRgb(7, 108, 151),
-                Color.FromRgb(230, 247, 253)),
-
-            "theme.violet" => new ThemePalette(
-                Color.FromRgb(124, 77, 255),
-                Color.FromRgb(94, 53, 177),
-                Color.FromRgb(241, 236, 255)),
-
-            "theme.forest" => new ThemePalette(
-                Color.FromRgb(46, 139, 87),
-                Color.FromRgb(34, 110, 68),
-                Color.FromRgb(232, 247, 238)),
-
-            "theme.sunset" => new ThemePalette(
-                Color.FromRgb(230, 106, 44),
-                Color.FromRgb(194, 81, 28),
-                Color.FromRgb(255, 239, 231)),
+            "theme.halloween-night" => new ThemePalette(
+                Color.FromRgb(255, 138, 36),
+                Color.FromRgb(217, 92, 16),
+                Color.FromRgb(246, 234, 255)),
 
             _ => new ThemePalette(
                 Color.FromRgb(52, 120, 246),
@@ -1253,6 +1285,40 @@ public partial class MainWindow : Window
         Resources["AccentBrush"] = new SolidColorBrush(palette.Accent);
         Resources["AccentHoverBrush"] = new SolidColorBrush(palette.Hover);
         Resources["AccentSoftBrush"] = new SolidColorBrush(palette.Soft);
+
+        UpdateHalloweenEffects(themeId.Equals(
+            "theme.halloween-night",
+            StringComparison.OrdinalIgnoreCase));
+    }
+
+    private void UpdateHalloweenEffects(bool enabled)
+    {
+        if (HalloweenEffectsOverlay == null)
+            return;
+
+        HalloweenEffectsOverlay.Visibility = enabled
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        HalloweenEffectsOverlay.Opacity = enabled ? 1 : 0;
+        HalloweenPumpkinLeftRotate.BeginAnimation(
+            RotateTransform.AngleProperty,
+            enabled ? HalloweenPumpkinLeftAnimation : null);
+        HalloweenPumpkinRightRotate.BeginAnimation(
+            RotateTransform.AngleProperty,
+            enabled ? HalloweenPumpkinRightAnimation : null);
+        HalloweenFogAOpacity.BeginAnimation(
+            UIElement.OpacityProperty,
+            enabled ? HalloweenFogAnimationA : null);
+        HalloweenFogBOpacity.BeginAnimation(
+            UIElement.OpacityProperty,
+            enabled ? HalloweenFogAnimationB : null);
+        HalloweenBatTranslate.BeginAnimation(
+            TranslateTransform.XProperty,
+            enabled ? HalloweenBatAnimation : null);
+        HalloweenSparkleOpacity.BeginAnimation(
+            UIElement.OpacityProperty,
+            enabled ? HalloweenSparkleAnimation : null);
     }
 
     private void SaveAll()
