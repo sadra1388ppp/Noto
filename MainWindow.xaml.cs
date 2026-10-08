@@ -1087,12 +1087,6 @@ public partial class MainWindow : Window
                 "T",
                 "No themes are available right now."),
 
-            "Stickers" => (
-                "Stickers",
-                "Collect stickers and personalize your future Noto profile.",
-                "S",
-                "Sticker items will be added to the Store later."),
-
             "Skins" => (
                 "Skins",
                 "Customize your profile with future skin items.",
@@ -1101,7 +1095,7 @@ public partial class MainWindow : Window
 
             _ => (
                 "All",
-                "Browse themes and everything else available in the Noto Store.",
+                "Browse themes and everything available in the Noto Store.",
                 "A",
                 "The Store is empty.")
         };
@@ -1114,7 +1108,6 @@ public partial class MainWindow : Window
         SetStoreCategoryButtonState(StoreAllButton, category == "All");
         SetStoreCategoryButtonState(StoreThemesButton, category == "Themes");
         SetStoreCategoryButtonState(StoreSkinsButton, category == "Skins");
-        SetStoreCategoryButtonState(StoreStickersButton, category == "Stickers");
 
         _storeView.Refresh();
 
