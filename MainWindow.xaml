@@ -584,332 +584,281 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Halloween atmospheric overlay -->
-        <Canvas x:Name="HalloweenEffectsOverlay"
-                Grid.ColumnSpan="2"
-                IsHitTestVisible="False"
-                Panel.ZIndex="200"
-                Visibility="Collapsed"
-                ClipToBounds="False">
+        <!-- Halloween decorative layer: clipped to a safe header band so it never hides app controls -->
+        <Grid x:Name="HalloweenEffectsOverlay"
+              Grid.ColumnSpan="2"
+              Height="118"
+              VerticalAlignment="Top"
+              IsHitTestVisible="False"
+              Panel.ZIndex="20"
+              Visibility="Collapsed"
+              ClipToBounds="True">
 
-            <!-- Natural moon, tucked into the corner so it never blocks controls -->
-            <Canvas Canvas.Right="8"
-                    Canvas.Top="-6"
-                    Width="132"
-                    Height="132"
-                    IsHitTestVisible="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="245"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <Ellipse Width="132"
-                         Height="132"
-                         Opacity="0.14">
-                    <Ellipse.Fill>
-                        <RadialGradientBrush Center="0.48,0.44">
-                            <GradientStop Color="#FFFFFFFF" Offset="0"/>
-                            <GradientStop Color="#FFDDBDFF" Offset="0.42"/>
-                            <GradientStop Color="#006A3C80" Offset="1"/>
-                        </RadialGradientBrush>
-                    </Ellipse.Fill>
-                </Ellipse>
+            <!-- Sidebar pumpkin -->
+            <Canvas Grid.Column="0"
+                    IsHitTestVisible="False"
+                    ClipToBounds="True">
 
-                <Ellipse Width="104"
-                         Height="104"
-                         Canvas.Left="14"
-                         Canvas.Top="14"
-                         Fill="#FFE9DFFF"
-                         Opacity="0.95">
-                    <Ellipse.Effect>
-                        <DropShadowEffect BlurRadius="24"
-                                          ShadowDepth="0"
-                                          Color="#FFA96BFF"
-                                          Opacity="0.36"/>
-                    </Ellipse.Effect>
-                </Ellipse>
+                <Canvas Width="58"
+                        Height="88"
+                        Canvas.Right="8"
+                        Canvas.Top="-26"
+                        RenderTransformOrigin="0.5,0">
+                    <Canvas.RenderTransform>
+                        <RotateTransform x:Name="HalloweenPumpkinLeftRotate" Angle="-3"/>
+                    </Canvas.RenderTransform>
 
-                <!-- soft lunar craters -->
-                <Ellipse Width="19"
-                         Height="12"
-                         Canvas.Left="30"
-                         Canvas.Top="34"
-                         Fill="#FFCDBEDF"
-                         Opacity="0.27"/>
-                <Ellipse Width="12"
-                         Height="8"
-                         Canvas.Left="68"
-                         Canvas.Top="25"
-                         Fill="#FFCDBEDF"
-                         Opacity="0.23"/>
-                <Ellipse Width="24"
-                         Height="15"
-                         Canvas.Left="69"
-                         Canvas.Top="63"
-                         Fill="#FFCDBEDF"
-                         Opacity="0.22"/>
-                <Ellipse Width="10"
-                         Height="7"
-                         Canvas.Left="40"
-                         Canvas.Top="76"
-                         Fill="#FFCDBEDF"
-                         Opacity="0.20"/>
-                <Ellipse Width="7"
-                         Height="7"
-                         Canvas.Left="82"
-                         Canvas.Top="42"
-                         Fill="#FFCDBEDF"
-                         Opacity="0.18"/>
+                    <Line X1="29" Y1="0" X2="29" Y2="26"
+                          Stroke="#FF58485F" StrokeThickness="1.6"/>
+                    <Line X1="29" Y1="1" X2="29" Y2="26"
+                          Stroke="#FFC7B5CC" StrokeThickness="0.7"/>
+
+                    <Path Data="M 29,24
+                                C 21,18 13,21 9,30
+                                C 4,41 7,57 15,66
+                                C 23,76 36,76 44,66
+                                C 52,56 54,41 49,30
+                                C 45,21 37,18 29,24 Z"
+                          Fill="#FFF07A26"
+                          Stroke="#FFBC551A"
+                          StrokeThickness="0.8"/>
+
+                    <Path Data="M 29,24 C 25,34 25,58 29,70"
+                          Stroke="#FFFFAA54"
+                          StrokeThickness="2"
+                          Opacity="0.30"
+                          Fill="Transparent"
+                          StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round"/>
+
+                    <Path Data="M 17,30 C 12,41 14,56 20,65"
+                          Stroke="#FFB95117"
+                          StrokeThickness="2"
+                          Opacity="0.70"
+                          Fill="Transparent"
+                          StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round"/>
+
+                    <Path Data="M 41,30 C 47,42 46,56 40,65"
+                          Stroke="#FFB95117"
+                          StrokeThickness="2"
+                          Opacity="0.70"
+                          Fill="Transparent"
+                          StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round"/>
+
+                    <Path Data="M 26,23 C 25,18 28,15 33,16 C 36,18 35,22 33,25 Z"
+                          Fill="#FF4E6C31"/>
+
+                    <Path Data="M 14,44 L 22,40 L 25,46 L 19,49 Z"
+                          Fill="#FF24162A"/>
+                    <Path Data="M 34,46 L 37,40 L 45,44 L 40,49 Z"
+                          Fill="#FF24162A"/>
+                    <Path Data="M 18,56 Q 29,64 41,55 Q 37,68 29,68 Q 22,67 18,56 Z"
+                          Fill="#FF24162A"/>
+                </Canvas>
             </Canvas>
 
-            <!-- Left hanging pumpkin -->
-            <Canvas Canvas.Left="258"
-                    Canvas.Top="-10"
-                    Width="112"
-                    Height="136"
-                    RenderTransformOrigin="0.5,0"
-                    IsHitTestVisible="False">
-                <Canvas.RenderTransform>
-                    <RotateTransform x:Name="HalloweenPumpkinLeftRotate" Angle="-2.5"/>
-                </Canvas.RenderTransform>
+            <!-- Main-content decorations: intentionally placed in the empty space before right-side controls -->
+            <Canvas Grid.Column="1"
+                    Margin="42,0,42,0"
+                    IsHitTestVisible="False"
+                    ClipToBounds="True">
 
-                <Line X1="56" Y1="0" X2="56" Y2="34" Stroke="#FF4A3D54" StrokeThickness="2"/>
-                <Line X1="56" Y1="2" X2="56" Y2="34" Stroke="#FFBCA9C8" StrokeThickness="1"/>
+                <!-- Moon -->
+                <Canvas Width="82"
+                        Height="82"
+                        Canvas.Right="285"
+                        Canvas.Top="3">
+                    <Ellipse Width="82"
+                             Height="82"
+                             Fill="#FFE9E0F2"
+                             Opacity="0.94"/>
 
-                <Path Data="M 54,31 C 43,24 30,28 24,40 C 16,55 19,79 31,93 C 43,107 68,107 81,92 C 94,77 96,53 86,39 C 78,28 66,24 57,31 Z"
-                      Fill="#FFED7423"
-                      Stroke="#FFB95118"
-                      StrokeThickness="1.2"/>
+                    <Ellipse Width="14"
+                             Height="8"
+                             Canvas.Left="18"
+                             Canvas.Top="20"
+                             Fill="#FFCFC0D8"
+                             Opacity="0.32"/>
+                    <Ellipse Width="10"
+                             Height="7"
+                             Canvas.Left="51"
+                             Canvas.Top="15"
+                             Fill="#FFCFC0D8"
+                             Opacity="0.27"/>
+                    <Ellipse Width="19"
+                             Height="11"
+                             Canvas.Left="46"
+                             Canvas.Top="43"
+                             Fill="#FFCFC0D8"
+                             Opacity="0.25"/>
+                    <Ellipse Width="8"
+                             Height="6"
+                             Canvas.Left="24"
+                             Canvas.Top="54"
+                             Fill="#FFCFC0D8"
+                             Opacity="0.23"/>
 
-                <Path Data="M 55,31 C 45,43 43,77 55,97 C 65,78 67,45 55,31 Z"
-                      Fill="#FFFF9B45"
-                      Opacity="0.22"/>
+                    <Ellipse Width="82"
+                             Height="82"
+                             Opacity="0.12">
+                        <Ellipse.Fill>
+                            <RadialGradientBrush Center="0.5,0.5">
+                                <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                                <GradientStop Color="#FFE3C6FF" Offset="0.44"/>
+                                <GradientStop Color="#00000000" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Canvas>
 
-                <Path Data="M 35,36 C 28,51 29,77 38,91"
-                      Stroke="#FFB94C17"
-                      StrokeThickness="3"
-                      Opacity="0.72"
-                      StrokeStartLineCap="Round"
-                      StrokeEndLineCap="Round"/>
-                <Path Data="M 76,36 C 84,52 83,77 74,91"
-                      Stroke="#FFB94C17"
-                      StrokeThickness="3"
-                      Opacity="0.72"
-                      StrokeStartLineCap="Round"
-                      StrokeEndLineCap="Round"/>
+                <!-- Content pumpkin -->
+                <Canvas Width="54"
+                        Height="88"
+                        Canvas.Left="250"
+                        Canvas.Top="-22"
+                        RenderTransformOrigin="0.5,0"
+                        IsHitTestVisible="False">
+                    <Canvas.RenderTransform>
+                        <RotateTransform x:Name="HalloweenPumpkinRightRotate" Angle="3"/>
+                    </Canvas.RenderTransform>
 
-                <Path Data="M 49,30 C 47,23 51,18 59,17 C 63,20 64,26 61,32 Z"
-                      Fill="#FF4D672B"/>
-                <Path Data="M 59,20 Q 64,13 69,17 Q 66,23 62,26"
-                      Stroke="#FF6B8242"
-                      StrokeThickness="2"
-                      Fill="Transparent"
-                      StrokeStartLineCap="Round"
-                      StrokeEndLineCap="Round"/>
+                    <Line X1="27" Y1="0" X2="27" Y2="27"
+                          Stroke="#FF58485F" StrokeThickness="1.5"/>
+                    <Line X1="27" Y1="1" X2="27" Y2="27"
+                          Stroke="#FFC7B5CC" StrokeThickness="0.7"/>
 
-                <Path Data="M 30,55 L 43,49 L 49,58 L 38,63 Z"
-                      Fill="#FF211723"/>
-                <Path Data="M 64,58 L 70,49 L 83,55 L 75,63 Z"
-                      Fill="#FF211723"/>
+                    <Path Data="M 27,25
+                                C 20,20 12,23 8,32
+                                C 3,43 6,58 14,68
+                                C 22,78 34,78 42,68
+                                C 50,57 52,42 47,32
+                                C 43,23 34,20 27,25 Z"
+                          Fill="#FFF17C28"
+                          Stroke="#FFBD581A"
+                          StrokeThickness="0.8"/>
 
-                <Path Data="M 35,72 Q 54,85 76,71 Q 68,94 53,94 Q 41,92 35,72 Z"
-                      Fill="#FF211723"/>
-                <Path Data="M 45,81 L 49,88 L 54,81 L 59,89 L 64,81"
-                      Stroke="#FFFFB95E"
-                      StrokeThickness="1.2"
-                      Fill="Transparent"
-                      Opacity="0.8"/>
+                    <Path Data="M 27,25 C 24,36 24,59 27,71"
+                          Stroke="#FFFFB45F"
+                          StrokeThickness="2"
+                          Opacity="0.27"
+                          Fill="Transparent"
+                          StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round"/>
 
-                <Ellipse Width="12" Height="5" Canvas.Left="33" Canvas.Top="47" Fill="#FFFFC47A" Opacity="0.20"/>
+                    <Path Data="M 15,32 C 10,44 12,58 19,67"
+                          Stroke="#FFB95117"
+                          StrokeThickness="2"
+                          Opacity="0.68"
+                          Fill="Transparent"
+                          StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round"/>
+
+                    <Path Data="M 39,32 C 45,44 43,58 36,67"
+                          Stroke="#FFB95117"
+                          StrokeThickness="2"
+                          Opacity="0.68"
+                          Fill="Transparent"
+                          StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round"/>
+
+                    <Path Data="M 24,24 C 23,19 26,16 31,17 C 34,19 33,23 31,26 Z"
+                          Fill="#FF4D6A31"/>
+
+                    <Path Data="M 11,45 L 19,41 L 22,47 L 16,50 Z"
+                          Fill="#FF24172A"/>
+                    <Path Data="M 32,47 L 35,41 L 43,45 L 38,50 Z"
+                          Fill="#FF24172A"/>
+                    <Path Data="M 15,57 Q 27,65 39,56 Q 35,69 27,69 Q 20,68 15,57 Z"
+                          Fill="#FF24172A"/>
+                </Canvas>
+
+                <!-- Bat stays in the same safe area and is fully visible -->
+                <Canvas Width="94"
+                        Height="38"
+                        Canvas.Right="302"
+                        Canvas.Top="76">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform x:Name="HalloweenBatTranslate" X="0"/>
+                    </Canvas.RenderTransform>
+
+                    <Path Data="M 47,19
+                                C 41,12 34,10 26,13
+                                C 18,16 11,11 2,7
+                                C 6,16 12,23 20,26
+                                C 14,29 9,33 5,38
+                                C 17,35 28,32 36,27
+                                C 40,33 44,36 47,36
+                                C 50,36 54,33 58,27
+                                C 66,32 77,35 89,38
+                                C 85,33 80,29 74,26
+                                C 82,23 88,16 92,7
+                                C 83,11 76,16 68,13
+                                C 60,10 53,12 47,19 Z"
+                          Fill="#FF0B0710"
+                          Stroke="#FF9C70B6"
+                          StrokeThickness="1"
+                          StrokeLineJoin="Round"
+                          Opacity="0.98"/>
+
+                    <Ellipse Width="14"
+                             Height="20"
+                             Canvas.Left="40"
+                             Canvas.Top="15"
+                             Fill="#FF120A18"/>
+
+                    <Path Data="M 41,17 L 44,11 L 47,17 M 48,17 L 51,11 L 54,17"
+                          Stroke="#FF0B0710"
+                          StrokeThickness="1.8"
+                          StrokeLineJoin="Round"
+                          Fill="Transparent"/>
+
+                    <Ellipse Width="2.6"
+                             Height="2.6"
+                             Canvas.Left="43"
+                             Canvas.Top="21"
+                             Fill="#FFFFA54F"/>
+                    <Ellipse Width="2.6"
+                             Height="2.6"
+                             Canvas.Left="49"
+                             Canvas.Top="21"
+                             Fill="#FFFFA54F"/>
+                </Canvas>
+
+                <!-- Tiny low-cost fireflies -->
+                <Ellipse x:Name="HalloweenSparkleOpacity"
+                         Width="6"
+                         Height="6"
+                         Canvas.Right="326"
+                         Canvas.Top="22"
+                         Fill="#FFFFA23D"/>
+
+                <Ellipse Width="4"
+                         Height="4"
+                         Canvas.Right="348"
+                         Canvas.Top="54"
+                         Fill="#FFB77CFF"
+                         Opacity="0.75"/>
+                <Ellipse Width="3"
+                         Height="3"
+                         Canvas.Right="315"
+                         Canvas.Top="62"
+                         Fill="#FFFFC46F"
+                         Opacity="0.75"/>
+                <Ellipse Width="4"
+                         Height="4"
+                         Canvas.Right="300"
+                         Canvas.Top="46"
+                         Fill="#FFC27BFF"
+                         Opacity="0.70"/>
             </Canvas>
-
-            <!-- Right hanging pumpkin -->
-            <Canvas Canvas.Right="130"
-                    Canvas.Top="-4"
-                    Width="124"
-                    Height="150"
-                    RenderTransformOrigin="0.5,0"
-                    IsHitTestVisible="False">
-                <Canvas.RenderTransform>
-                    <RotateTransform x:Name="HalloweenPumpkinRightRotate" Angle="3"/>
-                </Canvas.RenderTransform>
-
-                <Line X1="62" Y1="0" X2="62" Y2="40" Stroke="#FF4A3D54" StrokeThickness="2"/>
-                <Line X1="62" Y1="2" X2="62" Y2="40" Stroke="#FFC6B4D2" StrokeThickness="1"/>
-
-                <Path Data="M 60,36 C 48,27 33,31 26,44 C 17,61 21,88 34,105 C 47,121 78,120 91,104 C 104,87 106,62 96,46 C 88,33 71,27 60,36 Z"
-                      Fill="#FFF17824"
-                      Stroke="#FFC05A18"
-                      StrokeThickness="1.2"/>
-
-                <Path Data="M 60,36 C 52,51 50,88 61,111 C 71,90 73,50 60,36 Z"
-                      Fill="#FFFFA651"
-                      Opacity="0.20"/>
-
-                <Path Data="M 37,41 C 29,59 31,88 42,103"
-                      Stroke="#FFB94C17"
-                      StrokeThickness="3.2"
-                      Opacity="0.72"
-                      StrokeStartLineCap="Round"
-                      StrokeEndLineCap="Round"/>
-                <Path Data="M 84,41 C 93,59 91,88 81,104"
-                      Stroke="#FFB94C17"
-                      StrokeThickness="3.2"
-                      Opacity="0.72"
-                      StrokeStartLineCap="Round"
-                      StrokeEndLineCap="Round"/>
-
-                <Path Data="M 56,35 C 54,27 59,21 68,21 C 72,24 72,31 69,36 Z"
-                      Fill="#FF4E682E"/>
-                <Path Data="M 66,24 Q 72,17 78,22 Q 75,28 69,31"
-                      Stroke="#FF70864A"
-                      StrokeThickness="2"
-                      Fill="Transparent"
-                      StrokeStartLineCap="Round"
-                      StrokeEndLineCap="Round"/>
-
-                <Path Data="M 34,61 L 48,54 L 53,64 L 42,68 Z"
-                      Fill="#FF251828"/>
-                <Path Data="M 68,64 L 74,54 L 89,61 L 79,69 Z"
-                      Fill="#FF251828"/>
-
-                <Path Data="M 39,80 Q 59,95 82,79 Q 74,104 59,105 Q 45,102 39,80 Z"
-                      Fill="#FF251828"/>
-                <Path Data="M 49,90 L 53,98 L 59,89 L 65,99 L 71,90"
-                      Stroke="#FFFFC26F"
-                      StrokeThickness="1.2"
-                      Fill="Transparent"
-                      Opacity="0.78"/>
-
-                <Ellipse Width="13" Height="5" Canvas.Left="36" Canvas.Top="52" Fill="#FFFFC47A" Opacity="0.18"/>
-            </Canvas>
-
-            <!-- Organic cobweb corners -->
-            <Canvas Canvas.Left="4" Canvas.Top="3" Width="170" Height="150" Opacity="0.46">
-                <Path Data="M 0,0 C 55,10 105,12 166,0 M 0,0 C 12,46 14,95 0,148 M 0,0 C 46,28 92,70 129,112"
-                      Stroke="#FFBFA9CA"
-                      StrokeThickness="1"
-                      Fill="Transparent"/>
-                <Path Data="M 3,27 Q 34,12 68,8 Q 83,8 101,4 M 9,51 Q 44,35 78,25 Q 96,20 116,10 M 14,80 Q 50,62 91,43 Q 111,32 132,17"
-                      Stroke="#FFBFA9CA"
-                      StrokeThickness="1"
-                      Fill="Transparent"/>
-            </Canvas>
-
-            <!-- Drifting fog layers -->
-            <Ellipse x:Name="HalloweenFogAOpacity"
-                     Width="650"
-                     Height="185"
-                     Canvas.Left="-150"
-                     Canvas.Bottom="24"
-                     Fill="#FFA96BFF"
-                     Opacity="0.15">
-                <Ellipse.Effect>
-                    <BlurEffect Radius="34"/>
-                </Ellipse.Effect>
-            </Ellipse>
-
-            <Ellipse x:Name="HalloweenFogBOpacity"
-                     Width="780"
-                     Height="205"
-                     Canvas.Right="-210"
-                     Canvas.Bottom="-8"
-                     Fill="#FF6A8DB8"
-                     Opacity="0.10">
-                <Ellipse.Effect>
-                    <BlurEffect Radius="40"/>
-                </Ellipse.Effect>
-            </Ellipse>
-
-            <!-- Flying bat: larger, outlined and visible against the dark theme -->
-            <Canvas Canvas.Left="0"
-                    Canvas.Top="126"
-                    Width="112"
-                    Height="58"
-                    IsHitTestVisible="False">
-                <Canvas.RenderTransform>
-                    <TranslateTransform x:Name="HalloweenBatTranslate" X="-130"/>
-                </Canvas.RenderTransform>
-
-                <Path Data="M 56,27
-                            C 48,18 40,15 31,18
-                            C 22,21 14,15 3,10
-                            C 7,20 14,28 23,31
-                            C 16,34 11,41 6,49
-                            C 18,47 31,43 41,35
-                            C 46,42 51,46 56,46
-                            C 61,46 66,42 71,35
-                            C 81,43 94,47 106,49
-                            C 101,41 96,34 89,31
-                            C 98,28 105,20 109,10
-                            C 98,15 90,21 81,18
-                            C 72,15 64,18 56,27 Z"
-                      Fill="#FF0A0710"
-                      Stroke="#FF8F6AA8"
-                      StrokeThickness="1.15"
-                      StrokeLineJoin="Round"
-                      Opacity="0.98">
-                    <Path.Effect>
-                        <DropShadowEffect BlurRadius="8"
-                                          ShadowDepth="2"
-                                          Direction="270"
-                                          Color="#FF000000"
-                                          Opacity="0.45"/>
-                    </Path.Effect>
-                </Path>
-
-                <Ellipse Width="16"
-                         Height="25"
-                         Canvas.Left="48"
-                         Canvas.Top="20"
-                         Fill="#FF110B18"/>
-
-                <Path Data="M 48,22 L 51,15 L 55,22 M 57,22 L 61,15 L 64,22"
-                      Stroke="#FF0A0710"
-                      StrokeThickness="2.2"
-                      StrokeLineJoin="Round"
-                      Fill="Transparent"/>
-
-                <Ellipse Width="3.2"
-                         Height="3.2"
-                         Canvas.Left="51"
-                         Canvas.Top="27"
-                         Fill="#FFFFA24A"
-                         Opacity="0.95"/>
-                <Ellipse Width="3.2"
-                         Height="3.2"
-                         Canvas.Left="58"
-                         Canvas.Top="27"
-                         Fill="#FFFFA24A"
-                         Opacity="0.95"/>
-            </Canvas>
-
-            <!-- Floating embers and fireflies -->
-            <Ellipse x:Name="HalloweenSparkleOpacity"
-                     Width="7"
-                     Height="7"
-                     Canvas.Left="462"
-                     Canvas.Top="102"
-                     Fill="#FFFFA23D"/>
-
-            <Ellipse Width="5" Height="5" Canvas.Left="520" Canvas.Top="168" Fill="#FFC27BFF" Opacity="0.72"/>
-            <Ellipse Width="4" Height="4" Canvas.Left="632" Canvas.Top="126" Fill="#FFFFB85B" Opacity="0.78"/>
-            <Ellipse Width="6" Height="6" Canvas.Left="742" Canvas.Top="214" Fill="#FFB77CFF" Opacity="0.68"/>
-            <Ellipse Width="4" Height="4" Canvas.Left="804" Canvas.Top="156" Fill="#FFFFA23D" Opacity="0.74"/>
-            <Ellipse Width="5" Height="5" Canvas.Left="880" Canvas.Top="238" Fill="#FFC27BFF" Opacity="0.72"/>
-            <Ellipse Width="3" Height="3" Canvas.Left="946" Canvas.Top="188" Fill="#FFFFC46F" Opacity="0.8"/>
-
-            <!-- Subtle top vignette -->
-            <Border Width="1000"
-                    Height="170"
-                    Canvas.Left="80"
-                    Canvas.Top="-90"
-                    CornerRadius="90"
-                    Opacity="0.16">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#FF5A2E78" Offset="0"/>
-                        <GradientStop Color="#00000000" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-            </Border>
-        </Canvas>
+        </Grid>
 
         <Grid x:Name="HalloweenBackdrop"
               Grid.ColumnSpan="2"
@@ -1081,7 +1030,7 @@
                     <TextBlock x:Name="NoListsText"
                                Text="No custom lists"
                                FontSize="13"
-                               Foreground="#9A9FA7"
+                               Foreground="{DynamicResource MutedTextBrush}"
                                Margin="12,6,0,0"/>
 
                 </StackPanel>
@@ -1090,7 +1039,7 @@
                         x:Name="NewListPanel"
                         Visibility="Collapsed"
                         Background="#F6F7F9"
-                        BorderBrush="#E1E4E8"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="9"
                         Padding="9"
@@ -1160,7 +1109,7 @@
 
                     <TextBlock Text="Everything you want to remember, in one place."
                                FontSize="14"
-                               Foreground="#7D828A"
+                               Foreground="{DynamicResource MutedTextBrush}"
                                Margin="0,6,0,0"/>
                 </StackPanel>
 
@@ -1168,7 +1117,7 @@
                         Height="40"
                         HorizontalAlignment="Right"
                         Background="{DynamicResource SurfaceBrush}"
-                        BorderBrush="#E1E4E8"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="9">
 
@@ -1214,7 +1163,7 @@
                           Margin="10,0,10,0">
 
                         <Border Height="46"
-                                Background="#F8F9FB"
+                                Background="{DynamicResource ContentSoftBrush}"
                                 BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
                                 CornerRadius="11"
@@ -1230,7 +1179,7 @@
                                     <TextBlock x:Name="DueDatePlaceholderText"
                                                Text="Choose date"
                                                FontSize="12"
-                                               Foreground="#9A9FA7"
+                                               Foreground="{DynamicResource MutedTextBrush}"
                                                VerticalAlignment="Center"
                                                IsHitTestVisible="False"/>
 
@@ -1266,7 +1215,7 @@
 
                             <Border Width="320"
                                     Background="{DynamicResource SurfaceBrush}"
-                                    BorderBrush="#E0E4E8"
+                                    BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
                                     CornerRadius="16"
                                     Padding="16">
@@ -1315,7 +1264,7 @@
                                                 Height="32"
                                                 HorizontalAlignment="Left"
                                                 Background="Transparent"
-                                                Foreground="#6E747C"
+                                                Foreground="{DynamicResource MutedTextBrush}"
                                                 BorderThickness="0"
                                                 FontSize="11"
                                                 FontWeight="SemiBold"
@@ -1326,7 +1275,7 @@
                                                 Height="32"
                                                 HorizontalAlignment="Right"
                                                 Background="Transparent"
-                                                Foreground="#6E747C"
+                                                Foreground="{DynamicResource MutedTextBrush}"
                                                 BorderThickness="0"
                                                 FontSize="11"
                                                 FontWeight="SemiBold"
@@ -1362,13 +1311,13 @@
                     <TextBlock Text="Reminders"
                                FontSize="18"
                                FontWeight="SemiBold"
-                               Foreground="#25282D"/>
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                     <TextBlock x:Name="ReminderCountText"
                                HorizontalAlignment="Right"
                                Text="0"
                                FontSize="13"
-                               Foreground="#858A92"/>
+                               Foreground="{DynamicResource SubtleTextBrush}"/>
 
                 </Grid>
 
@@ -1405,7 +1354,7 @@
 
                                             <TextBlock Text="{Binding DueDate, StringFormat='{}{0:d}'}"
                                                        FontSize="12"
-                                                       Foreground="#8C929A"
+                                                       Foreground="{DynamicResource SubtleTextBrush}"
                                                        Margin="32,5,0,0"/>
 
                                         </StackPanel>
@@ -1440,12 +1389,12 @@
                         <TextBlock Text="No reminders"
                                    FontSize="22"
                                    FontWeight="SemiBold"
-                                   Foreground="#34373C"
+                                   Foreground="{DynamicResource BodyTextBrush}"
                                    HorizontalAlignment="Center"/>
 
                         <TextBlock Text="Add your first reminder above."
                                    FontSize="14"
-                                   Foreground="#8A8F97"
+                                   Foreground="{DynamicResource MutedTextBrush}"
                                    Margin="0,7,0,0"
                                    HorizontalAlignment="Center"/>
 
@@ -1492,7 +1441,7 @@
                             Height="38"
                             Margin="0,0,8,0"
                             Background="{DynamicResource SurfaceBrush}"
-                            Foreground="#4E555E"
+                            Foreground="{DynamicResource SecondaryTextBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             FontSize="12"
@@ -1504,7 +1453,7 @@
                             Height="38"
                             Margin="0,0,5,0"
                             Background="{DynamicResource SurfaceBrush}"
-                            Foreground="#4E555E"
+                            Foreground="{DynamicResource SecondaryTextBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             FontSize="22"
@@ -1514,7 +1463,7 @@
                             Width="38"
                             Height="38"
                             Background="{DynamicResource SurfaceBrush}"
-                            Foreground="#4E555E"
+                            Foreground="{DynamicResource SecondaryTextBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             FontSize="22"
@@ -1554,13 +1503,13 @@
                                      Columns="7"
                                      Margin="0,0,0,7">
 
-                            <TextBlock Text="SUN" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
-                            <TextBlock Text="MON" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
-                            <TextBlock Text="TUE" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
-                            <TextBlock Text="WED" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
-                            <TextBlock Text="THU" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
-                            <TextBlock Text="FRI" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
-                            <TextBlock Text="SAT" FontSize="10" FontWeight="SemiBold" Foreground="#9A9FA7" TextAlignment="Center"/>
+                            <TextBlock Text="SUN" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center"/>
+                            <TextBlock Text="MON" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center"/>
+                            <TextBlock Text="TUE" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center"/>
+                            <TextBlock Text="WED" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center"/>
+                            <TextBlock Text="THU" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center"/>
+                            <TextBlock Text="FRI" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center"/>
+                            <TextBlock Text="SAT" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource MutedTextBrush}" TextAlignment="Center"/>
 
                         </UniformGrid>
 
