@@ -514,14 +514,7 @@
                 <DataTrigger Binding="{Binding IsEquipped}" Value="True">
                     <Setter Property="IsEnabled" Value="False"/>
                 </DataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Category}" Value="Guns"/>
-                        <Condition Binding="{Binding IsOwned}" Value="True"/>
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="IsEnabled" Value="False"/>
-                </MultiDataTrigger>
-            </Style.Triggers>
+</Style.Triggers>
         </Style>
 
         <Style x:Key="StoreCategoryButtonStyle" TargetType="Button">
@@ -1585,14 +1578,6 @@
                         Style="{StaticResource StoreCategoryButtonStyle}"
                         Click="StoreCategoryButton_Click"/>
 
-                <Button x:Name="StoreGunsButton"
-                        Grid.Row="0"
-                        Grid.Column="4"
-                        Content="GUNS"
-                        Tag="Guns"
-                        Style="{StaticResource StoreCategoryButtonStyle}"
-                        Click="StoreCategoryButton_Click"/>
-
                 <Button x:Name="StoreSkinsButton"
                         Grid.Row="0"
                         Grid.Column="6"
@@ -1697,29 +1682,9 @@
                                                                    TargetType="Grid">
                                                                 <Setter Property="Visibility"
                                                                         Value="Visible"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Category}"
-                                                                                 Value="Guns">
-                                                                        <Setter Property="Visibility"
-                                                                                Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
+</Style>
 
-                                                            <Style x:Key="GunPreviewStyle"
-                                                                   TargetType="Grid">
-                                                                <Setter Property="Visibility"
-                                                                        Value="Collapsed"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Category}"
-                                                                                 Value="Guns">
-                                                                        <Setter Property="Visibility"
-                                                                                Value="Visible"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-
-                                                        </Grid.Resources>
+</Grid.Resources>
 
                                                         <Grid Style="{StaticResource ThemePreviewStyle}">
                                                             <Ellipse Width="112"
@@ -1750,42 +1715,7 @@
                                                                        VerticalAlignment="Center"/>
                                                         </Grid>
 
-                                                        <Grid Style="{StaticResource GunPreviewStyle}">
-
-                                                            <Ellipse Width="170"
-                                                                     Height="100"
-                                                                     Fill="{Binding PreviewSoft}"
-                                                                     Opacity="0.35"
-                                                                     HorizontalAlignment="Center"
-                                                                     VerticalAlignment="Center"/>
-
-                                                            <Path Data="{Binding PreviewGeometry}"
-                                                                  Width="245"
-                                                                  Height="88"
-                                                                  Stretch="Uniform"
-                                                                  Fill="{Binding PreviewAccent}"
-                                                                  Stroke="{Binding PreviewSecondary}"
-                                                                  StrokeThickness="1.2"
-                                                                  HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center">
-                                                                <Path.Effect>
-                                                                    <DropShadowEffect BlurRadius="13"
-                                                                                      ShadowDepth="0"
-                                                                                      Opacity="0.42"/>
-                                                                </Path.Effect>
-                                                            </Path>
-
-                                                            <TextBlock Text="GUN PREVIEW"
-                                                                       FontSize="8"
-                                                                       FontWeight="Bold"
-                                                                       Foreground="{Binding PreviewSecondary}"
-                                                                       HorizontalAlignment="Left"
-                                                                       VerticalAlignment="Bottom"
-                                                                       Margin="10,0,0,8"
-                                                                       Opacity="0.8"/>
-                                                        </Grid>
-
-                                                    </Grid>
+</Grid>
                                                 </Border>
 
                                                 <Grid Grid.Row="1"
