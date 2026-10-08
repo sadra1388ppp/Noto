@@ -55,29 +55,12 @@ public partial class MainWindow : Window
         RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
     };
 
-    private static readonly DoubleAnimation HalloweenFogAnimationA = new()
-    {
-        From = 0.14,
-        To = 0.34,
-        Duration = TimeSpan.FromSeconds(4.5),
-        AutoReverse = true,
-        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
-    };
-
-    private static readonly DoubleAnimation HalloweenFogAnimationB = new()
-    {
-        From = 0.08,
-        To = 0.24,
-        Duration = TimeSpan.FromSeconds(6.0),
-        AutoReverse = true,
-        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
-    };
-
     private static readonly DoubleAnimation HalloweenBatAnimation = new()
     {
-        From = -130,
-        To = 1000,
-        Duration = TimeSpan.FromSeconds(10.5),
+        From = 0,
+        To = 52,
+        Duration = TimeSpan.FromSeconds(8.5),
+        AutoReverse = true,
         RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
     };
 
@@ -1341,12 +1324,6 @@ public partial class MainWindow : Window
         HalloweenPumpkinRightRotate.BeginAnimation(
             RotateTransform.AngleProperty,
             enabled ? HalloweenPumpkinRightAnimation : null);
-        HalloweenFogAOpacity.BeginAnimation(
-            UIElement.OpacityProperty,
-            enabled ? HalloweenFogAnimationA : null);
-        HalloweenFogBOpacity.BeginAnimation(
-            UIElement.OpacityProperty,
-            enabled ? HalloweenFogAnimationB : null);
         HalloweenBatTranslate.BeginAnimation(
             TranslateTransform.XProperty,
             enabled ? HalloweenBatAnimation : null);
