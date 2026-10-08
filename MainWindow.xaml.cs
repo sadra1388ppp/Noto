@@ -1195,6 +1195,11 @@ public partial class MainWindow : Window
         RewardsContentPanel.Visibility = Visibility.Collapsed;
         StoreContentPanel.Visibility = Visibility.Collapsed;
         AchievementsContentPanel.Visibility = Visibility.Collapsed;
+
+        // Entering Calendar always starts from today instead of keeping an old selection.
+        _calendarMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        _selectedCalendarDate = DateTime.Today;
+
         RefreshCalendar();
     }
 
