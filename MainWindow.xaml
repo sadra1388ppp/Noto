@@ -592,38 +592,71 @@
                 Visibility="Collapsed"
                 ClipToBounds="False">
 
-            <!-- Soft moonlight: no black circle, just a glowing moon with subtle craters -->
-            <Ellipse Width="220"
-                     Height="220"
-                     Canvas.Right="6"
-                     Canvas.Top="20"
-                     Opacity="0.16">
-                <Ellipse.Fill>
-                    <RadialGradientBrush Center="0.45,0.42">
-                        <GradientStop Color="#FFFFFFFF" Offset="0"/>
-                        <GradientStop Color="#FFE4C7FF" Offset="0.32"/>
-                        <GradientStop Color="#009A5CFF" Offset="1"/>
-                    </RadialGradientBrush>
-                </Ellipse.Fill>
-            </Ellipse>
+            <!-- Natural moon, tucked into the corner so it never blocks controls -->
+            <Canvas Canvas.Right="8"
+                    Canvas.Top="-6"
+                    Width="132"
+                    Height="132"
+                    IsHitTestVisible="False">
 
-            <Ellipse Width="146"
-                     Height="146"
-                     Canvas.Right="38"
-                     Canvas.Top="48"
-                     Fill="#FFE8D8FF"
-                     Opacity="0.94">
-                <Ellipse.Effect>
-                    <DropShadowEffect BlurRadius="36"
-                                      ShadowDepth="0"
-                                      Color="#FFA96BFF"
-                                      Opacity="0.55"/>
-                </Ellipse.Effect>
-            </Ellipse>
+                <Ellipse Width="132"
+                         Height="132"
+                         Opacity="0.14">
+                    <Ellipse.Fill>
+                        <RadialGradientBrush Center="0.48,0.44">
+                            <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                            <GradientStop Color="#FFDDBDFF" Offset="0.42"/>
+                            <GradientStop Color="#006A3C80" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
 
-            <Ellipse Width="22" Height="14" Canvas.Right="70" Canvas.Top="80" Fill="#FFD2B8ED" Opacity="0.38"/>
-            <Ellipse Width="12" Height="9" Canvas.Right="96" Canvas.Top="122" Fill="#FFD2B8ED" Opacity="0.34"/>
-            <Ellipse Width="17" Height="11" Canvas.Right="68" Canvas.Top="146" Fill="#FFD2B8ED" Opacity="0.28"/>
+                <Ellipse Width="104"
+                         Height="104"
+                         Canvas.Left="14"
+                         Canvas.Top="14"
+                         Fill="#FFE9DFFF"
+                         Opacity="0.95">
+                    <Ellipse.Effect>
+                        <DropShadowEffect BlurRadius="24"
+                                          ShadowDepth="0"
+                                          Color="#FFA96BFF"
+                                          Opacity="0.36"/>
+                    </Ellipse.Effect>
+                </Ellipse>
+
+                <!-- soft lunar craters -->
+                <Ellipse Width="19"
+                         Height="12"
+                         Canvas.Left="30"
+                         Canvas.Top="34"
+                         Fill="#FFCDBEDF"
+                         Opacity="0.27"/>
+                <Ellipse Width="12"
+                         Height="8"
+                         Canvas.Left="68"
+                         Canvas.Top="25"
+                         Fill="#FFCDBEDF"
+                         Opacity="0.23"/>
+                <Ellipse Width="24"
+                         Height="15"
+                         Canvas.Left="69"
+                         Canvas.Top="63"
+                         Fill="#FFCDBEDF"
+                         Opacity="0.22"/>
+                <Ellipse Width="10"
+                         Height="7"
+                         Canvas.Left="40"
+                         Canvas.Top="76"
+                         Fill="#FFCDBEDF"
+                         Opacity="0.20"/>
+                <Ellipse Width="7"
+                         Height="7"
+                         Canvas.Left="82"
+                         Canvas.Top="42"
+                         Fill="#FFCDBEDF"
+                         Opacity="0.18"/>
+            </Canvas>
 
             <!-- Left hanging pumpkin -->
             <Canvas Canvas.Left="258"
@@ -784,36 +817,67 @@
                 </Ellipse.Effect>
             </Ellipse>
 
-            <!-- Flying bat with curved wings -->
-            <Canvas Canvas.Left="0" Canvas.Top="120" Width="86" Height="42">
+            <!-- Flying bat: larger, outlined and visible against the dark theme -->
+            <Canvas Canvas.Left="0"
+                    Canvas.Top="126"
+                    Width="112"
+                    Height="58"
+                    IsHitTestVisible="False">
                 <Canvas.RenderTransform>
-                    <TranslateTransform x:Name="HalloweenBatTranslate" X="-70"/>
+                    <TranslateTransform x:Name="HalloweenBatTranslate" X="-130"/>
                 </Canvas.RenderTransform>
 
-                <Path Data="M 43,19
-                            C 37,13 31,11 24,13
-                            C 18,15 12,11 3,8
-                            C 8,16 10,22 18,25
-                            C 12,27 8,32 4,37
-                            C 15,35 25,33 33,27
-                            C 37,31 40,34 43,34
-                            C 46,34 49,31 53,27
-                            C 61,33 71,35 82,37
-                            C 78,32 74,27 68,25
-                            C 76,22 78,16 83,8
-                            C 74,11 68,15 62,13
-                            C 55,11 49,13 43,19 Z"
-                      Fill="#FF15101D"
-                      Opacity="0.92"/>
+                <Path Data="M 56,27
+                            C 48,18 40,15 31,18
+                            C 22,21 14,15 3,10
+                            C 7,20 14,28 23,31
+                            C 16,34 11,41 6,49
+                            C 18,47 31,43 41,35
+                            C 46,42 51,46 56,46
+                            C 61,46 66,42 71,35
+                            C 81,43 94,47 106,49
+                            C 101,41 96,34 89,31
+                            C 98,28 105,20 109,10
+                            C 98,15 90,21 81,18
+                            C 72,15 64,18 56,27 Z"
+                      Fill="#FF0A0710"
+                      Stroke="#FF8F6AA8"
+                      StrokeThickness="1.15"
+                      StrokeLineJoin="Round"
+                      Opacity="0.98">
+                    <Path.Effect>
+                        <DropShadowEffect BlurRadius="8"
+                                          ShadowDepth="2"
+                                          Direction="270"
+                                          Color="#FF000000"
+                                          Opacity="0.45"/>
+                    </Path.Effect>
+                </Path>
 
-                <Ellipse Width="13"
-                         Height="21"
-                         Canvas.Left="37"
-                         Canvas.Top="14"
-                         Fill="#FF17111F"/>
+                <Ellipse Width="16"
+                         Height="25"
+                         Canvas.Left="48"
+                         Canvas.Top="20"
+                         Fill="#FF110B18"/>
 
-                <Ellipse Width="2.7" Height="2.7" Canvas.Left="40" Canvas.Top="20" Fill="#FFFF9B45" Opacity="0.9"/>
-                <Ellipse Width="2.7" Height="2.7" Canvas.Left="45" Canvas.Top="20" Fill="#FFFF9B45" Opacity="0.9"/>
+                <Path Data="M 48,22 L 51,15 L 55,22 M 57,22 L 61,15 L 64,22"
+                      Stroke="#FF0A0710"
+                      StrokeThickness="2.2"
+                      StrokeLineJoin="Round"
+                      Fill="Transparent"/>
+
+                <Ellipse Width="3.2"
+                         Height="3.2"
+                         Canvas.Left="51"
+                         Canvas.Top="27"
+                         Fill="#FFFFA24A"
+                         Opacity="0.95"/>
+                <Ellipse Width="3.2"
+                         Height="3.2"
+                         Canvas.Left="58"
+                         Canvas.Top="27"
+                         Fill="#FFFFA24A"
+                         Opacity="0.95"/>
             </Canvas>
 
             <!-- Floating embers and fireflies -->
