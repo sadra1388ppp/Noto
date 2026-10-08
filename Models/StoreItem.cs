@@ -40,21 +40,11 @@ public sealed class StoreItem : INotifyPropertyChanged
         set => SetField(ref _isEquipped, value);
     }
 
-    public string ActionText
-    {
-        get
-        {
-            if (Category.Equals("Guns", StringComparison.OrdinalIgnoreCase))
-            {
-                return IsOwned ? "Owned" : $"Buy • {Price}";
-            }
-
-            return IsEquipped ? "Equipped" :
-                   IsOwned ? "Equip" :
-                   Price == 0 ? "Free" :
-                   $"Buy • {Price}";
-        }
-    }
+    public string ActionText =>
+        IsEquipped ? "Equipped" :
+        IsOwned ? "Equip" :
+        Price == 0 ? "Free" :
+        $"Buy • {Price}";
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
