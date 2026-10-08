@@ -1948,6 +1948,7 @@
                                                                     <Setter Property="Visibility" Value="Visible"/>
                                                                 </DataTrigger>
                                                             </Style>
+                                                        </Style>
                                                     </Grid.Style>
                                                     <Ellipse Width="60"
                                                              Height="60"
