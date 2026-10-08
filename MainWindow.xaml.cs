@@ -74,6 +74,52 @@ public partial class MainWindow : Window
     };
 
 
+    private static readonly DoubleAnimation ForestFireflyAnimationA = new()
+    {
+        From = 0.28,
+        To = 1.0,
+        Duration = TimeSpan.FromSeconds(2.4),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation ForestFireflyMoveA = new()
+    {
+        From = 0,
+        To = -7,
+        Duration = TimeSpan.FromSeconds(3.6),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation ForestFireflyMoveB = new()
+    {
+        From = 0,
+        To = 8,
+        Duration = TimeSpan.FromSeconds(4.2),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation ForestLeafMove = new()
+    {
+        From = 0,
+        To = 10,
+        Duration = TimeSpan.FromSeconds(4.8),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+    private static readonly DoubleAnimation ForestLeafSwing = new()
+    {
+        From = -18,
+        To = 18,
+        Duration = TimeSpan.FromSeconds(4.8),
+        AutoReverse = true,
+        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
+    };
+
+
     public MainWindow()
     {
         InitializeComponent();
@@ -138,13 +184,15 @@ public partial class MainWindow : Window
         // Keep only the current theme inventory. Older removed themes are migrated out.
         _progress.OwnedStoreItemIds = _progress.OwnedStoreItemIds
             .Where(id => id.Equals("theme.default", StringComparison.OrdinalIgnoreCase) ||
-                         id.Equals("theme.halloween-night", StringComparison.OrdinalIgnoreCase))
+                         id.Equals("theme.halloween-night", StringComparison.OrdinalIgnoreCase) ||
+                         id.Equals("theme.moonlit-forest", StringComparison.OrdinalIgnoreCase))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList();
 
         if (string.IsNullOrWhiteSpace(_progress.EquippedThemeId) ||
             (!_progress.EquippedThemeId.Equals("theme.default", StringComparison.OrdinalIgnoreCase) &&
-             !_progress.EquippedThemeId.Equals("theme.halloween-night", StringComparison.OrdinalIgnoreCase)))
+             !_progress.EquippedThemeId.Equals("theme.halloween-night", StringComparison.OrdinalIgnoreCase) &&
+             !_progress.EquippedThemeId.Equals("theme.moonlit-forest", StringComparison.OrdinalIgnoreCase)))
         {
             _progress.EquippedThemeId = "theme.default";
         }
@@ -1253,6 +1301,14 @@ public partial class MainWindow : Window
 
     private void ApplyTheme(string themeId)
     {
+        var halloweenEnabled = themeId.Equals(
+            "theme.halloween-night",
+            StringComparison.OrdinalIgnoreCase);
+
+        var forestEnabled = themeId.Equals(
+            "theme.moonlit-forest",
+            StringComparison.OrdinalIgnoreCase);
+
         var palette = themeId switch
         {
             "theme.halloween-night" => new ThemePalette(
@@ -1260,48 +1316,114 @@ public partial class MainWindow : Window
                 Color.FromRgb(217, 92, 16),
                 Color.FromRgb(246, 234, 255)),
 
+            "theme.moonlit-forest" => new ThemePalette(
+                Color.FromRgb(103, 191, 98),
+                Color.FromRgb(73, 153, 76),
+                Color.FromRgb(223, 244, 214)),
+
             _ => new ThemePalette(
                 Color.FromRgb(52, 120, 246),
                 Color.FromRgb(40, 101, 219),
                 Color.FromRgb(234, 241, 255))
         };
 
-        var halloweenEnabled = themeId.Equals(
-            "theme.halloween-night",
-            StringComparison.OrdinalIgnoreCase);
-
         Resources["AccentBrush"] = new SolidColorBrush(palette.Accent);
         Resources["AccentHoverBrush"] = new SolidColorBrush(palette.Hover);
         Resources["AccentSoftBrush"] = new SolidColorBrush(palette.Soft);
 
         Resources["WindowBackgroundBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(10, 6, 16) : Color.FromRgb(247, 248, 250));
+            halloweenEnabled
+                ? Color.FromRgb(10, 6, 16)
+                : forestEnabled
+                    ? Color.FromRgb(5, 15, 9)
+                    : Color.FromRgb(247, 248, 250));
+
         Resources["SurfaceBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(20, 14, 28) : Color.FromRgb(255, 255, 255));
+            halloweenEnabled
+                ? Color.FromRgb(20, 14, 28)
+                : forestEnabled
+                    ? Color.FromRgb(12, 28, 17)
+                    : Color.FromRgb(255, 255, 255));
+
         Resources["SurfaceSoftBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(28, 19, 38) : Color.FromRgb(250, 251, 252));
+            halloweenEnabled
+                ? Color.FromRgb(28, 19, 38)
+                : forestEnabled
+                    ? Color.FromRgb(18, 41, 24)
+                    : Color.FromRgb(250, 251, 252));
+
         Resources["ContentSoftBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(24, 17, 33) : Color.FromRgb(248, 249, 250));
+            halloweenEnabled
+                ? Color.FromRgb(24, 17, 33)
+                : forestEnabled
+                    ? Color.FromRgb(14, 34, 20)
+                    : Color.FromRgb(248, 249, 250));
+
         Resources["BorderBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(55, 39, 68) : Color.FromRgb(226, 229, 233));
+            halloweenEnabled
+                ? Color.FromRgb(55, 39, 68)
+                : forestEnabled
+                    ? Color.FromRgb(42, 75, 46)
+                    : Color.FromRgb(226, 229, 233));
+
         Resources["InputBorderBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(82, 61, 99) : Color.FromRgb(205, 210, 216));
+            halloweenEnabled
+                ? Color.FromRgb(82, 61, 99)
+                : forestEnabled
+                    ? Color.FromRgb(63, 101, 66)
+                    : Color.FromRgb(205, 210, 216));
+
         Resources["HoverSurfaceBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(39, 27, 50) : Color.FromRgb(241, 243, 246));
+            halloweenEnabled
+                ? Color.FromRgb(39, 27, 50)
+                : forestEnabled
+                    ? Color.FromRgb(26, 56, 33)
+                    : Color.FromRgb(241, 243, 246));
+
         Resources["PrimaryTextBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(246, 237, 251) : Color.FromRgb(23, 25, 28));
+            halloweenEnabled
+                ? Color.FromRgb(246, 237, 251)
+                : forestEnabled
+                    ? Color.FromRgb(236, 246, 231)
+                    : Color.FromRgb(23, 25, 28));
+
         Resources["TextBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(238, 228, 246) : Color.FromRgb(32, 35, 41));
+            halloweenEnabled
+                ? Color.FromRgb(238, 228, 246)
+                : forestEnabled
+                    ? Color.FromRgb(225, 241, 221)
+                    : Color.FromRgb(32, 35, 41));
+
         Resources["BodyTextBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(220, 207, 232) : Color.FromRgb(48, 53, 59));
+            halloweenEnabled
+                ? Color.FromRgb(220, 207, 232)
+                : forestEnabled
+                    ? Color.FromRgb(204, 225, 199)
+                    : Color.FromRgb(48, 53, 59));
+
         Resources["SecondaryTextBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(188, 173, 202) : Color.FromRgb(85, 91, 102));
+            halloweenEnabled
+                ? Color.FromRgb(188, 173, 202)
+                : forestEnabled
+                    ? Color.FromRgb(168, 193, 163)
+                    : Color.FromRgb(85, 91, 102));
+
         Resources["MutedTextBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(177, 160, 193) : Color.FromRgb(123, 129, 138));
+            halloweenEnabled
+                ? Color.FromRgb(177, 160, 193)
+                : forestEnabled
+                    ? Color.FromRgb(156, 179, 152)
+                    : Color.FromRgb(123, 129, 138));
+
         Resources["SubtleTextBrush"] = new SolidColorBrush(
-            halloweenEnabled ? Color.FromRgb(148, 131, 165) : Color.FromRgb(138, 144, 152));
+            halloweenEnabled
+                ? Color.FromRgb(148, 131, 165)
+                : forestEnabled
+                    ? Color.FromRgb(130, 156, 125)
+                    : Color.FromRgb(138, 144, 152));
 
         UpdateHalloweenEffects(halloweenEnabled);
+        UpdateForestEffects(forestEnabled);
     }
 
     private void UpdateHalloweenEffects(bool enabled)
@@ -1318,18 +1440,56 @@ public partial class MainWindow : Window
             : Visibility.Collapsed;
 
         HalloweenEffectsOverlay.Opacity = enabled ? 1 : 0;
+
         HalloweenPumpkinLeftRotate.BeginAnimation(
             RotateTransform.AngleProperty,
             enabled ? HalloweenPumpkinLeftAnimation : null);
+
         HalloweenPumpkinRightRotate.BeginAnimation(
             RotateTransform.AngleProperty,
             enabled ? HalloweenPumpkinRightAnimation : null);
+
         HalloweenBatTranslate.BeginAnimation(
             TranslateTransform.XProperty,
             enabled ? HalloweenBatAnimation : null);
+
         HalloweenSparkleOpacity.BeginAnimation(
             UIElement.OpacityProperty,
             enabled ? HalloweenSparkleAnimation : null);
+    }
+
+    private void UpdateForestEffects(bool enabled)
+    {
+        if (ForestEffectsOverlay == null)
+            return;
+
+        ForestEffectsOverlay.Visibility = enabled
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        ForestBackdrop.Visibility = enabled
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        ForestFireflyOpacityA.BeginAnimation(
+            UIElement.OpacityProperty,
+            enabled ? ForestFireflyAnimationA : null);
+
+        ForestFireflyTranslateA.BeginAnimation(
+            TranslateTransform.YProperty,
+            enabled ? ForestFireflyMoveA : null);
+
+        ForestFireflyTranslateB.BeginAnimation(
+            TranslateTransform.YProperty,
+            enabled ? ForestFireflyMoveB : null);
+
+        ForestLeafTranslate.BeginAnimation(
+            TranslateTransform.YProperty,
+            enabled ? ForestLeafMove : null);
+
+        ForestLeafRotate.BeginAnimation(
+            RotateTransform.AngleProperty,
+            enabled ? ForestLeafSwing : null);
     }
 
     private void SaveAll()
