@@ -1187,15 +1187,15 @@ public partial class MainWindow : Window
     {
         button.Background = selected
             ? (Brush)FindResource("AccentSoftBrush")
-            : new SolidColorBrush(Color.FromRgb(247, 248, 250));
+            : (Brush)FindResource("ContentSoftBrush");
 
         button.Foreground = selected
             ? (Brush)FindResource("AccentBrush")
-            : new SolidColorBrush(Color.FromRgb(85, 91, 102));
+            : (Brush)FindResource("SecondaryTextBrush");
 
         button.BorderBrush = selected
             ? (Brush)FindResource("AccentBrush")
-            : new SolidColorBrush(Color.FromRgb(226, 229, 233));
+            : (Brush)FindResource("BorderBrush");
     }
 
     private void ShowAchievementsView()
@@ -1283,13 +1283,42 @@ public partial class MainWindow : Window
                 Color.FromRgb(234, 241, 255))
         };
 
+        var halloweenEnabled = themeId.Equals(
+            "theme.halloween-night",
+            StringComparison.OrdinalIgnoreCase);
+
         Resources["AccentBrush"] = new SolidColorBrush(palette.Accent);
         Resources["AccentHoverBrush"] = new SolidColorBrush(palette.Hover);
         Resources["AccentSoftBrush"] = new SolidColorBrush(palette.Soft);
 
-        UpdateHalloweenEffects(themeId.Equals(
-            "theme.halloween-night",
-            StringComparison.OrdinalIgnoreCase));
+        Resources["WindowBackgroundBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(10, 6, 16) : Color.FromRgb(247, 248, 250));
+        Resources["SurfaceBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(20, 14, 28) : Color.FromRgb(255, 255, 255));
+        Resources["SurfaceSoftBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(28, 19, 38) : Color.FromRgb(250, 251, 252));
+        Resources["ContentSoftBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(24, 17, 33) : Color.FromRgb(248, 249, 250));
+        Resources["BorderBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(55, 39, 68) : Color.FromRgb(226, 229, 233));
+        Resources["InputBorderBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(82, 61, 99) : Color.FromRgb(205, 210, 216));
+        Resources["HoverSurfaceBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(39, 27, 50) : Color.FromRgb(241, 243, 246));
+        Resources["PrimaryTextBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(246, 237, 251) : Color.FromRgb(23, 25, 28));
+        Resources["TextBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(238, 228, 246) : Color.FromRgb(32, 35, 41));
+        Resources["BodyTextBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(220, 207, 232) : Color.FromRgb(48, 53, 59));
+        Resources["SecondaryTextBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(188, 173, 202) : Color.FromRgb(85, 91, 102));
+        Resources["MutedTextBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(177, 160, 193) : Color.FromRgb(123, 129, 138));
+        Resources["SubtleTextBrush"] = new SolidColorBrush(
+            halloweenEnabled ? Color.FromRgb(148, 131, 165) : Color.FromRgb(138, 144, 152));
+
+        UpdateHalloweenEffects(halloweenEnabled);
     }
 
     private void UpdateHalloweenEffects(bool enabled)
@@ -1298,6 +1327,10 @@ public partial class MainWindow : Window
             return;
 
         HalloweenEffectsOverlay.Visibility = enabled
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        HalloweenBackdrop.Visibility = enabled
             ? Visibility.Visible
             : Visibility.Collapsed;
 
