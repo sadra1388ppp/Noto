@@ -28,6 +28,12 @@
         <SolidColorBrush x:Key="MutedTextBrush" Color="#7B818A"/>
         <SolidColorBrush x:Key="SubtleTextBrush" Color="#8A9098"/>
 
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="{DynamicResource BodyTextBrush}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="SelectionBrush" Value="{DynamicResource AccentBrush}"/>
+        </Style>
+
         <Style x:Key="SidebarItemStyle" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="12,9"/>
             <Setter Property="Margin" Value="0,2"/>
@@ -69,7 +75,7 @@
 
         <Style x:Key="ActionButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#70757D"/>
+            <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="8"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -162,7 +168,7 @@
         </Style>
 
         <Style x:Key="ReminderCheckBoxStyle" TargetType="CheckBox">
-            <Setter Property="Foreground" Value="#24272C"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -253,7 +259,7 @@
             <Setter Property="Width" Value="32"/>
             <Setter Property="Height" Value="32"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#9AA0A8"/>
+            <Setter Property="Foreground" Value="{DynamicResource SubtleTextBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -1354,11 +1360,6 @@
                                     CornerRadius="16"
                                     Padding="16">
 
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="24"
-                                                      ShadowDepth="5"
-                                                      Opacity="0.18"/>
-                                </Border.Effect>
 
                                 <StackPanel>
                                     <Grid Margin="2,0,2,12">
@@ -1668,19 +1669,27 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0">
-                            <TextBlock Text="Selected day"
-                                       FontSize="11"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource SubtleTextBrush}"/>
+                        <Grid Grid.Row="0">
+                            <StackPanel>
+                                <TextBlock Text="SELECTED DAY"
+                                           FontSize="9"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentBrush}"
+                                           Opacity="0.9"/>
 
-                            <TextBlock x:Name="CalendarSelectedDateText"
-                                       Text="Today"
-                                       FontSize="21"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource TextBrush}"
-                                       Margin="0,4,0,0"/>
-                        </StackPanel>
+                                <TextBlock x:Name="CalendarSelectedDateText"
+                                           Text="Today"
+                                           FontSize="21"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextBrush}"
+                                           Margin="0,4,0,0"/>
+
+                                <TextBlock Text="Your plan for this day"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource MutedTextBrush}"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </Grid>
 
                         <Border Grid.Row="1"
                                 Background="{DynamicResource AccentSoftBrush}"
@@ -1688,19 +1697,27 @@
                                 Padding="12"
                                 Margin="0,18,0,14">
 
-                            <StackPanel>
-                                <TextBlock Text="REMINDERS"
-                                           FontSize="9"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource AccentBrush}"/>
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Text="REMINDERS"
+                                               FontSize="9"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource AccentBrush}"/>
 
-                                <TextBlock x:Name="CalendarSelectedCountText"
-                                           Text="0"
-                                           FontSize="22"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextBrush}"
-                                           Margin="0,2,0,0"/>
-                            </StackPanel>
+                                    <TextBlock x:Name="CalendarSelectedCountText"
+                                               Text="0"
+                                               FontSize="22"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextBrush}"
+                                               Margin="0,2,0,0"/>
+                                </StackPanel>
+
+                                <TextBlock Text="scheduled"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="10"
+                                           Foreground="{DynamicResource MutedTextBrush}"/>
+                            </Grid>
                         </Border>
 
                         <Grid Grid.Row="2">
@@ -1714,18 +1731,61 @@
                                                     CornerRadius="10"
                                                     Padding="11"
                                                     Margin="0,0,0,8">
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Title}"
-                                                               FontSize="13"
-                                                               FontWeight="SemiBold"
-                                                               Foreground="{DynamicResource BodyTextBrush}"
-                                                               TextWrapping="Wrap"/>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="20"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                                    <TextBlock Text="{Binding IsCompleted, StringFormat={}{0:Completed}}"
-                                                               FontSize="11"
-                                                               Foreground="{DynamicResource MutedTextBrush}"
-                                                               Margin="0,4,0,0"/>
-                                                </StackPanel>
+                                                    <Border Width="9"
+                                                            Height="9"
+                                                            CornerRadius="5"
+                                                            Background="{DynamicResource AccentBrush}"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Top"
+                                                            Margin="2,4,0,0"/>
+
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="{Binding Title}"
+                                                                   FontSize="13"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource BodyTextBrush}"
+                                                                   TextWrapping="Wrap"/>
+
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    Margin="0,4,0,0">
+                                                            <TextBlock Text="Completed"
+                                                                       FontSize="10.5"
+                                                                       Foreground="{DynamicResource AccentBrush}">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+
+                                                            <TextBlock Text="Pending"
+                                                                       FontSize="10.5"
+                                                                       Foreground="{DynamicResource MutedTextBrush}">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Grid>
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -1733,7 +1793,7 @@
                             </ScrollViewer>
 
                             <TextBlock x:Name="CalendarEmptyText"
-                                       Text="No reminders for this day."
+                                       Text="Nothing scheduled for this day."
                                        FontSize="13"
                                        Foreground="{DynamicResource SubtleTextBrush}"
                                        TextWrapping="Wrap"
@@ -1765,7 +1825,7 @@
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-                    <TextBlock Text="Everything you've earned from the Store."
+                    <TextBlock Text="Your owned themes — switch back anytime."
                                FontSize="14"
                                Foreground="{DynamicResource MutedTextBrush}"
                                Margin="0,6,0,0"/>
@@ -1831,65 +1891,166 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Width="220"
+                                <Border Width="245"
+                                        Height="248"
                                         Background="{DynamicResource SurfaceSoftBrush}"
-                                        BorderBrush="#E4E7EA"
+                                        BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="13"
-                                        Padding="15"
+                                        CornerRadius="14"
+                                        Padding="13"
                                         Margin="0,0,12,12">
 
                                     <Grid>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="92"/>
                                             <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <Border Grid.Row="0"
-                                                Height="82"
-                                                Background="{DynamicResource AccentSoftBrush}"
+                                                Background="{Binding PreviewBackground}"
                                                 CornerRadius="10"
-                                                Margin="0,0,0,13">
-
+                                                ClipToBounds="True">
                                             <Grid>
-                                                <Ellipse Width="42"
-                                                         Height="42"
-                                                         Fill="{DynamicResource AccentBrush}"/>
 
-                                                <TextBlock Text="R"
-                                                           Foreground="White"
-                                                           FontSize="17"
-                                                           FontWeight="Bold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"/>
+                                                <Grid>
+                                                    <Grid.Style>
+                                                        <Style TargetType="Grid">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Id}" Value="theme.default">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Grid.Style>
+                                                    <Ellipse Width="64"
+                                                             Height="64"
+                                                             Fill="#FF3478F6"
+                                                             Opacity="0.85"
+                                                             HorizontalAlignment="Center"
+                                                             VerticalAlignment="Center"/>
+                                                    <TextBlock Text="DEFAULT"
+                                                               FontSize="9"
+                                                               FontWeight="Bold"
+                                                               Foreground="White"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"/>
+                                                </Grid>
+
+                                                <Grid>
+                                                    <Grid.Style>
+                                                        <Style TargetType="Grid">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Id}" Value="theme.halloween-night">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Style>
+                                                    </Grid.Style>
+                                                    <Ellipse Width="60"
+                                                             Height="60"
+                                                             HorizontalAlignment="Right"
+                                                             VerticalAlignment="Top"
+                                                             Margin="0,10,14,0"
+                                                             Fill="#FFE8D8FF"/>
+                                                    <Path Data="M 0,76 Q 70,52 125,75 T 245,72 L 245,92 L 0,92 Z"
+                                                          Fill="#FF0D0912"/>
+                                                    <Canvas Width="42"
+                                                            Height="48"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Bottom"
+                                                            Margin="15,0,0,7">
+                                                        <Ellipse Width="20" Height="29" Canvas.Left="12" Canvas.Top="14" Fill="#FFFF7D25"/>
+                                                        <Ellipse Width="23" Height="34" Canvas.Left="3" Canvas.Top="12" Fill="#FFFF9137"/>
+                                                        <Ellipse Width="23" Height="34" Canvas.Left="20" Canvas.Top="12" Fill="#FFFF7422"/>
+                                                        <Path Data="M 11,28 L 18,24 L 20,29 M 23,29 L 25,24 L 32,28"
+                                                              Stroke="#FF24172A"
+                                                              StrokeThickness="3.5"
+                                                              Fill="Transparent"/>
+                                                        <Path Data="M 14,35 Q 22,42 31,35 Q 28,44 22,44 Q 18,43 14,35 Z"
+                                                              Fill="#FF24172A"/>
+                                                    </Canvas>
+                                                </Grid>
+
+                                                <Grid>
+                                                    <Grid.Style>
+                                                        <Style TargetType="Grid">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Id}" Value="theme.moonlit-forest">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Grid.Style>
+                                                    <Ellipse Width="54"
+                                                             Height="54"
+                                                             HorizontalAlignment="Right"
+                                                             VerticalAlignment="Top"
+                                                             Margin="0,12,16,0"
+                                                             Fill="#FFEAF3DC"/>
+                                                    <Path Data="M 0,92 L 0,65 L 17,39 L 29,65 L 45,45 L 58,65 L 76,36 L 90,65 L 106,47 L 120,65 L 138,39 L 153,65 L 171,46 L 186,65 L 204,38 L 220,65 L 245,45 L 245,92 Z"
+                                                          Fill="#FF092012"/>
+                                                    <Ellipse Width="4" Height="4" Canvas.Left="42" Canvas.Top="28" Fill="#FFD8FF8B"/>
+                                                    <Ellipse Width="4" Height="4" Canvas.Left="126" Canvas.Top="22" Fill="#FFBDF47D"/>
+                                                    <Ellipse Width="5" Height="5" Canvas.Left="189" Canvas.Top="38" Fill="#FFE5FFA0"/>
+                                                    <TextBlock Text="MOONLIT FOREST"
+                                                               FontSize="8"
+                                                               FontWeight="Bold"
+                                                               Foreground="#FFD7EACD"
+                                                               Margin="12,10,0,0"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Top"/>
+                                                </Grid>
+
                                             </Grid>
                                         </Border>
 
-                                        <TextBlock Grid.Row="1"
-                                                   Text="{Binding Name}"
-                                                   FontSize="15"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource TextBrush}"/>
+                                        <Grid Grid.Row="1"
+                                              Margin="2,11,2,0">
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextBrush}"/>
+                                            <Border HorizontalAlignment="Right"
+                                                    Background="{Binding PreviewSoft}"
+                                                    CornerRadius="7"
+                                                    Padding="7,4">
+                                                <TextBlock Text="THEME"
+                                                           FontSize="8"
+                                                           FontWeight="Bold"
+                                                           Foreground="{Binding PreviewAccent}"/>
+                                            </Border>
+                                        </Grid>
 
                                         <TextBlock Grid.Row="2"
                                                    Text="{Binding Description}"
-                                                   FontSize="12"
+                                                   FontSize="11.5"
                                                    Foreground="{DynamicResource MutedTextBrush}"
                                                    TextWrapping="Wrap"
-                                                   Margin="0,5,0,13"/>
+                                                   Margin="2,5,2,10"
+                                                   VerticalAlignment="Top"/>
 
-                                        <Button Grid.Row="3"
-                                                Content="{Binding ActionText}"
-                                                Tag="{Binding}"
-                                                Height="36"
-                                                Background="{DynamicResource AccentBrush}"
-                                                Foreground="White"
-                                                BorderThickness="0"
-                                                FontSize="12"
-                                                FontWeight="SemiBold"
-                                                Click="StoreItemButton_Click"/>
+                                        <Grid Grid.Row="3">
+                                            <TextBlock Text="Owned"
+                                                       FontSize="10"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource AccentBrush}"
+                                                       VerticalAlignment="Center"/>
+                                            <Button Tag="{Binding}"
+                                                    Content="{Binding ActionText}"
+                                                    Height="34"
+                                                    Width="90"
+                                                    HorizontalAlignment="Right"
+                                                    Background="{DynamicResource AccentBrush}"
+                                                    Foreground="White"
+                                                    BorderThickness="0"
+                                                    FontSize="11"
+                                                    FontWeight="SemiBold"
+                                                    Click="StoreItemButton_Click"/>
+                                        </Grid>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
