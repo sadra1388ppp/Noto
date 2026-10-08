@@ -26,8 +26,6 @@ public sealed class StoreItem : INotifyPropertyChanged
 
     public string PreviewSoft { get; init; } = "#272C34";
 
-    public string PreviewGeometry { get; init; } = string.Empty;
-
     public bool IsOwned
     {
         get => _isOwned;
