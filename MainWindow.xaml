@@ -1548,13 +1548,9 @@
                   Margin="0,0,0,16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="54"/>
-                    <RowDefinition Height="12"/>
-                    <RowDefinition Height="54"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="12"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="12"/>
                     <ColumnDefinition Width="*"/>
@@ -1580,20 +1576,12 @@
 
                 <Button x:Name="StoreSkinsButton"
                         Grid.Row="0"
-                        Grid.Column="6"
+                        Grid.Column="4"
                         Content="SKINS"
                         Tag="Skins"
                         Style="{StaticResource StoreCategoryButtonStyle}"
                         Click="StoreCategoryButton_Click"/>
-
-                <Button x:Name="StoreStickersButton"
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Content="STICKERS"
-                        Tag="Stickers"
-                        Style="{StaticResource StoreCategoryButtonStyle}"
-                        Click="StoreCategoryButton_Click"/>
-            </Grid>
+</Grid>
 
             <Border Grid.Row="2"
                     Background="White"
