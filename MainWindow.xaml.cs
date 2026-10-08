@@ -35,6 +35,19 @@ public partial class MainWindow : Window
     private bool _ownerMode;
     private string _selectedStoreCategory = "All";
     private readonly TextBlock RewardsStatusText = new();
+    private readonly StoreItem _defaultThemeItem = new()
+    {
+        Id = "theme.default",
+        Name = "Noto Default",
+        Description = "The original Noto workspace. Keep it as your clean fallback theme.",
+        Category = "Themes",
+        Price = 0,
+        PreviewBackground = "#F7F8FA",
+        PreviewAccent = "#3478F6",
+        PreviewSecondary = "#FFFFFF",
+        PreviewSoft = "#EAF1FF",
+        IsOwned = true
+    };
     private DateTime _calendarMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private DateTime _selectedCalendarDate = DateTime.Today;
     private static readonly DoubleAnimation HalloweenPumpkinLeftAnimation = new()
@@ -215,7 +228,14 @@ public partial class MainWindow : Window
             achievement.IsUnlocked = _progress.UnlockedAchievementIds.Contains(achievement.Id);
         }
 
+        _defaultThemeItem.IsOwned = true;
+        _defaultThemeItem.IsEquipped = _progress.EquippedThemeId.Equals(
+            "theme.default",
+            StringComparison.OrdinalIgnoreCase);
+
         OwnedStoreItems.Clear();
+        OwnedStoreItems.Add(_defaultThemeItem);
+
         foreach (var item in StoreItems.Where(item => item.IsOwned))
         {
             OwnedStoreItems.Add(item);
@@ -244,7 +264,11 @@ public partial class MainWindow : Window
         {
             _reminderView.Refresh();
             RefreshView();
-            RefreshCalendar();
+
+            if (CalendarContentPanel.Visibility == Visibility.Visible)
+            {
+                RefreshCalendar();
+            }
         }
     }
 
@@ -299,8 +323,6 @@ public partial class MainWindow : Window
         NoListsText.Visibility = CustomLists.Count == 0
             ? Visibility.Visible
             : Visibility.Collapsed;
-
-        RefreshRewardsView();
     }
 
     private void RefreshRewardsView()
@@ -349,32 +371,51 @@ public partial class MainWindow : Window
 
         var firstVisibleDay = _calendarMonth.AddDays(-(int)_calendarMonth.DayOfWeek);
 
+        var remindersByDate = Reminders
+            .Where(r => r.DueDate.HasValue)
+            .GroupBy(r => r.DueDate!.Value.Date)
+            .ToDictionary(group => group.Key, group => group.ToList());
+
+        var accentBrush = (Brush)FindResource("AccentBrush");
+        var accentSoftBrush = (Brush)FindResource("AccentSoftBrush");
+        var textBrush = (Brush)FindResource("TextBrush");
+        var mutedTextBrush = (Brush)FindResource("MutedTextBrush");
+        var borderBrush = (Brush)FindResource("BorderBrush");
+
         for (var i = 0; i < 42; i++)
         {
             var day = firstVisibleDay.AddDays(i);
-            var reminders = Reminders.Where(r => r.DueDate?.Date == day.Date).ToList();
+            var reminders = remindersByDate.TryGetValue(day.Date, out var dayReminders)
+                ? dayReminders
+                : [];
             var isCurrentMonth = day.Month == _calendarMonth.Month;
             var isToday = day.Date == DateTime.Today;
             var isSelected = day.Date == _selectedCalendarDate.Date;
 
             var background = isSelected
-                ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3478F6"))
+                ? accentBrush
                 : isToday
-                    ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#EAF1FF"))
+                    ? accentSoftBrush
                     : Brushes.Transparent;
 
             var foreground = isSelected
                 ? Brushes.White
                 : isCurrentMonth
-                    ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30353B"))
-                    : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B6BBC2"));
+                    ? textBrush
+                    : mutedTextBrush;
 
-            var content = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+            var content = new StackPanel
+            {
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
             content.Children.Add(new TextBlock
             {
                 Text = day.Day.ToString(),
                 FontSize = 13,
-                FontWeight = isToday || isSelected ? FontWeights.SemiBold : FontWeights.Normal,
+                FontWeight = isToday || isSelected
+                    ? FontWeights.SemiBold
+                    : FontWeights.Normal,
                 Foreground = foreground,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 TextAlignment = TextAlignment.Center
@@ -384,10 +425,10 @@ public partial class MainWindow : Window
             {
                 content.Children.Add(new Border
                 {
-                    Width = 5,
+                    Width = reminders.Count >= 10 ? 7 : 5,
                     Height = 5,
                     CornerRadius = new CornerRadius(3),
-                    Background = isSelected ? Brushes.White : (Brush)FindResource("AccentBrush"),
+                    Background = isSelected ? Brushes.White : accentBrush,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Margin = new Thickness(0, 4, 0, 0)
                 });
@@ -399,17 +440,24 @@ public partial class MainWindow : Window
                 Tag = day,
                 Margin = new Thickness(3),
                 Padding = new Thickness(0),
-                BorderThickness = isSelected ? new Thickness(0) : new Thickness(1),
+                BorderThickness = isSelected
+                    ? new Thickness(0)
+                    : new Thickness(1),
                 BorderBrush = isSelected
                     ? Brushes.Transparent
                     : isToday
-                        ? (Brush)FindResource("AccentBrush")
-                        : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ECEEF1")),
+                        ? accentBrush
+                        : borderBrush,
                 Background = background,
+                Foreground = foreground,
                 HorizontalContentAlignment = HorizontalAlignment.Center,
                 VerticalContentAlignment = VerticalAlignment.Center,
                 FontSize = 13,
-                ToolTip = reminders.Count == 0 ? null : $"{reminders.Count} reminder{(reminders.Count == 1 ? "" : "s")}"
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Focusable = false,
+                ToolTip = reminders.Count == 0
+                    ? null
+                    : $"{reminders.Count} reminder{(reminders.Count == 1 ? "" : "s")}"
             };
 
             dayButton.Click += (_, _) =>
