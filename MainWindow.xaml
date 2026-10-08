@@ -741,7 +741,6 @@
                 <Line X1="0" Y1="0" X2="126" Y2="108" Stroke="#FFB99FBF" StrokeThickness="1"/>
                 <Line X1="0" Y1="38" X2="75" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
                 <Line X1="0" Y1="72" X2="108" Y2="0" Stroke="#FFB99FBF" StrokeThickness="1"/>
-                <ArcSegment/>
             </Canvas>
 
             <Canvas Canvas.Right="0"
