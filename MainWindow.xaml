@@ -1947,7 +1947,7 @@
                                                                 <DataTrigger Binding="{Binding Id}" Value="theme.halloween-night">
                                                                     <Setter Property="Visibility" Value="Visible"/>
                                                                 </DataTrigger>
-                                                            </Style>
+                                                            </Style.Triggers>
                                                         </Style>
                                                     </Grid.Style>
                                                     <Ellipse Width="60"
