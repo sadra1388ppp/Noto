@@ -584,6 +584,124 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Moonlit Forest decorative layer -->
+        <Grid x:Name="ForestEffectsOverlay"
+              Grid.ColumnSpan="2"
+              Height="118"
+              VerticalAlignment="Top"
+              IsHitTestVisible="False"
+              Panel.ZIndex="1"
+              Visibility="Collapsed"
+              ClipToBounds="True">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="245"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Canopy on the sidebar -->
+            <Canvas Grid.Column="0" ClipToBounds="True">
+                <Path Data="M -5,18 C 38,4 84,10 126,28 C 157,40 184,38 220,26"
+                      Stroke="#FF163B25"
+                      StrokeThickness="12"
+                      StrokeStartLineCap="Round"
+                      Fill="Transparent"
+                      Opacity="0.92"/>
+                <Ellipse Width="34" Height="17" Canvas.Left="28" Canvas.Top="12" Fill="#FF4D8B51">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform Angle="18"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse Width="29" Height="16" Canvas.Left="76" Canvas.Top="20" Fill="#FF3D7645">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform Angle="28"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse Width="28" Height="16" Canvas.Left="119" Canvas.Top="27" Fill="#FF5C9A5A">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform Angle="26"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse Width="24" Height="14" Canvas.Left="159" Canvas.Top="22" Fill="#FF315F39">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform Angle="12"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+            </Canvas>
+
+            <!-- Main header: only in the empty center band, never over search/coin controls -->
+            <Canvas Grid.Column="1"
+                    Margin="310,0,310,0"
+                    ClipToBounds="True">
+
+                <Path Data="M 12,-12 C 28,17 29,41 44,61 C 57,78 79,86 91,106"
+                      Stroke="#FF356E42"
+                      StrokeThickness="3"
+                      StrokeStartLineCap="Round"
+                      Fill="Transparent"
+                      Opacity="0.74"/>
+
+                <Ellipse Width="18" Height="10" Canvas.Left="8" Canvas.Top="27" Fill="#FF5C9B60"/>
+                <Ellipse Width="16" Height="9" Canvas.Left="35" Canvas.Top="49" Fill="#FF467E50">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform Angle="24"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse Width="14" Height="8" Canvas.Left="60" Canvas.Top="75" Fill="#FF71AC6C">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform Angle="-18"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+
+                <Canvas Width="16" Height="16" Canvas.Left="102" Canvas.Top="18">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform x:Name="ForestFireflyTranslateA"/>
+                    </Canvas.RenderTransform>
+                    <Ellipse Width="6" Height="6"
+                             Canvas.Left="5" Canvas.Top="5"
+                             Fill="#FFD2FF82"
+                             Opacity="0.86"/>
+                </Canvas>
+
+                <Canvas Width="16" Height="16" Canvas.Left="155" Canvas.Top="55">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform x:Name="ForestFireflyTranslateB"/>
+                    </Canvas.RenderTransform>
+                    <Ellipse Width="5" Height="5"
+                             Canvas.Left="5" Canvas.Top="5"
+                             Fill="#FFE2FF9B"
+                             Opacity="0.78"/>
+                </Canvas>
+
+                <Ellipse x:Name="ForestFireflyOpacityA"
+                         Width="5" Height="5"
+                         Canvas.Left="132" Canvas.Top="36"
+                         Fill="#FFC4F27C"/>
+
+                <Ellipse Width="4" Height="4" Canvas.Left="190" Canvas.Top="26"
+                         Fill="#FFB7EC78" Opacity="0.70"/>
+                <Ellipse Width="3" Height="3" Canvas.Left="202" Canvas.Top="75"
+                         Fill="#FFE0FF9D" Opacity="0.65"/>
+
+                <Canvas Width="22" Height="22"
+                        Canvas.Left="220" Canvas.Top="79">
+                    <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform x:Name="ForestLeafTranslate"/>
+                            <RotateTransform x:Name="ForestLeafRotate" Angle="-18"/>
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
+                    <Path Data="M 2,10 C 8,2 17,2 20,10 C 15,18 7,19 2,10 Z"
+                          Fill="#FF6FA85B"
+                          Opacity="0.78"/>
+                    <Path Data="M 4,10 L 18,10"
+                          Stroke="#FFB2D98A"
+                          StrokeThickness="1"
+                          Opacity="0.55"/>
+                </Canvas>
+            </Canvas>
+        </Grid>
+
         <!-- Halloween decorative layer: clipped to a safe header band so it never hides app controls -->
         <Grid x:Name="HalloweenEffectsOverlay"
               Grid.ColumnSpan="2"
@@ -874,6 +992,22 @@
                 </LinearGradientBrush>
             </Grid.Background>
         </Grid>
+        
+        <Grid x:Name="ForestBackdrop"
+              Grid.ColumnSpan="2"
+              Panel.ZIndex="0"
+              IsHitTestVisible="False"
+              Visibility="Collapsed">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0"
+                                     EndPoint="1,1">
+                    <GradientStop Color="#FF06120A" Offset="0"/>
+                    <GradientStop Color="#FF0A1F12" Offset="0.48"/>
+                    <GradientStop Color="#FF12351D" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+        </Grid>
+
 
         <!-- Sidebar -->
         <Border Grid.Column="0"
@@ -1966,112 +2100,94 @@
                                                         CornerRadius="12"
                                                         ClipToBounds="True">
                                                     <Grid>
-                                                        <Rectangle Fill="#160D21"
-                                                                   Opacity="0.22"/>
 
-                                                        <!-- Moon -->
-                                                        <Ellipse Width="74"
-                                                                 Height="74"
-                                                                 HorizontalAlignment="Right"
-                                                                 VerticalAlignment="Top"
-                                                                 Margin="0,10,14,0"
-                                                                 Fill="#FFE8D8FF"
-                                                                 Opacity="0.96"/>
+                                                        <!-- Halloween -->
+                                                        <Grid>
+                                                            <Grid.Style>
+                                                                <Style TargetType="Grid">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Id}" Value="theme.halloween-night">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Grid.Style>
 
-                                                        <Ellipse Width="34"
-                                                                 Height="34"
-                                                                 HorizontalAlignment="Right"
-                                                                 VerticalAlignment="Top"
-                                                                 Margin="0,28,50,0"
-                                                                 Fill="{Binding PreviewBackground}"
-                                                                 Opacity="0.98"/>
-
-                                                        <!-- Moon glow -->
-                                                        <Ellipse Width="112"
-                                                                 Height="112"
-                                                                 HorizontalAlignment="Right"
-                                                                 VerticalAlignment="Top"
-                                                                 Margin="0,-10,-5,0"
-                                                                 Fill="{Binding PreviewSoft}"
-                                                                 Opacity="0.25"/>
-
-                                                        <!-- Stars -->
-                                                        <TextBlock Text="✦"
-                                                                   FontSize="13"
-                                                                   Foreground="#FFFFC56E"
-                                                                   Margin="22,18,0,0"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Top"/>
-                                                        <TextBlock Text="·"
-                                                                   FontSize="17"
-                                                                   Foreground="#FFC58EFF"
-                                                                   Margin="54,40,0,0"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Top"/>
-                                                        <TextBlock Text="✦"
-                                                                   FontSize="9"
-                                                                   Foreground="#FFB77CFF"
-                                                                   Margin="92,22,0,0"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Top"/>
-
-                                                        <!-- Haunted skyline -->
-                                                        <StackPanel Orientation="Horizontal"
-                                                                    HorizontalAlignment="Center"
+                                                            <Ellipse Width="72" Height="72"
+                                                                     HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Top"
+                                                                     Margin="0,9,16,0"
+                                                                     Fill="#FFE8D8FF"
+                                                                     Opacity="0.95"/>
+                                                            <Path Data="M 0,100 Q 75,75 152,96 T 300,94 L 300,118 L 0,118 Z"
+                                                                  Fill="#FF0D0912"/>
+                                                            <Canvas Width="60" Height="64"
+                                                                    HorizontalAlignment="Left"
                                                                     VerticalAlignment="Bottom"
-                                                                    Margin="0,0,0,20">
-                                                            <Rectangle Width="34" Height="36" Fill="#FF1D1225"/>
-                                                            <Polygon Points="10,0 24,0 30,8 4,8"
-                                                                     Fill="#FF1D1225"
-                                                                     Margin="-34,0,0,28"/>
-                                                            <Rectangle Width="56" Height="48" Fill="#FF140C1B"/>
-                                                            <Rectangle Width="30" Height="30" Fill="#FF1D1225"/>
-                                                        </StackPanel>
+                                                                    Margin="24,0,0,13">
+                                                                <Ellipse Width="25" Height="38" Canvas.Left="19" Canvas.Top="20" Fill="#FFFF7E27"/>
+                                                                <Ellipse Width="30" Height="44" Canvas.Left="5" Canvas.Top="18" Fill="#FFFF8E32"/>
+                                                                <Ellipse Width="30" Height="44" Canvas.Left="33" Canvas.Top="18" Fill="#FFFF7423"/>
+                                                                <Path Data="M 31,22 C 28,17 33,12 39,14 C 42,17 40,21 37,24 Z" Fill="#FF536F34"/>
+                                                                <Path Data="M 12,37 L 23,31 L 27,39 L 18,43 M 36,39 L 40,31 L 51,37 L 45,43"
+                                                                      Stroke="#FF24172A" StrokeThickness="5" StrokeLineJoin="Round" Fill="Transparent"/>
+                                                                <Path Data="M 19,48 Q 31,57 45,48 Q 40,59 31,60 Q 25,58 19,48 Z"
+                                                                      Fill="#FF24172A"/>
+                                                            </Canvas>
+                                                            <Path Data="M 224,37 C 216,30 210,28 203,30 C 196,33 190,29 184,26 C 188,34 194,38 200,40 C 194,43 190,47 187,51 C 196,48 204,46 211,42 C 215,47 220,50 224,50 C 228,50 232,47 236,42 C 243,46 251,48 260,51 C 257,47 253,43 247,40 C 253,38 258,34 262,26 C 253,29 248,34 241,31 C 234,28 229,30 224,37 Z"
+                                                                  Fill="#FF17101F"
+                                                                  Opacity="0.95"/>
+                                                        </Grid>
 
-                                                        <!-- Foreground hill -->
-                                                        <Path Data="M 0,96 Q 70,74 140,96 T 300,94 L 300,118 L 0,118 Z"
-                                                              Fill="#FF0F0914"
-                                                              Opacity="0.96"/>
+                                                        <!-- Moonlit Forest -->
+                                                        <Grid>
+                                                            <Grid.Style>
+                                                                <Style TargetType="Grid">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Id}" Value="theme.moonlit-forest">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Grid.Style>
 
-                                                        <!-- Pumpkin -->
-                                                        <Canvas Width="68"
-                                                                Height="68"
-                                                                HorizontalAlignment="Left"
-                                                                VerticalAlignment="Bottom"
-                                                                Margin="24,0,0,14">
-                                                            <Ellipse Width="26" Height="40" Canvas.Left="22" Canvas.Top="20" Fill="#FFF17824"/>
-                                                            <Ellipse Width="32" Height="46" Canvas.Left="7" Canvas.Top="18" Fill="#FFFF872B"/>
-                                                            <Ellipse Width="32" Height="46" Canvas.Left="36" Canvas.Top="18" Fill="#FFFF7520"/>
-                                                            <Path Data="M 33,22 C 29,16 34,12 40,13 C 44,16 42,21 39,24 Z"
-                                                                  Fill="#FF526C31"/>
-                                                            <Path Data="M 14,37 L 26,31 L 30,39 L 21,43 Z"
-                                                                  Fill="#FF24172A"/>
-                                                            <Path Data="M 39,39 L 43,31 L 55,37 L 48,43 Z"
-                                                                  Fill="#FF24172A"/>
-                                                            <Path Data="M 20,48 Q 34,58 49,48 Q 43,59 34,60 Q 26,58 20,48 Z"
-                                                                  Fill="#FF24172A"/>
-                                                        </Canvas>
+                                                            <Ellipse Width="64" Height="64"
+                                                                     HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Top"
+                                                                     Margin="0,10,18,0"
+                                                                     Fill="#FFE9F2DA"
+                                                                     Opacity="0.92"/>
 
-                                                        <!-- Bat -->
-                                                        <Path Data="M 224,35 C 218,28 212,27 205,29 C 199,32 193,28 186,25 C 190,33 195,37 201,39 C 195,41 190,45 187,49 C 196,47 205,45 211,41 C 215,46 219,48 223,48 C 227,48 231,46 235,41 C 241,45 250,47 259,49 C 256,45 251,41 245,39 C 251,37 256,33 260,25 C 252,28 247,32 241,29 C 234,27 229,28 224,35 Z"
-                                                              Fill="#FF17101F"
-                                                              Opacity="0.94"
-                                                              Margin="0,20,18,0"
-                                                              HorizontalAlignment="Right"
-                                                              VerticalAlignment="Top"/>
+                                                            <Path Data="M 0,118 L 0,86 L 18,56 L 30,86 L 48,62 L 62,86 L 82,49 L 96,86 L 112,58 L 128,86 L 146,45 L 162,86 L 180,56 L 198,86 L 216,49 L 232,86 L 250,56 L 267,86 L 284,50 L 300,86 L 300,118 Z"
+                                                                  Fill="#FF0B2314"/>
 
-                                                        <!-- Mist -->
-                                                        <Ellipse Width="210"
-                                                                 Height="42"
-                                                                 Fill="#FFE2CFFF"
-                                                                 Opacity="0.10"
-                                                                 HorizontalAlignment="Left"
-                                                                 VerticalAlignment="Bottom"
-                                                                 Margin="0,0,0,9">
-                                                            <Ellipse.Effect>
-                                                                <BlurEffect Radius="12"/>
-                                                            </Ellipse.Effect>
-                                                        </Ellipse>
+                                                            <Path Data="M 82,118 L 82,82 L 98,49 L 107,70 L 122,40 L 131,72 L 146,52 L 146,118 Z"
+                                                                  Fill="#FF07160C"/>
+                                                            <Path Data="M 202,118 L 202,79 L 218,47 L 227,69 L 242,38 L 251,71 L 268,50 L 268,118 Z"
+                                                                  Fill="#FF08180D"/>
+
+                                                            <Ellipse Width="5" Height="5" Canvas.Left="38" Canvas.Top="34" Fill="#FFD8FF8B"/>
+                                                            <Ellipse Width="4" Height="4" Canvas.Left="111" Canvas.Top="24" Fill="#FFBDF47D"/>
+                                                            <Ellipse Width="5" Height="5" Canvas.Left="175" Canvas.Top="43" Fill="#FFE5FFA0"/>
+                                                            <Ellipse Width="4" Height="4" Canvas.Left="247" Canvas.Top="27" Fill="#FFC9F27B"/>
+
+                                                            <Path Data="M 16,92 C 26,79 42,80 49,91 C 42,102 27,103 16,92 Z"
+                                                                  Fill="#FF4D8C4E"/>
+                                                            <Path Data="M 251,99 C 263,86 278,88 286,99 C 278,111 264,111 251,99 Z"
+                                                                  Fill="#FF619D58"/>
+
+                                                            <TextBlock Text="MOONLIT FOREST"
+                                                                       FontSize="8"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="#FFD5E8CB"
+                                                                       HorizontalAlignment="Left"
+                                                                       VerticalAlignment="Top"
+                                                                       Margin="16,14,0,0"
+                                                                       Opacity="0.88"/>
+                                                        </Grid>
+
                                                     </Grid>
                                                 </Border>
 
